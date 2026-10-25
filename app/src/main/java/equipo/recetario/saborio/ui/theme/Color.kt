@@ -38,4 +38,6 @@ val DarkText = Color(0xFF354048)
 
 //Colores Pagina
 val Brown = Color(0xFF5A413A)
+val LightBrown = Color(0xFF8F7068)
 val Orange = Color(0xFFAD2C00)
+val LightBrownGrey = Color(0xFFF1EDE7)
