@@ -35,3 +35,7 @@ val CustomBg = Color(0xFFF1EDE7)
 
 val WhiteText = Color(0xFFFFFFFF)
 val DarkText = Color(0xFF354048)
+
+//Colores Pagina
+val Brown = Color(0xFF5A413A)
+val Orange = Color(0xFFAD2C00)
