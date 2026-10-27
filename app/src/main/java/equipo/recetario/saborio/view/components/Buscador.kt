@@ -33,9 +33,11 @@ import equipo.recetario.saborio.ui.theme.LightBrown
 import equipo.recetario.saborio.ui.theme.LightBrownGrey
 
 @Composable
-fun Buscador() {
-    var textoBusqueda by remember { mutableStateOf("") }
-
+fun Buscador(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onSortClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,8 +46,8 @@ fun Buscador() {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         TextField(
-            value = textoBusqueda,
-            onValueChange = { textoBusqueda = it },
+            value = query,
+            onValueChange = onQueryChange,
             modifier = Modifier
                 .weight(1f),
             placeholder = {
@@ -74,7 +76,7 @@ fun Buscador() {
                 .background(color = LightBrownGrey, shape = CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            IconButton(onClick = { }) {
+            IconButton(onClick = { onSortClick() }) {
                 Image(
                     painter = painterResource(R.drawable.sort_arrows_icon),
                     contentDescription = "sort_arrows"
@@ -87,5 +89,10 @@ fun Buscador() {
 @Preview(showBackground = true)
 @Composable
 fun BuscadorPreview() {
-    Buscador()
+    var textoPrueba by remember { mutableStateOf("") }
+    Buscador(
+        query = textoPrueba,
+        onQueryChange = { textoPrueba = it },
+        onSortClick = {}
+    )
 }

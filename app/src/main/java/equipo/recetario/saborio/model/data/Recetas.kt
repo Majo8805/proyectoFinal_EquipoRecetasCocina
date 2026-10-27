@@ -37,7 +37,7 @@ val RecetaPrueba = Receta(
     esGuardada = false
 )
 
-val listaRecetas = listOf(
+var listaRecetas = listOf(
     Receta(
         id = "1",
         nombre = "Tagliatelle al Pesto de Albahaca Fresca",
@@ -382,7 +382,30 @@ fun filtrarPorEtiqueta(listaActual: List<Receta>, etiquetaSeleccionada: String):
     if (etiquetaSeleccionada.equals("Todas", ignoreCase = true)) {
         return listaActual
     }
+
+    if (etiquetaSeleccionada.equals("Otras", ignoreCase = true) || etiquetaSeleccionada.equals("Otros", ignoreCase = true)) {
+        val predeterminadas = EtiquetasPredeterminadas.listaEtiquetas
+
+        return listaActual.filter { receta ->
+            receta.etiquetas.any { etiqueta ->
+                predeterminadas.none { predeterminada ->
+                    predeterminada.equals(etiqueta, ignoreCase = true)
+                }
+            }
+        }
+    }
+
     return listaActual.filter { receta ->
         receta.etiquetas.any { it.equals(etiquetaSeleccionada, ignoreCase = true) }
+    }
+}
+
+fun guardadoGlobalDeRecetas(nombreReceta: String) {
+    listaRecetas = listaRecetas.map { receta ->
+        if (receta.nombre == nombreReceta) {
+            receta.copy(esGuardada = !receta.esGuardada)
+        } else {
+            receta
+        }
     }
 }

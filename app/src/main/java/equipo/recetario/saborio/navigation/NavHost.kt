@@ -5,11 +5,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import equipo.recetario.saborio.model.domain.Usuario
-import equipo.recetario.saborio.view.screens.PerfilScreen
 import equipo.recetario.saborio.view.screens.PrincipalScreen
 
 @Composable
-fun NavHost(usuario: Usuario) {
+fun AppNavHost(usuario: Usuario) {
     val navController = rememberNavController()
 //Cuando el Login este hecho cambiar el startDestination para que use la ruta del Login
     NavHost(navController = navController, startDestination = VerMisRecetas) {
@@ -41,18 +40,6 @@ fun NavHost(usuario: Usuario) {
                 onNavigateToExplorar = { navController.navigate(VerExplorar) },
                 onNavigateToGuardadas = {  },
                 onNavigateToPerfil = { navController.navigate(VerPerfil) }
-            )
-        }
-        composable<VerPerfil> {
-            PerfilScreen(
-                usuario,
-                onNavigateToInicio = { navController.navigate(VerMisRecetas) },
-                onNavigateToExplorar = { navController.navigate(VerExplorar) },
-                onNavigateToGuardadas = { navController.navigate(VerGuardadas) },
-                onNavigateToPerfil = { },
-                onEditarClick = { },
-                onDesbloquearClick = { },
-                onCerrarSesionClick = { }
             )
         }
     }
