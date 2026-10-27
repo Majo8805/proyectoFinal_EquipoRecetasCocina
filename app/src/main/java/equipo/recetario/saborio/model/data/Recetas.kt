@@ -98,7 +98,7 @@ val listaRecetas = listOf(
         enlaceWeb = null,
         esPublica = false,
         esSecreta = false,
-        nombreAutor = "Ana Torres",
+        nombreAutor = "Tryndamere Gonzales",
         calificacion = 4.5,
         esGuardada = false
     ),
@@ -289,7 +289,7 @@ val listaRecetas = listOf(
         enlaceWeb = null,
         esPublica = false,
         esSecreta = true,
-        nombreAutor = "Ana Torres",
+        nombreAutor = "Tryndamere Gonzales",
         calificacion = 5.0,
         esGuardada = false
     ),

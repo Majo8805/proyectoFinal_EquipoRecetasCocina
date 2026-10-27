@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import equipo.recetario.saborio.model.domain.Usuario
+import equipo.recetario.saborio.view.screens.PerfilScreen
 import equipo.recetario.saborio.view.screens.PrincipalScreen
 
 @Composable
@@ -43,13 +44,15 @@ fun NavHost(usuario: Usuario) {
             )
         }
         composable<VerPerfil> {
-            PrincipalScreen(
+            PerfilScreen(
                 usuario,
-                "Guardadas",
                 onNavigateToInicio = { navController.navigate(VerMisRecetas) },
                 onNavigateToExplorar = { navController.navigate(VerExplorar) },
                 onNavigateToGuardadas = { navController.navigate(VerGuardadas) },
-                onNavigateToPerfil = {  }
+                onNavigateToPerfil = { },
+                onEditarClick = { },
+                onDesbloquearClick = { },
+                onCerrarSesionClick = { }
             )
         }
     }
