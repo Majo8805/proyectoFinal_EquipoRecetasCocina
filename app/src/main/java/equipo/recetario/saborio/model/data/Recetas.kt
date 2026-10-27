@@ -362,7 +362,7 @@ var listaRecetas = listOf(
 )
 
 fun getMisRecetas(miNombre: String): List<Receta> {
-    return listaRecetas.filter { it.nombreAutor == miNombre }
+    return listaRecetas.filter { it.nombreAutor == miNombre && !it.esSecreta}
 }
 
 fun getRecetasSecretas(miNombre: String): List<Receta>{

@@ -54,7 +54,7 @@ fun AppNavHost(usuario: Usuario) {
                 onNavigateToGuardadas = { navController.navigate(VerGuardadas) },
                 onNavigateToPerfil = { },
                 onEditarClick = { navController.navigate(VerEditarPerfil)},
-                onDesbloquearClick = { },
+                onDesbloquearClick = { navController.navigate(VerRecetasSecretas) },
                 onCerrarSesionClick = { }
             )
         }

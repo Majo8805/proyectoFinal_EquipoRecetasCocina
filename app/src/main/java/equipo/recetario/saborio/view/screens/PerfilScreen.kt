@@ -40,11 +40,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import equipo.recetario.saborio.model.data.getMisRecetas
 import equipo.recetario.saborio.model.data.getRecetasSecretas
+import equipo.recetario.saborio.model.data.listaRecetas
 import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
-import equipo.recetario.saborio.navigation.VerRecetasSecretas
 import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
 import equipo.recetario.saborio.ui.theme.SaborioTheme
 import equipo.recetario.saborio.view.components.BarraInferior
@@ -62,6 +63,8 @@ fun PerfilScreen(
     onDesbloquearClick: () -> Unit,
     onCerrarSesionClick: () -> Unit
 ) {
+    val misRecetas = getMisRecetas(usuario.nombre)
+    val misRecetasSecretas = getRecetasSecretas(usuario.nombre)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -74,7 +77,7 @@ fun PerfilScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             EncabezadoPerfil(usuario)
-            EstadisticasPerfil(recetas = 0, secretas = 0)
+            EstadisticasPerfil(recetas = misRecetas.size, secretas = misRecetasSecretas.size)
             AccionesPerfil(
                 onEditarClick = onEditarClick,
                 onDesbloquearClick = onDesbloquearClick,
@@ -227,7 +230,7 @@ fun AccionesPerfil(
 
 @Preview(showBackground = true)
 @Composable
-fun RecetasSecretasScreen(){
+fun RecetasSecretasScreenPreview(){
     SaborioTheme {
         RecetasSecretasScreen(getRecetasSecretas(usuarioMuestra.nombre), {})
     }
