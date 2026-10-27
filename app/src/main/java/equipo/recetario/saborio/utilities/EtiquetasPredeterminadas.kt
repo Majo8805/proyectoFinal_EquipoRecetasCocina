@@ -11,4 +11,6 @@ object EtiquetasPredeterminadas {
     const val BEBIDA = "Bebida"
     const val ENSALADA = "Ensalada"
     const val PANADERIA = "Panadería"
+
+    val listaEtiquetas = listOf(DESAYUNO, COMIDA, CENA, POSTRE, SNACK, SALUDABLE, VEGETARIANA, BEBIDA, ENSALADA, PANADERIA)
 }

@@ -28,7 +28,10 @@ import equipo.recetario.saborio.ui.theme.WhiteText
 import equipo.recetario.saborio.utilities.EtiquetasPredeterminadas
 
 @Composable
-fun FiltrosCategorias() {
+fun FiltrosCategorias(
+    categoriaSeleccionada: String,
+    onCategoriaSelected: (String) -> Unit
+) {
     val categorias = listOf(
         "Todas",
         EtiquetasPredeterminadas.DESAYUNO,
@@ -44,8 +47,6 @@ fun FiltrosCategorias() {
         "Otras"
     )
 
-    var categoriaSeleccionada by remember { mutableStateOf(categorias[0]) }
-
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
@@ -60,7 +61,7 @@ fun FiltrosCategorias() {
                         color = if (esActiva) Orange else LightBrownGrey
                     )
                     .clickable {
-                        categoriaSeleccionada = categoria
+                        onCategoriaSelected(categoria)
                     }
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
@@ -78,5 +79,9 @@ fun FiltrosCategorias() {
 @Composable
 @Preview(showBackground = true)
 fun FiltrosCategoriasPreview() {
-    FiltrosCategorias()
+    var categoriaPrueba by remember { mutableStateOf("Todas") }
+    FiltrosCategorias(
+        categoriaSeleccionada = categoriaPrueba,
+        onCategoriaSelected = { categoriaPrueba = it }
+    )
 }
