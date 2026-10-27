@@ -3,6 +3,7 @@ package equipo.recetario.saborio.view.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,12 +18,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -37,12 +40,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import equipo.recetario.saborio.model.data.getRecetasSecretas
 import equipo.recetario.saborio.model.data.usuarioMuestra
+import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
+import equipo.recetario.saborio.navigation.VerRecetasSecretas
 import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
 import equipo.recetario.saborio.ui.theme.SaborioTheme
 import equipo.recetario.saborio.view.components.BarraInferior
 import equipo.recetario.saborio.view.components.BarraSuperior
+import equipo.recetario.saborio.view.components.ListaRecetas
 
 @Composable
 fun PerfilScreen(
@@ -60,7 +67,7 @@ fun PerfilScreen(
             .fillMaxSize()
             .background(BackgrounLightBrown)
     ) {
-        BarraSuperior(usuario)
+        BarraSuperior(usuario, onNavigateToPerfil)
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -83,6 +90,31 @@ fun PerfilScreen(
         )
     }
 }
+
+@Composable
+fun RecetasSecretasScreen(
+    recetas: List<Receta>,
+    onVolverClick: () -> Unit
+){
+    Column(modifier = Modifier.fillMaxSize().background(BackgrounLightBrown)) {
+        Row(verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(8.dp)) {
+            IconButton(onClick = onVolverClick) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            }
+            Text("Mis recetas secretas", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        }
+        Box(modifier = Modifier.weight(1f)){
+            if (recetas.isEmpty()){
+                Text("Aún no hay recetas secretas",
+                modifier = Modifier.align(Alignment.Center))
+            } else {
+                ListaRecetas(recetas, mostrarBotonGuardar = false, onGuardarClick = {})
+            }
+        }
+    }
+}
+
 
 @Composable
 fun EncabezadoPerfil(usuario: Usuario) {
@@ -190,6 +222,14 @@ fun AccionesPerfil(
         ) {
             Text(text = "Cerrar Sesión")
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RecetasSecretasScreen(){
+    SaborioTheme {
+        RecetasSecretasScreen(getRecetasSecretas(usuarioMuestra.nombre), {})
     }
 }
 

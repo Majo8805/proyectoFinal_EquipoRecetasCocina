@@ -114,7 +114,7 @@ fun BarraInferior(
             //Boton Perfil
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.clickable{onNavigateToPerfil}
+                modifier = Modifier.clickable{ onNavigateToPerfil() }
             ) {
                 val color = if (pestana == "Perfil") Orange else Brown
                 Image(painter = painterResource(R.drawable.person_icon),

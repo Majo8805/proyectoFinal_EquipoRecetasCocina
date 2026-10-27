@@ -365,6 +365,10 @@ fun getMisRecetas(miNombre: String): List<Receta> {
     return listaRecetas.filter { it.nombreAutor == miNombre }
 }
 
+fun getRecetasSecretas(miNombre: String): List<Receta>{
+    return listaRecetas.filter { it.nombreAutor == miNombre && it.esSecreta}
+}
+
 fun getRecetasExplorar(miNombre: String): List<Receta> {
     return listaRecetas.filter { it.esPublica && it.nombreAutor != miNombre }
 }
