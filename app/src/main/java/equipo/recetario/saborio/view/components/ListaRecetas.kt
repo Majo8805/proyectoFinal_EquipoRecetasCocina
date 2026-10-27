@@ -28,7 +28,7 @@ fun ListaRecetas(
             .padding(15.dp, 15.dp,15.dp, 0.dp)
     ) {
         items(recetas) { receta ->
-            RecetaElement(receta, mostrarBotonGuardar, onGuardarClick)
+            RecetaElement(receta, mostrarBotonGuardar, onGuardarClick, onRecetaClick)
         }
     }
 }
