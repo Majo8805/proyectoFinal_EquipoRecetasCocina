@@ -1,5 +1,4 @@
-package view.components
-
+package equipo.recetario.saborio.view.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth

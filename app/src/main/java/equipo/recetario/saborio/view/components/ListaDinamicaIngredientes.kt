@@ -1,5 +1,4 @@
-package view.components
-
+package equipo.recetario.saborio.view.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -56,7 +55,7 @@ fun ListaDinamicaIngredientes(
                 if (ingredientes.size > 1) {
                     IconButton(onClick = { onEliminarIngrediente(indice) }) {
                         Image(
-                            painter = painterResource(id = R.drawable.add_24px), 
+                            painter = painterResource(id = R.drawable.add_24px),
                             contentDescription = "Eliminar ingrediente",
                             colorFilter = ColorFilter.tint(Orange),
                             modifier = Modifier.size(24.dp)
