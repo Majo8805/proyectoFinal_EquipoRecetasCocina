@@ -2,6 +2,40 @@ package equipo.recetario.saborio.model.data
 import equipo.recetario.saborio.R
 import equipo.recetario.saborio.model.domain.Ingrediente
 import equipo.recetario.saborio.model.domain.Receta
+import equipo.recetario.saborio.utilities.EtiquetasPredeterminadas
+
+val RecetaPrueba = Receta(
+    id = "6",
+    nombre = "Cookies",
+    descripcionBreve = "Galletas clásicas con chispas de chocolate.",
+    fotografia = R.drawable.cookies,
+    ingredientes = listOf(
+        Ingrediente("Harina de trigo", 2.0, "tazas"),
+        Ingrediente("Mantequilla sin sal", 115.0, "g"),
+        Ingrediente("Azúcar morena", 0.75, "taza"),
+        Ingrediente("Chispas de chocolate", 1.0, "taza"),
+        Ingrediente("Huevo", 1.0, "pieza")
+    ),
+    pasosPreparacion = listOf(
+        "Precalienta el horno a 180°C y forra un par de bandejas para hornear con papel pergamino.",
+        "En un bol grande, bate la mantequilla a temperatura ambiente con el azúcar morena y el azúcar blanca hasta obtener una crema suave y esponjosa.",
+        "Añade el huevo y el extracto de vainilla, integrando completamente. Luego, incorpora poco a poco la harina tamizada con el bicarbonato y una pizca de sal.",
+        "Con la ayuda de una espátula, envuelve las chispas de chocolate oscuro en la masa hasta que estén bien distribuidas.",
+        "Forma bolitas de masa del tamaño de una nuez, colócalas en las bandejas dejando espacio entre ellas y hornea de 10 a 12 minutos."
+    ),
+    etiquetas = listOf(
+        EtiquetasPredeterminadas.POSTRE,
+        EtiquetasPredeterminadas.PANADERIA,
+        "Para compartir",
+        "Al horno"
+    ),
+    enlaceWeb = null,
+    esPublica = true,
+    esSecreta = false,
+    nombreAutor = "Ana Torres",
+    calificacion = 4.5,
+    esGuardada = false
+)
 
 val listaRecetas = listOf(
     Receta(
@@ -22,7 +56,12 @@ val listaRecetas = listOf(
             "Hierve abundante agua salada en una olla grande. Sumerge los tagliatelle y cocina durante 3 a 4 minutos.",
             "Fuera del fuego directo, integra la pasta caliente con el pesto en un cuenco tibio."
         ),
-        etiquetas = listOf("Italiana", "Vegetariano", "Fácil"),
+        etiquetas = listOf(
+            EtiquetasPredeterminadas.COMIDA,
+            EtiquetasPredeterminadas.CENA,
+            "Pasta",
+            "Italiana"
+        ),
         enlaceWeb = "chefsofia.com",
         esPublica = true,
         esSecreta = false,
@@ -50,7 +89,12 @@ val listaRecetas = listOf(
             "Añade el puré de tomate natural, unas hojas de albahaca fresca y cocina a fuego lento por 15 minutos.",
             "Escurre la pasta, agrégala a la sartén con la salsa y mezcla vigorosamente. Sirve con queso parmesano rallado."
         ),
-        etiquetas = listOf("Pasta", "Italiano"),
+        etiquetas = listOf(
+            EtiquetasPredeterminadas.COMIDA,
+            EtiquetasPredeterminadas.CENA,
+            "Pasta",
+            "Italiana"
+        ),
         enlaceWeb = null,
         esPublica = false,
         esSecreta = false,
@@ -78,7 +122,12 @@ val listaRecetas = listOf(
             "Hornea el salmón durante 12-15 minutos, barnizándolo con el glaseado a la mitad de la cocción hasta que caramelice.",
             "Sirve el salmón caliente sobre una cama de quinoa cocida, acompañado de rodajas de aguacate y semillas de sésamo espolvoreadas."
         ),
-        etiquetas = listOf("Saludable", "CenaRápida"),
+        etiquetas = listOf(
+            EtiquetasPredeterminadas.COMIDA,
+            EtiquetasPredeterminadas.SALUDABLE,
+            "Alta en proteína",
+            "Pescado"
+        ),
         enlaceWeb = null,
         esPublica = true,
         esSecreta = false,
@@ -106,7 +155,10 @@ val listaRecetas = listOf(
             "Unta una capa generosa de la mezcla de aguacate sobre el pan tostado.",
             "Coloca el huevo pochado encima, espolvorea con hojuelas de chile y un hilo de aceite de oliva antes de servir."
         ),
-        etiquetas = listOf("Saludable", "15Min"),
+        etiquetas = listOf(
+            EtiquetasPredeterminadas.SALUDABLE,
+            "15MIN",
+        ),
         enlaceWeb = null,
         esPublica = true,
         esSecreta = false,
@@ -134,7 +186,11 @@ val listaRecetas = listOf(
             "Pica la carne finamente y calienta las tortillas de maíz en la misma sartén para que absorban el sabor del adobo.",
             "Sirve la carne sobre las tortillas, acompañando con cilantro picado, cebolla finamente cortada, trozos de piña asada y salsa al gusto."
         ),
-        etiquetas = listOf("Mexicana", "Favorito"),
+        etiquetas = listOf(
+            EtiquetasPredeterminadas.COMIDA,
+            EtiquetasPredeterminadas.CENA,
+            "Comida Mexicana"
+        ),
         enlaceWeb = null,
         esPublica = true,
         esSecreta = false,
@@ -162,7 +218,12 @@ val listaRecetas = listOf(
             "Con la ayuda de una espátula, envuelve las chispas de chocolate oscuro en la masa hasta que estén bien distribuidas.",
             "Forma bolitas de masa del tamaño de una nuez, colócalas en las bandejas dejando espacio entre ellas y hornea de 10 a 12 minutos."
         ),
-        etiquetas = listOf("Postres"),
+        etiquetas = listOf(
+            EtiquetasPredeterminadas.POSTRE,
+            EtiquetasPredeterminadas.PANADERIA,
+            "Al Horno",
+            "Chocolate"
+        ),
         enlaceWeb = null,
         esPublica = true,
         esSecreta = false,
@@ -190,7 +251,10 @@ val listaRecetas = listOf(
             "Vierte la mezcla inmediatamente en un tazón amplio y profundo.",
             "Decora artísticamente la superficie con rodajas frescas de fresa, el resto del plátano, granola crujiente, hojuelas de coco y semillas de chía."
         ),
-        etiquetas = listOf("Desayunos", "Frutas"),
+        etiquetas = listOf(
+            EtiquetasPredeterminadas.DESAYUNO,
+            "Frutas"
+        ),
         enlaceWeb = null,
         esPublica = true,
         esSecreta = false,
@@ -218,7 +282,10 @@ val listaRecetas = listOf(
             "Agrega la harina y el cacao en polvo tamizados, mezclando con movimientos envolventes justo hasta que desaparezcan los grumos blancos.",
             "Vierte la masa en el molde, nivela la superficie y hornea por 25-30 minutos; el centro debe quedar ligeramente húmedo."
         ),
-        etiquetas = listOf("Postres", "Familiar"),
+        etiquetas = listOf(
+            EtiquetasPredeterminadas.POSTRE,
+            EtiquetasPredeterminadas.PANADERIA
+        ),
         enlaceWeb = null,
         esPublica = false,
         esSecreta = true,
@@ -246,7 +313,11 @@ val listaRecetas = listOf(
             "Un par de minutos antes de servir, sumerge los totopos de maíz en la salsa caliente, asegurándote de que todos queden cubiertos, pero retirándolos pronto para que se mantengan crujientes.",
             "Sirve inmediatamente decorando con crema ácida, queso fresco desmoronado, aros de cebolla morada y unas hojas de cilantro."
         ),
-        etiquetas = listOf("Mexicana", "Desayunos"),
+        etiquetas = listOf(
+            EtiquetasPredeterminadas.DESAYUNO,
+            "Comida Mexicana",
+            "Picante"
+        ),
         enlaceWeb = null,
         esPublica = true,
         esSecreta = false,
@@ -274,7 +345,13 @@ val listaRecetas = listOf(
             "Rompe las hojas de lechuga con las manos en trozos del tamaño de un bocado y colócalas en una ensaladera grande.",
             "Vierte el aderezo sobre la lechuga, mezcla suavemente para cubrir cada hoja, añade los crutones y termina con abundante queso parmesano recién rallado."
         ),
-        etiquetas = listOf("Saludable", "CenaRápida"),
+        etiquetas = listOf(
+            EtiquetasPredeterminadas.ENSALADA,
+            EtiquetasPredeterminadas.SALUDABLE,
+            EtiquetasPredeterminadas.VEGETARIANA,
+            EtiquetasPredeterminadas.CENA,
+            "Baja en calorías"
+        ),
         enlaceWeb = null,
         esPublica = true,
         esSecreta = false,
