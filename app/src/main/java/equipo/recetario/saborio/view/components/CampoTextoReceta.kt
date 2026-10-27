@@ -26,7 +26,6 @@ fun CampoTextoReceta(
     maxLineas: Int = 1
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
-        // Etiqueta por fuera arriba del input
         Text(
             text = etiqueta,
             color = DarkText,
@@ -35,8 +34,7 @@ fun CampoTextoReceta(
         )
 
         Spacer(modifier = Modifier.height(6.dp))
-
-        // Campo con fondo blanco y bordes redondeados tipo píldora
+        
         OutlinedTextField(
             value = valor,
             onValueChange = onCambioValor,
