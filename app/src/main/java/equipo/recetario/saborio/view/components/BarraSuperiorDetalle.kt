@@ -30,7 +30,10 @@ fun BarraSuperiorDetalle(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 30.dp),
+            .padding(start = 16.dp,
+                end = 16.dp,
+                top = 40.dp,
+                bottom = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -67,7 +70,7 @@ fun BarraSuperiorDetalle(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun preview(){
     BarraSuperiorDetalle(usuarioMuestra,{},{})
