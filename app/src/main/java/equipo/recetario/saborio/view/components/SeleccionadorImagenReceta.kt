@@ -1,4 +1,4 @@
-package view.components
+package equipo.recetario.saborio.view.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
