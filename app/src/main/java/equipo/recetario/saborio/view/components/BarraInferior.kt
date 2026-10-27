@@ -97,11 +97,11 @@ fun BarraInferior(
             //Boton Guardadas
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.clickable{}
+                modifier = Modifier.clickable{onNavigateToGuardadas()}
             ) {
                 val color = if (pestana == "Guardadas") Orange else Brown
-                Image(painter = painterResource(R.drawable.guardar_cafe_icon),
-                    contentDescription = "guardar_cafe_icon",
+                Image(painter = painterResource(R.drawable.guardar_icon),
+                    contentDescription = "guardar_icon",
                     colorFilter = ColorFilter.tint(color)
                 )
                 Text(
@@ -114,7 +114,7 @@ fun BarraInferior(
             //Boton Perfil
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.clickable{}
+                modifier = Modifier.clickable{onNavigateToPerfil}
             ) {
                 val color = if (pestana == "Perfil") Orange else Brown
                 Image(painter = painterResource(R.drawable.person_icon),

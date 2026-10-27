@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +28,7 @@ import equipo.recetario.saborio.model.domain.Usuario
 import equipo.recetario.saborio.ui.theme.Orange
 
 @Composable
-fun BarraSuperior(usuario: Usuario) {
+fun BarraSuperior(usuario: Usuario, onNavigateToPerfil: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -57,14 +58,16 @@ fun BarraSuperior(usuario: Usuario) {
                 fontSize = 22.sp
             )
             Spacer(modifier = Modifier.weight(1f))
-            Image(
-                painter = painterResource(usuario.fotoPerfil),
-                contentDescription = "Foto de perfil",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-            )
+            IconButton(onClick = { onNavigateToPerfil() }) {
+                Image(
+                    painter = painterResource(usuario.fotoPerfil),
+                    contentDescription = "Foto de perfil",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                )
+            }
         }
     }
 }
@@ -72,5 +75,5 @@ fun BarraSuperior(usuario: Usuario) {
 @Composable
 @Preview(showBackground = true)
 fun BarraSuperiorPreview() {
-    BarraSuperior(usuarioMuestra)
+    BarraSuperior(usuarioMuestra, {})
 }
