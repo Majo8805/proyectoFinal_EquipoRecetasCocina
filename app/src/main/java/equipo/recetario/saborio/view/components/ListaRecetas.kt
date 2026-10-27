@@ -17,7 +17,8 @@ import equipo.recetario.saborio.model.domain.Receta
 fun ListaRecetas(
     recetas: List<Receta>,
     mostrarBotonGuardar: Boolean,
-    onGuardarClick: (Receta) -> Unit
+    onGuardarClick: (Receta) -> Unit,
+    onRecetaClick: (Receta) -> Unit
     ) {
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(2),
@@ -27,13 +28,18 @@ fun ListaRecetas(
             .padding(15.dp, 15.dp,15.dp, 0.dp)
     ) {
         items(recetas) { receta ->
-            RecetaElement(receta, mostrarBotonGuardar, onGuardarClick)
+            RecetaElement(receta, mostrarBotonGuardar, onGuardarClick, onRecetaClick)
         }
     }
 }
 
-@Composable
 @Preview(showBackground = true)
+@Composable
 fun ListaRecetasPreview() {
-    ListaRecetas(listaRecetas, true, {})
+    ListaRecetas(
+        listaRecetas,
+        true,
+        {},
+        {}
+    )
 }

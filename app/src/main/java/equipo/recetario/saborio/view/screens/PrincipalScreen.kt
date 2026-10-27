@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import equipo.recetario.saborio.model.data.usuarioMuestra
+import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
 import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
 import equipo.recetario.saborio.ui.theme.Brown
@@ -37,6 +38,7 @@ fun PrincipalScreen(
     onNavigateToExplorar: () -> Unit,
     onNavigateToGuardadas: () -> Unit,
     onNavigateToPerfil: () -> Unit,
+    onRecetaClick: (Receta) -> Unit,
     viewModel: RecetasViewModel = viewModel()
 ) {
     LaunchedEffect(key1 = pestana) {
@@ -53,15 +55,11 @@ fun PrincipalScreen(
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            Buscador(
-                query = viewModel.textoBusqueda,
-                onQueryChange = { nuevoTexto ->
-                    viewModel.onSearchQueryChanged(nuevoTexto)
-                },
-                onSortClick = {
-                    viewModel.ordenarPorEstrellas()
-                }
-            )
+            Buscador(query = viewModel.textoBusqueda, onQueryChange = { nuevoTexto ->
+                viewModel.onSearchQueryChanged(nuevoTexto)
+            }, onSortClick = {
+                viewModel.ordenarPorEstrellas()
+            })
 
             Text(
                 text = viewModel.titulo,
@@ -72,11 +70,9 @@ fun PrincipalScreen(
             )
 
             FiltrosCategorias(
-                viewModel.categoriaSeleccionada,
-                onCategoriaSelected = { nuevaCategoria ->
+                viewModel.categoriaSeleccionada, onCategoriaSelected = { nuevaCategoria ->
                     viewModel.seleccionarCategoria(nuevaCategoria, usuario.nombre)
-                }
-            )
+                })
 
             if (!viewModel.hayRecetas) {
                 Box(
@@ -95,11 +91,12 @@ fun PrincipalScreen(
                 }
             } else {
                 ListaRecetas(
-                    viewModel.recetasAMostrar,
-                    viewModel.mostrarBotonGuardar,
+                    recetas = viewModel.recetasAMostrar,
+                    mostrarBotonGuardar = viewModel.mostrarBotonGuardar,
                     onGuardarClick = { receta ->
                         viewModel.alternarGuardado(receta)
-                    }
+                    },
+                    onRecetaClick = onRecetaClick
                 )
             }
 
@@ -119,12 +116,5 @@ fun PrincipalScreen(
 @Composable
 @Preview(showBackground = true)
 fun PrincipalScreenPreview() {
-    PrincipalScreen(
-        usuarioMuestra,
-        "Inicio",
-        {},
-        {},
-        {},
-        {}
-    )
+    PrincipalScreen(usuarioMuestra, "Inicio", {}, {}, {}, {}, {})
 }
