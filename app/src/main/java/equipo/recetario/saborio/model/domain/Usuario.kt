@@ -6,6 +6,6 @@ data class Usuario (
     val correo: String,
     val fechaNacimiento: String,
     val genero: String,
-    val fotoPerfil: String?,
+    val fotoPerfil: Int,
     val descripcionUsuario: String = "Hola! Estoy usando Saborío!"
 )
