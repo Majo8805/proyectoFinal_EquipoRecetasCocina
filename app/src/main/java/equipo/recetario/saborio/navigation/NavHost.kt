@@ -4,7 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import equipo.recetario.saborio.model.data.listaRecetas
 import equipo.recetario.saborio.model.domain.Usuario
+import equipo.recetario.saborio.view.screens.DetalleRecetaScreen
 import equipo.recetario.saborio.view.screens.PrincipalScreen
 
 @Composable
@@ -16,10 +18,21 @@ fun AppNavHost(usuario: Usuario) {
             PrincipalScreen(
                 usuario,
                 "Inicio",
-                onNavigateToInicio = {  },
-                onNavigateToExplorar = { navController.navigate(VerExplorar) },
-                onNavigateToGuardadas = { navController.navigate(VerGuardadas) },
-                onNavigateToPerfil = { navController.navigate(VerPerfil) }
+                onNavigateToInicio = { },
+                onNavigateToExplorar = {
+                    navController.navigate(VerExplorar)
+                },
+                onNavigateToGuardadas = {
+                    navController.navigate(VerGuardadas)
+                },
+                onNavigateToPerfil = {
+                    navController.navigate(VerPerfil)
+                },
+                onRecetaClick = { receta ->
+                    navController.navigate(
+                        VerDetalleReceta(receta.id)
+                    )
+                }
             )
         }
         composable<VerExplorar> {
@@ -27,9 +40,14 @@ fun AppNavHost(usuario: Usuario) {
                 usuario,
                 "Explorar",
                 onNavigateToInicio = { navController.navigate(VerMisRecetas) },
-                onNavigateToExplorar = {  },
+                onNavigateToExplorar = { },
                 onNavigateToGuardadas = { navController.navigate(VerGuardadas) },
-                onNavigateToPerfil = { navController.navigate(VerPerfil) }
+                onNavigateToPerfil = { navController.navigate(VerPerfil) },
+                onRecetaClick = { receta ->
+                    navController.navigate(
+                        VerDetalleReceta(receta.id)
+                    )
+                }
             )
         }
         composable<VerGuardadas> {
@@ -38,8 +56,22 @@ fun AppNavHost(usuario: Usuario) {
                 "Guardadas",
                 onNavigateToInicio = { navController.navigate(VerMisRecetas) },
                 onNavigateToExplorar = { navController.navigate(VerExplorar) },
-                onNavigateToGuardadas = {  },
-                onNavigateToPerfil = { navController.navigate(VerPerfil) }
+                onNavigateToGuardadas = { },
+                onNavigateToPerfil = { navController.navigate(VerPerfil) },
+                onRecetaClick = { receta ->
+                    navController.navigate(
+                        VerDetalleReceta(receta.id)
+                    )
+                }
+            )
+        }
+        composable<VerDetalleReceta> {
+
+            val receta = listaRecetas.first()
+
+            DetalleRecetaScreen(
+                usuario = usuario,
+                receta = receta
             )
         }
     }

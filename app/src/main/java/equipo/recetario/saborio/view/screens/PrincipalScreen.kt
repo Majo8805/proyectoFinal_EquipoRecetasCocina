@@ -55,15 +55,11 @@ fun PrincipalScreen(
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            Buscador(
-                query = viewModel.textoBusqueda,
-                onQueryChange = { nuevoTexto ->
-                    viewModel.onSearchQueryChanged(nuevoTexto)
-                },
-                onSortClick = {
-                    viewModel.ordenarPorEstrellas()
-                }
-            )
+            Buscador(query = viewModel.textoBusqueda, onQueryChange = { nuevoTexto ->
+                viewModel.onSearchQueryChanged(nuevoTexto)
+            }, onSortClick = {
+                viewModel.ordenarPorEstrellas()
+            })
 
             Text(
                 text = viewModel.titulo,
@@ -74,11 +70,9 @@ fun PrincipalScreen(
             )
 
             FiltrosCategorias(
-                viewModel.categoriaSeleccionada,
-                onCategoriaSelected = { nuevaCategoria ->
+                viewModel.categoriaSeleccionada, onCategoriaSelected = { nuevaCategoria ->
                     viewModel.seleccionarCategoria(nuevaCategoria, usuario.nombre)
-                }
-            )
+                })
 
             if (!viewModel.hayRecetas) {
                 Box(
@@ -122,13 +116,5 @@ fun PrincipalScreen(
 @Composable
 @Preview(showBackground = true)
 fun PrincipalScreenPreview() {
-    PrincipalScreen(
-        usuarioMuestra,
-        "Inicio",
-        {},
-        {},
-        {},
-        {},
-        {}
-    )
+    PrincipalScreen(usuarioMuestra, "Inicio", {}, {}, {}, {}, {})
 }
