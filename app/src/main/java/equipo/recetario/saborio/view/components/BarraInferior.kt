@@ -29,7 +29,13 @@ import equipo.recetario.saborio.ui.theme.Brown
 import equipo.recetario.saborio.ui.theme.Orange
 
 @Composable
-fun BarraInferior() {
+fun BarraInferior(
+    pestana: String,
+    onNavigateToInicio: () -> Unit,
+    onNavigateToExplorar: () -> Unit,
+    onNavigateToGuardadas: () -> Unit,
+    onNavigateToPerfil: () -> Unit
+) {
     Card(
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -44,31 +50,36 @@ fun BarraInferior() {
                 .padding(vertical = 5.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
+            //Boton Inicio
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.clickable{}
+                modifier = Modifier.clickable{onNavigateToInicio()}
             ) {
+                val color = if (pestana == "Inicio") Orange else Brown
                 Image(painter = painterResource(R.drawable.home_icon),
                     contentDescription = "home_icon",
-                    colorFilter = ColorFilter.tint(Brown)
+                    colorFilter = ColorFilter.tint(color)
                 )
                 Text(
                     "Inicio",
-                    color = Brown,
+                    color = color,
                     fontWeight = FontWeight.Bold,
                     fontSize = 10.sp
                 )
             }
+            //Boton Explorar
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.clickable{}
+                modifier = Modifier.clickable{onNavigateToExplorar()}
             ) {
+                val color = if (pestana == "Explorar") Orange else Brown
                 Image(painter = painterResource(R.drawable.explore_icon),
-                    contentDescription = "explore_icon"
+                    contentDescription = "explore_icon",
+                    colorFilter = ColorFilter.tint(color)
                 )
                 Text(
                     "Explorar",
-                    color = Brown,
+                    color = color,
                     fontWeight = FontWeight.Bold,
                     fontSize = 10.sp
                 )
@@ -83,31 +94,36 @@ fun BarraInferior() {
                 Image(painter = painterResource(R.drawable.plus_icon),
                     contentDescription = "plus_icon")
             }
+            //Boton Guardadas
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable{}
             ) {
+                val color = if (pestana == "Guardadas") Orange else Brown
                 Image(painter = painterResource(R.drawable.guardar_cafe_icon),
-                    contentDescription = "guardar_cafe_icon"
+                    contentDescription = "guardar_cafe_icon",
+                    colorFilter = ColorFilter.tint(color)
                 )
                 Text(
                     "Guardadas",
-                    color = Brown,
+                    color = color,
                     fontWeight = FontWeight.Bold,
                     fontSize = 10.sp
                 )
             }
+            //Boton Perfil
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable{}
             ) {
+                val color = if (pestana == "Perfil") Orange else Brown
                 Image(painter = painterResource(R.drawable.person_icon),
                     contentDescription = "person_icon",
-                    colorFilter = ColorFilter.tint(Brown)
+                    colorFilter = ColorFilter.tint(color)
                 )
                 Text(
                     "Perfil",
-                    color = Brown,
+                    color = color,
                     fontWeight = FontWeight.Bold,
                     fontSize = 10.sp
                 )
@@ -119,5 +135,11 @@ fun BarraInferior() {
 @Composable
 @Preview(showBackground = true)
 fun BarraInferiorPreview() {
-    BarraInferior()
+    BarraInferior(
+        "Guardadas",
+        {},
+        {},
+        {},
+        {}
+    )
 }

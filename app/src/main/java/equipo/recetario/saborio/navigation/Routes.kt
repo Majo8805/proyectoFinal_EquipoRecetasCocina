@@ -11,3 +11,11 @@ object VerPerfil
 @Serializable
 object VerRecetasSecretas
 
+@Serializable
+object VerMisRecetas
+
+@Serializable
+object VerExplorar
+
+@Serializable
+object VerGuardadas
