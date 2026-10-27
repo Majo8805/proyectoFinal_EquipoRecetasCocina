@@ -42,7 +42,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import equipo.recetario.saborio.model.data.getMisRecetas
 import equipo.recetario.saborio.model.data.getRecetasSecretas
-import equipo.recetario.saborio.model.data.listaRecetas
 import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
