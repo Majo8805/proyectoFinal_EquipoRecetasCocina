@@ -34,7 +34,7 @@ fun CampoTextoReceta(
         )
 
         Spacer(modifier = Modifier.height(6.dp))
-        
+
         OutlinedTextField(
             value = valor,
             onValueChange = onCambioValor,
