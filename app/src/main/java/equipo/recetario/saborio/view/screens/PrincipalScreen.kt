@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import equipo.recetario.saborio.model.data.usuarioMuestra
+import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
 import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
 import equipo.recetario.saborio.ui.theme.Brown
@@ -37,6 +38,7 @@ fun PrincipalScreen(
     onNavigateToExplorar: () -> Unit,
     onNavigateToGuardadas: () -> Unit,
     onNavigateToPerfil: () -> Unit,
+    onRecetaClick: (Receta) -> Unit,
     viewModel: RecetasViewModel = viewModel()
 ) {
     LaunchedEffect(key1 = pestana) {
@@ -95,11 +97,12 @@ fun PrincipalScreen(
                 }
             } else {
                 ListaRecetas(
-                    viewModel.recetasAMostrar,
-                    viewModel.mostrarBotonGuardar,
+                    recetas = viewModel.recetasAMostrar,
+                    mostrarBotonGuardar = viewModel.mostrarBotonGuardar,
                     onGuardarClick = { receta ->
                         viewModel.alternarGuardado(receta)
-                    }
+                    },
+                    onRecetaClick = onRecetaClick
                 )
             }
 
@@ -122,6 +125,7 @@ fun PrincipalScreenPreview() {
     PrincipalScreen(
         usuarioMuestra,
         "Inicio",
+        {},
         {},
         {},
         {},

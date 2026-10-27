@@ -2,6 +2,7 @@ package equipo.recetario.saborio.view.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,7 +46,8 @@ import equipo.recetario.saborio.utilities.getColorByEtiqueta
 fun RecetaElement(
     receta: Receta,
     mostrarBotonGuardar: Boolean,
-    onGuardarClick: (Receta) -> Unit
+    onGuardarClick: (Receta) -> Unit,
+    onRecetaClick: (Receta) -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(24.dp),
@@ -53,6 +55,9 @@ fun RecetaElement(
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         modifier = Modifier
             .fillMaxWidth()
+            .clickable {
+                onRecetaClick(receta)
+            }
     ) {
         Column(
             modifier = Modifier.padding(all = 12.dp)
@@ -174,8 +179,13 @@ fun EtiquetaTag(texto: String) {
 }
 
 
-@Composable
 @Preview(showBackground = true)
+@Composable
 fun RecetaElementPreview() {
-    RecetaElement(RecetaPrueba, true, {})
+    RecetaElement(
+        RecetaPrueba,
+        true,
+        {},
+        {}
+    )
 }

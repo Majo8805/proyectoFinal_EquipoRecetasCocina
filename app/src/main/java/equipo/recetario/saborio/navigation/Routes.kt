@@ -19,3 +19,8 @@ object VerExplorar
 
 @Serializable
 object VerGuardadas
+
+@Serializable
+data class VerDetalleReceta(
+    val recetaId: String
+)
