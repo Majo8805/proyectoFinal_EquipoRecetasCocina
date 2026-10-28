@@ -36,7 +36,6 @@ import equipo.recetario.saborio.view.components.EtiquetaTag
 fun DetalleRecetaScreen(
     usuario: Usuario,
     receta: Receta,
-    onBack: () -> Unit,
     esPropia: Boolean
 ) {
 
@@ -45,7 +44,6 @@ fun DetalleRecetaScreen(
         item {
             BarraSuperiorDetalle(
                 usuario = usuario,
-                onBack = onBack,
                 onNavigateToPerfil = {}
             )
         }
@@ -437,5 +435,5 @@ fun HeroReceta(
 @Composable
 fun preview() {
     DetalleRecetaScreen(
-        usuarioMuestra, RecetaPrueba, {},true)
+        usuarioMuestra, RecetaPrueba,true)
 }

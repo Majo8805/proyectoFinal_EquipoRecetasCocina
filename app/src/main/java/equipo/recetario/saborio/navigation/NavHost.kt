@@ -77,10 +77,7 @@ fun AppNavHost(usuario: Usuario) {
             DetalleRecetaScreen(
                 usuario = usuario,
                 receta = receta,
-                onBack = {
-                    navController.popBackStack()
-                },
-                esPropia = true
+                esPropia = ruta.esPropia
             )
         }
     }
