@@ -2,7 +2,17 @@ package equipo.recetario.saborio.view.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +36,7 @@ import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Ingrediente
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
+import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
 import equipo.recetario.saborio.ui.theme.Brown
 import equipo.recetario.saborio.ui.theme.LightBrownGrey
 import equipo.recetario.saborio.ui.theme.Orange
@@ -34,25 +45,24 @@ import equipo.recetario.saborio.view.components.EtiquetaEstrellas
 import equipo.recetario.saborio.view.components.EtiquetaTag
 
 
-
 @Composable
-fun DetalleRecetaScreen(
-    usuario: Usuario,
-    receta: Receta,
-    esPropia: Boolean
+fun detalleRecetaScreen(
+    usuario: Usuario, receta: Receta, esPropia: Boolean
 ) {
 
-    LazyColumn {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(BackgrounLightBrown)
+    ) {
 
         item {
             BarraSuperiorDetalle(
-                usuario = usuario,
-                onNavigateToPerfil = {}
-            )
+                usuario = usuario, onNavigateToPerfil = {})
         }
 
         item {
-            HeroReceta(receta)
+            heroReceta(receta)
         }
 
         item {
@@ -61,17 +71,15 @@ fun DetalleRecetaScreen(
                 modifier = Modifier.padding(16.dp)
             ) {
 
-                EncabezadoAutor(
-                    usuario,
-                    receta,
-                    esPropia
+                encabezadoAutor(
+                    usuario, receta, esPropia
                 )
 
                 Spacer(
                     modifier = Modifier.height(16.dp)
                 )
 
-                TituloReceta(
+                tituloReceta(
                     receta
                 )
 
@@ -79,7 +87,7 @@ fun DetalleRecetaScreen(
                     modifier = Modifier.height(24.dp)
                 )
 
-                SeccionIngredientes(
+                seccionIngredientes(
                     receta
                 )
 
@@ -87,7 +95,7 @@ fun DetalleRecetaScreen(
                     modifier = Modifier.height(24.dp)
                 )
 
-                SeccionPreparacion(
+                seccionPreparacion(
                     receta
                 )
 
@@ -95,14 +103,14 @@ fun DetalleRecetaScreen(
                     modifier = Modifier.height(24.dp)
                 )
 
-                EnlaceReceta(
+                enlaceReceta(
                     receta
                 )
 
                 if (esPropia) {
-                    SeccionCalificacionPropia(receta)
+                    seccionCalificacionPropia(receta)
                 } else {
-                    SeccionCalificacion(receta)
+                    seccionCalificacion(receta)
                 }
 
                 Spacer(
@@ -114,7 +122,7 @@ fun DetalleRecetaScreen(
 }
 
 @Composable
-fun SeccionCalificacion(
+fun seccionCalificacion(
     receta: Receta
 ) {
 
@@ -126,11 +134,9 @@ fun SeccionCalificacion(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                LightBrownGrey,
-                RoundedCornerShape(12.dp)
+                LightBrownGrey, RoundedCornerShape(12.dp)
             )
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Row(
@@ -149,9 +155,7 @@ fun SeccionCalificacion(
             )
 
             Text(
-                text = "★★★★★",
-                color = Orange,
-                fontSize = 24.sp
+                text = "★★★★★", color = Orange, fontSize = 24.sp
             )
         }
 
@@ -163,11 +167,9 @@ fun SeccionCalificacion(
             modifier = Modifier
                 .fillMaxWidth(0.90f)
                 .background(
-                    Color.White,
-                    RoundedCornerShape(8.dp)
+                    Color.White, RoundedCornerShape(8.dp)
                 )
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
+                .padding(16.dp), contentAlignment = Alignment.Center
         ) {
 
             Text(
@@ -199,7 +201,7 @@ fun SeccionCalificacion(
 }
 
 @Composable
-fun EnlaceReceta(
+fun enlaceReceta(
     receta: Receta
 ) {
 
@@ -216,7 +218,7 @@ fun EnlaceReceta(
 }
 
 @Composable
-fun NumeroPaso(
+fun numeroPaso(
     numeroPaso: Int
 ) {
 
@@ -235,13 +237,13 @@ fun NumeroPaso(
 }
 
 @Composable
-fun PasoPreparacionItem(
+fun pasoPreparacionItem(
     numeroPaso: Int, descripcion: String
 ) {
 
     Row {
 
-        NumeroPaso(
+        numeroPaso(
             numeroPaso = numeroPaso
         )
 
@@ -267,7 +269,7 @@ fun PasoPreparacionItem(
 }
 
 @Composable
-fun SeccionPreparacion(
+fun seccionPreparacion(
     receta: Receta
 ) {
 
@@ -281,7 +283,7 @@ fun SeccionPreparacion(
 
     receta.pasosPreparacion.forEachIndexed { index, paso ->
 
-        PasoPreparacionItem(
+        pasoPreparacionItem(
             numeroPaso = index + 1, descripcion = paso
         )
 
@@ -292,7 +294,7 @@ fun SeccionPreparacion(
 }
 
 @Composable
-fun PuntoIngrediente() {
+fun puntoIngrediente() {
 
     Box(
         modifier = Modifier
@@ -304,7 +306,7 @@ fun PuntoIngrediente() {
 }
 
 @Composable
-fun IngredienteItem(
+fun ingredienteItem(
     ingrediente: Ingrediente
 ) {
 
@@ -318,7 +320,7 @@ fun IngredienteItem(
             .padding(12.dp), verticalAlignment = Alignment.CenterVertically
     ) {
 
-        PuntoIngrediente()
+        puntoIngrediente()
 
         Spacer(
             modifier = Modifier.width(12.dp)
@@ -331,7 +333,7 @@ fun IngredienteItem(
 }
 
 @Composable
-fun SeccionIngredientes(
+fun seccionIngredientes(
     receta: Receta
 ) {
 
@@ -345,14 +347,14 @@ fun SeccionIngredientes(
 
     receta.ingredientes.forEach { ingrediente ->
 
-        IngredienteItem(
+        ingredienteItem(
             ingrediente
         )
     }
 }
 
 @Composable
-fun TituloReceta(
+fun tituloReceta(
     receta: Receta
 ) {
 
@@ -370,7 +372,7 @@ fun TituloReceta(
 }
 
 @Composable
-fun FotoAutor(
+fun fotoAutor(
     usuario: Usuario
 ) {
 
@@ -384,7 +386,7 @@ fun FotoAutor(
 }
 
 @Composable
-fun EncabezadoAutor(
+fun encabezadoAutor(
     usuario: Usuario, receta: Receta, esPropia: Boolean
 ) {
 
@@ -392,7 +394,7 @@ fun EncabezadoAutor(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        FotoAutor(usuario)
+        fotoAutor(usuario)
 
         Spacer(
             modifier = Modifier.width(10.dp)
@@ -406,26 +408,24 @@ fun EncabezadoAutor(
             modifier = Modifier.weight(1f)
         )
 
-        BotonAccionReceta(
+        botonAccionReceta(
             esPropia = esPropia
         )
     }
 }
 
 @Composable
-fun BotonAccionReceta(
+fun botonAccionReceta(
     esPropia: Boolean
 ) {
 
     Box(
         modifier = Modifier
             .background(
-                Orange,
-                RoundedCornerShape(50.dp)
+                Orange, RoundedCornerShape(50.dp)
             )
             .padding(
-                horizontal = 16.dp,
-                vertical = 8.dp
+                horizontal = 16.dp, vertical = 8.dp
             )
     ) {
 
@@ -438,7 +438,7 @@ fun BotonAccionReceta(
 }
 
 @Composable
-fun HeroReceta(
+fun heroReceta(
     receta: Receta
 ) {
 
@@ -475,7 +475,7 @@ fun HeroReceta(
 }
 
 @Composable
-fun SeccionCalificacionPropia(
+fun seccionCalificacionPropia(
     receta: Receta
 ) {
 
@@ -483,11 +483,9 @@ fun SeccionCalificacionPropia(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                LightBrownGrey,
-                RoundedCornerShape(12.dp)
+                LightBrownGrey, RoundedCornerShape(12.dp)
             )
-            .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Row(
@@ -505,9 +503,7 @@ fun SeccionCalificacionPropia(
             )
 
             Text(
-                text = "★★★★☆",
-                color = Orange,
-                fontSize = 24.sp
+                text = "★★★★☆", color = Orange, fontSize = 24.sp
             )
         }
 
@@ -519,11 +515,9 @@ fun SeccionCalificacionPropia(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    Color.White,
-                    RoundedCornerShape(8.dp)
+                    Color.White, RoundedCornerShape(8.dp)
                 )
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
+                .padding(16.dp), contentAlignment = Alignment.Center
         ) {
 
             Text(
@@ -536,11 +530,10 @@ fun SeccionCalificacionPropia(
 }
 
 
-
-
 @Preview(showBackground = true)
 @Composable
 fun preview() {
-    DetalleRecetaScreen(
-        usuarioMuestra, RecetaPrueba,true)
+    detalleRecetaScreen(
+        usuarioMuestra, RecetaPrueba, true
+    )
 }

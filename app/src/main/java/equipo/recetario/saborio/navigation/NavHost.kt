@@ -7,7 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import equipo.recetario.saborio.model.data.listaRecetas
 import equipo.recetario.saborio.model.domain.Usuario
-import equipo.recetario.saborio.view.screens.DetalleRecetaScreen
+import equipo.recetario.saborio.view.screens.detalleRecetaScreen
 import equipo.recetario.saborio.view.screens.PrincipalScreen
 
 @Composable
@@ -74,7 +74,7 @@ fun AppNavHost(usuario: Usuario) {
                 it.id == ruta.recetaId
             }
 
-            DetalleRecetaScreen(
+            detalleRecetaScreen(
                 usuario = usuario,
                 receta = receta,
                 esPropia = ruta.esPropia
