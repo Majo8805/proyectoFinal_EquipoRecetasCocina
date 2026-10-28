@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -24,6 +25,7 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -53,7 +55,11 @@ import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
 import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
+import equipo.recetario.saborio.ui.theme.Brown
+import equipo.recetario.saborio.ui.theme.LightBrownGrey
+import equipo.recetario.saborio.ui.theme.Orange
 import equipo.recetario.saborio.ui.theme.SaborioTheme
+import equipo.recetario.saborio.ui.theme.WhiteText
 import equipo.recetario.saborio.view.components.BarraInferior
 import equipo.recetario.saborio.view.components.BarraSuperior
 import equipo.recetario.saborio.view.components.ListaRecetas
@@ -75,6 +81,7 @@ fun PerfilScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(BackgrounLightBrown)
+            .statusBarsPadding()
     ) {
         BarraSuperior(usuario, onNavigateToPerfil)
         Column(
@@ -177,15 +184,24 @@ fun EncabezadoPerfil(usuario: Usuario) {
 
 @Composable
 fun EstadisticaPerfil(valor: Int, etiqueta: String, modifier: Modifier = Modifier) {
-    Card(modifier = modifier, shape = RoundedCornerShape(16.dp)) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = valor.toString(), fontSize = 23.sp, fontWeight = FontWeight.Bold)
-            Text(text = etiqueta, fontSize = 14.sp)
+            Text(
+                text = valor.toString(),
+                color = Orange,
+                fontSize = 23.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(text = etiqueta, color = Brown, fontSize = 14.sp)
         }
     }
 }
@@ -209,7 +225,11 @@ fun BotonEditarPerfil(onClick: () -> Unit) {
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        colors = ButtonDefaults.filledTonalButtonColors(
+            containerColor = LightBrownGrey,
+            contentColor = Brown
+        )
     ) {
         Icon(
             imageVector = Icons.Default.Edit,
@@ -227,7 +247,10 @@ fun BotonCerrarSesion(onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = LightBrownGrey,
+            contentColor = Orange
+        )
     ) { Text("Cerrar sesión") }
 }
 
@@ -238,7 +261,8 @@ fun TarjetaFolderSecretas(cantidad: Int, onDesbloquearClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(20.dp)
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -248,7 +272,18 @@ fun TarjetaFolderSecretas(cantidad: Int, onDesbloquearClick: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Icon(Icons.Default.Lock, contentDescription = null)
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(Orange)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = null,
+                        tint = WhiteText
+                    )
+                }
                 Column {
                     Text(text = "Folder de Recetas", fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     Text(text = "$cantidad recetas secretas", fontSize = 14.sp)
@@ -258,13 +293,18 @@ fun TarjetaFolderSecretas(cantidad: Int, onDesbloquearClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(16.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .background(LightBrownGrey)
                     .padding(12.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Autenticación biométrica requerida", fontSize = 14.sp)
-                Button(onClick = onDesbloquearClick) {
+                Button(onClick = onDesbloquearClick,
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Orange,
+                        contentColor = WhiteText
+                    )) {
                     Text(text = "Desbloquear")
                 }
 
@@ -279,7 +319,8 @@ fun TarjetaGrafica(titulo: String, imagen: Int) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(20.dp)
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(titulo, fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -301,7 +342,8 @@ fun TarjetaPreferencias() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(20.dp)
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
     ) {
         Row(
             modifier = Modifier
