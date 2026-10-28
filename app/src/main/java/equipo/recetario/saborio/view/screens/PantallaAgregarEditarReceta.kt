@@ -11,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import equipo.recetario.saborio.R
 import equipo.recetario.saborio.ui.theme.*
 import equipo.recetario.saborio.view.components.AccionesGuardado
@@ -21,30 +23,31 @@ import equipo.recetario.saborio.view.components.EnlaceFuente
 import equipo.recetario.saborio.view.components.EtiquetasReceta
 import equipo.recetario.saborio.view.components.FotoPlatillo
 import equipo.recetario.saborio.view.components.InformacionBasicaReceta
-import equipo.recetario.saborio.view.components.IngredienteItem
 import equipo.recetario.saborio.view.components.ListaIngredientes
 import equipo.recetario.saborio.view.components.PasosPreparacion
+import equipo.recetario.saborio.viewModel.AgregarEditarRecetaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaAgregarEditarReceta(
     esEdicion: Boolean = false,
     onVolverClick: () -> Unit = {},
-    onGuardarExitoso: () -> Unit = {}
+    onGuardarExitoso: () -> Unit = {},
+    viewModel: AgregarEditarRecetaViewModel = viewModel()
 ) {
-    // --- ESTADOS DE LA RECETA ---
-    var nombreReceta by remember { mutableStateOf("") }
-    var descripcionReceta by remember { mutableStateOf("") }
+    LaunchedEffect(key1 = esEdicion) {
+        viewModel.inicializarModo(esEdicion)
+    }
 
-    // Listas dinámicas
-    val listaIngredientesState = remember { mutableStateListOf<IngredienteItem>() }
-    val listaPasosState = remember { mutableStateListOf<String>() }
-    val etiquetasSeleccionadasState = remember { mutableStateListOf<String>() }
-
-    // Opciones de configuración y privacidad
-    var compartirReceta by remember { mutableStateOf(true) }
-    var recetaSecreta by remember { mutableStateOf(false) }
-    var enlaceFuenteUrl by remember { mutableStateOf("") }
+    // --- ESTADOS DE LA RECETA DESDE EL VIEWMODEL ---
+    val nombreReceta = viewModel.nombreReceta
+    val descripcionReceta = viewModel.descripcionReceta
+    val listaIngredientesState = viewModel.listaIngredientes
+    val listaPasosState = viewModel.listaPasos
+    val etiquetasSeleccionadasState = viewModel.etiquetasSeleccionadas
+    val compartirReceta = viewModel.compartirReceta
+    val recetaSecreta = viewModel.recetaSecreta
+    val enlaceFuenteUrl = viewModel.enlaceFuenteUrl
 
     Scaffold(
         topBar = {
@@ -94,6 +97,22 @@ fun PantallaAgregarEditarReceta(
                 verticalArrangement = Arrangement.spacedBy(spacingBetween),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // Mensaje de error general si la validación falla
+                viewModel.errorGeneral?.let { errorMsg ->
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+                        shape = MaterialTheme.shapes.medium,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = errorMsg,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(12.dp)
+                        )
+                    }
+                }
+
                 if (isTabletOrWide) {
                     // --- DISEÑO RESPONSIVO (2 COLUMNAS PARA TABLETS / PANTALLAS ANCHAS) ---
                     Row(
@@ -108,30 +127,24 @@ fun PantallaAgregarEditarReceta(
                         ) {
                             InformacionBasicaReceta(
                                 nombre = nombreReceta,
-                                onNombreChange = { nombreReceta = it },
+                                onNombreChange = { viewModel.actualizarNombre(it) },
                                 descripcion = descripcionReceta,
-                                onDescripcionChange = { descripcionReceta = it }
+                                onDescripcionChange = { viewModel.actualizarDescripcion(it) }
                             )
+                            viewModel.errorNombre?.let { MensajeErrorCampo(it) }
+                            viewModel.errorDescripcion?.let { MensajeErrorCampo(it) }
 
                             FotoPlatillo(
                                 onSubirFotoClick = { /* Galería / Cámara */ }
                             )
+                            viewModel.errorFoto?.let { MensajeErrorCampo(it) }
 
                             EtiquetasReceta(
                                 etiquetasSeleccionadas = etiquetasSeleccionadasState,
-                                onToggleEtiqueta = { tag ->
-                                    if (etiquetasSeleccionadasState.contains(tag)) {
-                                        etiquetasSeleccionadasState.remove(tag)
-                                    } else {
-                                        etiquetasSeleccionadasState.add(tag)
-                                    }
-                                },
-                                onAddCustomEtiqueta = { nuevaEtiqueta ->
-                                    if (!etiquetasSeleccionadasState.contains(nuevaEtiqueta)) {
-                                        etiquetasSeleccionadasState.add(nuevaEtiqueta)
-                                    }
-                                }
+                                onToggleEtiqueta = { viewModel.alternarEtiqueta(it) },
+                                onAddCustomEtiqueta = { viewModel.agregarEtiquetaPersonalizada(it) }
                             )
+                            viewModel.errorEtiquetas?.let { MensajeErrorCampo(it) }
                         }
 
                         // Columna Derecha
@@ -141,107 +154,89 @@ fun PantallaAgregarEditarReceta(
                         ) {
                             ListaIngredientes(
                                 ingredientes = listaIngredientesState,
-                                onAddIngrediente = { ingrediente ->
-                                    listaIngredientesState.add(ingrediente)
-                                },
-                                onDeleteIngrediente = { ingrediente ->
-                                    listaIngredientesState.remove(ingrediente)
-                                }
+                                onAddIngrediente = { viewModel.agregarIngrediente(it) },
+                                onDeleteIngrediente = { viewModel.eliminarIngrediente(it) }
                             )
+                            viewModel.errorIngredientes?.let { MensajeErrorCampo(it) }
 
                             PasosPreparacion(
                                 pasos = listaPasosState,
-                                onAddPaso = { nuevoPaso ->
-                                    listaPasosState.add(nuevoPaso)
-                                },
-                                onDeletePaso = { index ->
-                                    if (index in listaPasosState.indices) {
-                                        listaPasosState.removeAt(index)
-                                    }
-                                }
+                                onAddPaso = { viewModel.agregarPaso(it) },
+                                onDeletePaso = { viewModel.eliminarPaso(it) }
                             )
+                            viewModel.errorPasos?.let { MensajeErrorCampo(it) }
 
                             ConfiguracionPrivacidad(
                                 compartirReceta = compartirReceta,
-                                onCompartirChange = { compartirReceta = it },
+                                onCompartirChange = { viewModel.actualizarCompartirReceta(it) },
                                 recetaSecreta = recetaSecreta,
-                                onSecretaChange = { recetaSecreta = it }
+                                onSecretaChange = { viewModel.actualizarRecetaSecreta(it) }
                             )
 
                             EnlaceFuente(
                                 url = enlaceFuenteUrl,
-                                onUrlChange = { enlaceFuenteUrl = it }
+                                onUrlChange = { viewModel.actualizarEnlaceFuente(it) }
                             )
+                            viewModel.errorEnlaceFuente?.let { MensajeErrorCampo(it) }
                         }
                     }
                 } else {
                     // --- DISEÑO MÓVIL (1 COLUMNA) ---
                     InformacionBasicaReceta(
                         nombre = nombreReceta,
-                        onNombreChange = { nombreReceta = it },
+                        onNombreChange = { viewModel.actualizarNombre(it) },
                         descripcion = descripcionReceta,
-                        onDescripcionChange = { descripcionReceta = it }
+                        onDescripcionChange = { viewModel.actualizarDescripcion(it) }
                     )
+                    viewModel.errorNombre?.let { MensajeErrorCampo(it) }
+                    viewModel.errorDescripcion?.let { MensajeErrorCampo(it) }
 
                     FotoPlatillo(
                         onSubirFotoClick = { /* Galería / Cámara */ }
                     )
+                    viewModel.errorFoto?.let { MensajeErrorCampo(it) }
 
                     ListaIngredientes(
                         ingredientes = listaIngredientesState,
-                        onAddIngrediente = { ingrediente ->
-                            listaIngredientesState.add(ingrediente)
-                        },
-                        onDeleteIngrediente = { ingrediente ->
-                            listaIngredientesState.remove(ingrediente)
-                        }
+                        onAddIngrediente = { viewModel.agregarIngrediente(it) },
+                        onDeleteIngrediente = { viewModel.eliminarIngrediente(it) }
                     )
+                    viewModel.errorIngredientes?.let { MensajeErrorCampo(it) }
 
                     PasosPreparacion(
                         pasos = listaPasosState,
-                        onAddPaso = { nuevoPaso ->
-                            listaPasosState.add(nuevoPaso)
-                        },
-                        onDeletePaso = { index ->
-                            if (index in listaPasosState.indices) {
-                                listaPasosState.removeAt(index)
-                            }
-                        }
+                        onAddPaso = { viewModel.agregarPaso(it) },
+                        onDeletePaso = { viewModel.eliminarPaso(it) }
                     )
+                    viewModel.errorPasos?.let { MensajeErrorCampo(it) }
 
                     EtiquetasReceta(
                         etiquetasSeleccionadas = etiquetasSeleccionadasState,
-                        onToggleEtiqueta = { tag ->
-                            if (etiquetasSeleccionadasState.contains(tag)) {
-                                etiquetasSeleccionadasState.remove(tag)
-                            } else {
-                                etiquetasSeleccionadasState.add(tag)
-                            }
-                        },
-                        onAddCustomEtiqueta = { nuevaEtiqueta ->
-                            if (!etiquetasSeleccionadasState.contains(nuevaEtiqueta)) {
-                                etiquetasSeleccionadasState.add(nuevaEtiqueta)
-                            }
-                        }
+                        onToggleEtiqueta = { viewModel.alternarEtiqueta(it) },
+                        onAddCustomEtiqueta = { viewModel.agregarEtiquetaPersonalizada(it) }
                     )
+                    viewModel.errorEtiquetas?.let { MensajeErrorCampo(it) }
 
                     ConfiguracionPrivacidad(
                         compartirReceta = compartirReceta,
-                        onCompartirChange = { compartirReceta = it },
+                        onCompartirChange = { viewModel.actualizarCompartirReceta(it) },
                         recetaSecreta = recetaSecreta,
-                        onSecretaChange = { recetaSecreta = it }
+                        onSecretaChange = { viewModel.actualizarRecetaSecreta(it) }
                     )
 
                     EnlaceFuente(
                         url = enlaceFuenteUrl,
-                        onUrlChange = { enlaceFuenteUrl = it }
+                        onUrlChange = { viewModel.actualizarEnlaceFuente(it) }
                     )
+                    viewModel.errorEnlaceFuente?.let { MensajeErrorCampo(it) }
                 }
 
                 // Botones de acción principales
                 AccionesGuardado(
                     onGuardarClick = {
-                        onGuardarExitoso()
+                        if (viewModel.validarFormularioCompleto()) {
+                            onGuardarExitoso()
+                        }
                     },
                     onDescartarClick = {
                         onVolverClick()
@@ -251,5 +246,26 @@ fun PantallaAgregarEditarReceta(
                 Spacer(modifier = Modifier.height(32.dp))
             }
         }
+    }
+}
+
+@Composable
+private fun MensajeErrorCampo(mensaje: String) {
+    Text(
+        text = mensaje,
+        color = MaterialTheme.colorScheme.error,
+        style = MaterialTheme.typography.bodySmall,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 2.dp)
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PantallaAgregarEditarRecetaPreview() {
+    SaborioTheme {
+        PantallaAgregarEditarReceta()
     }
 }
