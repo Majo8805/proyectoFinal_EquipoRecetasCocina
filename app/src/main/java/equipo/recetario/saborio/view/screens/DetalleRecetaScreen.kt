@@ -36,7 +36,8 @@ import equipo.recetario.saborio.view.components.EtiquetaTag
 fun DetalleRecetaScreen(
     usuario: Usuario,
     receta: Receta,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    esPropia: Boolean
 ) {
 
     LazyColumn {
@@ -61,7 +62,8 @@ fun DetalleRecetaScreen(
 
                 EncabezadoAutor(
                     usuario,
-                    receta
+                    receta,
+                    esPropia
                 )
 
                 Spacer(
@@ -341,7 +343,7 @@ fun FotoAutor(
 
 @Composable
 fun EncabezadoAutor(
-    usuario: Usuario, receta: Receta
+    usuario: Usuario, receta: Receta, esPropia: Boolean
 ) {
 
     Row(
@@ -362,7 +364,34 @@ fun EncabezadoAutor(
             modifier = Modifier.weight(1f)
         )
 
-        TextoGuardar()
+        BotonAccionReceta(
+            esPropia = esPropia
+        )
+    }
+}
+
+@Composable
+fun BotonAccionReceta(
+    esPropia: Boolean
+) {
+
+    Box(
+        modifier = Modifier
+            .background(
+                Orange,
+                RoundedCornerShape(50.dp)
+            )
+            .padding(
+                horizontal = 16.dp,
+                vertical = 8.dp
+            )
+    ) {
+
+        Text(
+            text = if (esPropia) "Editar" else "Guardar",
+            color = Color.White,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
@@ -408,5 +437,5 @@ fun HeroReceta(
 @Composable
 fun preview() {
     DetalleRecetaScreen(
-        usuarioMuestra, RecetaPrueba, {})
+        usuarioMuestra, RecetaPrueba, {},true)
 }

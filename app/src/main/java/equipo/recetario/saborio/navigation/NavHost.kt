@@ -79,7 +79,8 @@ fun AppNavHost(usuario: Usuario) {
                 receta = receta,
                 onBack = {
                     navController.popBackStack()
-                }
+                },
+                esPropia = true
             )
         }
     }
