@@ -1,6 +1,5 @@
 package equipo.recetario.saborio.view.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -60,7 +59,7 @@ fun PrincipalScreen(
             modifier = Modifier.weight(1f)
         ) {
             Buscador(query = viewModel.textoBusqueda, onQueryChange = { nuevoTexto ->
-                viewModel.onSearchQueryChanged(nuevoTexto)
+                viewModel.actualizarBusqueda(nuevoTexto)
             }, onSortClick = {
                 viewModel.ordenarPorEstrellas()
             })
@@ -98,7 +97,7 @@ fun PrincipalScreen(
                     recetas = viewModel.recetasAMostrar,
                     mostrarBotonGuardar = viewModel.mostrarBotonGuardar,
                     onGuardarClick = { receta ->
-                        viewModel.alternarGuardado(receta)
+                        viewModel.cambiarEstadoGuardado(receta)
                     },
                     onRecetaClick = onRecetaClick
                 )
