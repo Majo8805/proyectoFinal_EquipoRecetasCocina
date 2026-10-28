@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -21,7 +22,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
-import equipo.recetario.saborio.ui.theme.Brown
 import equipo.recetario.saborio.ui.theme.Orange
 import equipo.recetario.saborio.view.components.BarraInferior
 import equipo.recetario.saborio.view.components.BarraSuperior
@@ -45,12 +45,16 @@ fun PrincipalScreen(
         viewModel.cargarRecetas(pestana = pestana, nombreUsuario = usuario.nombre)
     }
 
-    Column(
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.onBackground
+    ) {
+      Column(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
+      ) {
         BarraSuperior(usuario, onNavigateToPerfil)
         Column(
             modifier = Modifier.weight(1f)
@@ -111,6 +115,7 @@ fun PrincipalScreen(
             onNavigateToPerfil
         )
     }
+}
 }
 
 @Composable

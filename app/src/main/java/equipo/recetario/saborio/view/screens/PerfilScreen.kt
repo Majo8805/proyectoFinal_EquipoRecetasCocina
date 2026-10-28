@@ -33,7 +33,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -75,12 +77,13 @@ fun PerfilScreen(
 ) {
     val misRecetas = getMisRecetas(usuario.nombre)
     val misRecetasSecretas = getRecetasSecretas(usuario.nombre)
-    Column(
+    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onBackground) {
+      Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .statusBarsPadding()
-    ) {
+      ) {
         BarraSuperior(usuario, onNavigateToPerfil)
         Column(
             modifier = Modifier
@@ -103,7 +106,7 @@ fun PerfilScreen(
                 onModoOscuroChange = onModoOscuroChange
             )
             BotonCerrarSesion(onCerrarSesionClick)
-        }
+          }
         BarraInferior(
             "Perfil",
             onNavigateToInicio,
@@ -113,6 +116,7 @@ fun PerfilScreen(
         )
     }
 }
+}
 
 @Composable
 fun RecetasSecretasScreen(
@@ -120,10 +124,11 @@ fun RecetasSecretasScreen(
     onRecetaClick: (Receta) -> Unit = {},
     onVolverClick: () -> Unit
 ) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colorScheme.background)
-        .statusBarsPadding()) {
+    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onBackground) {
+      Column(modifier = Modifier
+          .fillMaxSize()
+          .background(MaterialTheme.colorScheme.background)
+          .statusBarsPadding()) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(8.dp)
@@ -149,6 +154,7 @@ fun RecetasSecretasScreen(
             }
         }
     }
+}
 }
 
 
@@ -203,7 +209,11 @@ fun EstadisticaPerfil(valor: Int, etiqueta: String, modifier: Modifier = Modifie
                 fontSize = 23.sp,
                 fontWeight = FontWeight.Bold
             )
-            Text(text = etiqueta, color = Brown, fontSize = 14.sp)
+            Text(
+                text = etiqueta,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontSize = 14.sp
+            )
         }
     }
 }

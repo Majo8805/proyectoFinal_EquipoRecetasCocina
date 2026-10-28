@@ -6,8 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -26,8 +27,6 @@ import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Ingrediente
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
-import equipo.recetario.saborio.ui.theme.Brown
-import equipo.recetario.saborio.ui.theme.LightBrownGrey
 import equipo.recetario.saborio.ui.theme.Orange
 import equipo.recetario.saborio.view.components.BarraSuperiorDetalle
 import equipo.recetario.saborio.view.components.EtiquetaEstrellas
@@ -40,9 +39,11 @@ fun DetalleRecetaScreen(
     onBack: () -> Unit
 ) {
 
-    LazyColumn(
-        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+    Surface(
+        color = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.onBackground
     ) {
+        LazyColumn {
 
         item {
             BarraSuperiorDetalle(
@@ -109,6 +110,7 @@ fun DetalleRecetaScreen(
             }
         }
     }
+}
 }
 
 @Composable
@@ -316,7 +318,8 @@ fun TituloReceta(
     )
 
     Text(
-        text = receta.descripcionBreve, color = Brown
+        text = receta.descripcionBreve,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
     )
 }
 

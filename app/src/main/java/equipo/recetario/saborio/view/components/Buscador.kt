@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -29,8 +30,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import equipo.recetario.saborio.R
-import equipo.recetario.saborio.ui.theme.LightBrown
-import equipo.recetario.saborio.ui.theme.LightBrownGrey
 
 @Composable
 fun Buscador(
@@ -51,19 +50,21 @@ fun Buscador(
             modifier = Modifier
                 .weight(1f),
             placeholder = {
-                Text("Buscar recetas", color = LightBrown)
+                Text("Buscar recetas", color = MaterialTheme.colorScheme.onSurfaceVariant)
             },
             leadingIcon = {
                 Image(
                     painter = painterResource(R.drawable.search_icon),
                     contentDescription = "search_icon",
-                    colorFilter = ColorFilter.tint(LightBrown)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant)
                 )
             },
             shape = RoundedCornerShape(24.dp),
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = LightBrownGrey,
-                unfocusedContainerColor = LightBrownGrey,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
@@ -73,7 +74,7 @@ fun Buscador(
         Box(
             modifier = Modifier
                 .size(52.dp)
-                .background(color = LightBrownGrey, shape = CircleShape),
+                .background(color = MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape),
             contentAlignment = Alignment.Center
         ) {
             IconButton(onClick = { onSortClick() }) {
