@@ -12,7 +12,7 @@ import equipo.recetario.saborio.view.screens.detalleRecetaScreen
 import equipo.recetario.saborio.view.screens.EditarPerfilScreen
 import equipo.recetario.saborio.view.screens.PerfilScreen
 import equipo.recetario.saborio.model.data.listaRecetas
-import equipo.recetario.saborio.view.screens.DetalleRecetaScreen
+import equipo.recetario.saborio.view.screens.detalleRecetaScreen
 import equipo.recetario.saborio.view.screens.PrincipalScreen
 import equipo.recetario.saborio.view.screens.RecetasSecretasScreen
 
@@ -41,7 +41,7 @@ fun AppNavHost(
                 },
                 onRecetaClick = { receta ->
                     navController.navigate(
-                        VerDetalleReceta(receta.id)
+                        VerDetalleReceta(receta.id, true)
                     )
                 }
             )
@@ -114,7 +114,7 @@ fun AppNavHost(
         composable<VerRecetasSecretas>{
             RecetasSecretasScreen(
                 recetas = getRecetasSecretas(usuario.nombre),
-                onRecetaClick = { receta -> navController.navigate(VerDetalleReceta(receta.id)) },
+                onRecetaClick = { receta -> navController.navigate(VerDetalleReceta(receta.id,false)) },
                 onVolverClick = { navController.popBackStack() }
             )
         }
