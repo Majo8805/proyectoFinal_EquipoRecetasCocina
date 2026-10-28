@@ -46,6 +46,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import equipo.recetario.saborio.R
 import equipo.recetario.saborio.model.data.getMisRecetas
 import equipo.recetario.saborio.model.data.getRecetasSecretas
 import equipo.recetario.saborio.model.data.usuarioMuestra
@@ -83,16 +84,17 @@ fun PerfilScreen(
         ) {
             EncabezadoPerfil(usuario)
             EstadisticasPerfil(recetas = misRecetas.size, secretas = misRecetasSecretas.size)
+            BotonEditarPerfil(onEditarClick)
             TarjetaFolderSecretas(
                 cantidad = misRecetasSecretas.size,
                 onDesbloquearClick = onDesbloquearClick
             )
+            TituloSeccion("Gráfica de actividad")
+            TarjetaGrafica("Recetas guardadas por mes", R.drawable.grafica_actividad)
+            TarjetaGrafica("Distribución de recetas", R.drawable.grafica_distribucion)
+            TituloSeccion("Preferencias de la aplicación")
             TarjetaPreferencias()
-            AccionesPerfil(
-                onEditarClick = onEditarClick,
-                onDesbloquearClick = onDesbloquearClick,
-                onCerrarSesionClick = onCerrarSesionClick
-            )
+            BotonCerrarSesion(onCerrarSesionClick)
         }
         BarraInferior(
             "Perfil",
@@ -205,15 +207,28 @@ fun EstadisticasPerfil(recetas: Int, secretas: Int) {
 fun BotonEditarPerfil(onClick: () -> Unit) {
     FilledTonalButton(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Icon(
             imageVector = Icons.Default.Edit,
             contentDescription = "Editar datos personales"
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Text(text = "Editar Perfil")
+        Text(text = "Editar datos personales")
     }
+}
+
+@Composable
+fun BotonCerrarSesion(onClick: () -> Unit) {
+    OutlinedButton(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
+    ) { Text("Cerrar sesión") }
 }
 
 @Composable
@@ -235,8 +250,8 @@ fun TarjetaFolderSecretas(cantidad: Int, onDesbloquearClick: () -> Unit) {
             ) {
                 Icon(Icons.Default.Lock, contentDescription = null)
                 Column {
-                    Text(text = "Recetas Secretas", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                    Text(text = "($cantidad recetas)", fontSize = 14.sp)
+                    Text(text = "Folder de Recetas", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Text(text = "$cantidad recetas secretas", fontSize = 14.sp)
                 }
             }
             Row(
@@ -248,12 +263,33 @@ fun TarjetaFolderSecretas(cantidad: Int, onDesbloquearClick: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Ver recetas secretas", fontSize = 16.sp)
+                Text(text = "Autenticación biométrica requerida", fontSize = 14.sp)
                 Button(onClick = onDesbloquearClick) {
-                    Text(text = "Ver")
+                    Text(text = "Desbloquear")
                 }
 
             }
+        }
+    }
+}
+
+@Composable
+fun TarjetaGrafica(titulo: String, imagen: Int) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(titulo, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(8.dp))
+            Image(
+                painter = painterResource(imagen),
+                contentDescription = titulo,
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.FillWidth
+            )
         }
     }
 }
@@ -281,43 +317,14 @@ fun TarjetaPreferencias() {
 }
 
 @Composable
-fun AccionesPerfil(
-    onEditarClick: () -> Unit,
-    onDesbloquearClick: () -> Unit,
-    onCerrarSesionClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        BotonEditarPerfil(onClick = onEditarClick)
-        FilledTonalButton(
-            onClick = onDesbloquearClick,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(
-                imageVector = Icons.Default.Lock,
-                contentDescription = "Desbloquear recetas"
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "Desbloquear Recetas Secretas")
-        }
-
-        OutlinedButton(
-            onClick = onCerrarSesionClick,
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = MaterialTheme.colorScheme.error
-            )
-        ) {
-            Text(text = "Cerrar Sesión")
-        }
-    }
+fun TituloSeccion(texto: String) {
+    Text(
+        text = texto,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+    )
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -363,5 +370,14 @@ fun PreviewEstadisticasPerfil() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewTarjetaPreferencias() {
-    SaborioTheme { TarjetaPreferencias() }
+    SaborioTheme {
+        TituloSeccion("Preferencias de la aplicación")
+        TarjetaPreferencias() }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewTarjetaGrafica() {
+    SaborioTheme {
+        TarjetaGrafica("Recetas guardadas por mes", R.drawable.grafica_actividad) }
 }
