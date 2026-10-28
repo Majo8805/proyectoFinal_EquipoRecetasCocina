@@ -2,6 +2,7 @@ package equipo.recetario.saborio.view.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,8 +19,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import equipo.recetario.saborio.model.data.RecetaPrueba
 import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Ingrediente
@@ -43,12 +48,19 @@ import equipo.recetario.saborio.ui.theme.Orange
 import equipo.recetario.saborio.view.components.BarraSuperiorDetalle
 import equipo.recetario.saborio.view.components.EtiquetaEstrellas
 import equipo.recetario.saborio.view.components.EtiquetaTag
+import equipo.recetario.saborio.viewModel.RecetasViewModel
+
+
 
 
 @Composable
 fun detalleRecetaScreen(
-    usuario: Usuario, receta: Receta, esPropia: Boolean
+    usuario: Usuario, receta: Receta, esPropia: Boolean, viewModel: RecetasViewModel
 ) {
+
+    var guardada by remember {
+        mutableStateOf(receta.esGuardada)
+    }
 
     LazyColumn(
         modifier = Modifier
@@ -72,7 +84,18 @@ fun detalleRecetaScreen(
             ) {
 
                 encabezadoAutor(
-                    usuario, receta, esPropia
+                    usuario = usuario,
+                    receta = receta,
+                    esPropia = esPropia,
+                    guardada = guardada,
+                    onAccionClick = {
+
+                        if (!esPropia) {
+                            viewModel.alternarGuardado(receta)
+                            guardada = !guardada
+                        }
+
+                    }
                 )
 
                 Spacer(
@@ -387,7 +410,11 @@ fun fotoAutor(
 
 @Composable
 fun encabezadoAutor(
-    usuario: Usuario, receta: Receta, esPropia: Boolean
+    usuario: Usuario,
+    receta: Receta,
+    esPropia: Boolean,
+    guardada: Boolean,
+    onAccionClick: () -> Unit
 ) {
 
     Row(
@@ -409,29 +436,54 @@ fun encabezadoAutor(
         )
 
         botonAccionReceta(
-            esPropia = esPropia
+            esPropia = esPropia,
+            guardada = guardada,
+            onClick = onAccionClick
         )
     }
 }
 
 @Composable
 fun botonAccionReceta(
-    esPropia: Boolean
+    guardada: Boolean,
+    esPropia: Boolean,
+    onClick: () -> Unit
 ) {
+
+    val colorFondo = when {
+        esPropia -> Orange
+        guardada -> Color.White
+        else -> Orange
+    }
+
+    val colorTexto = when {
+        esPropia -> Color.White
+        guardada -> Orange
+        else -> Color.White
+    }
+
+    val texto = when {
+        esPropia -> "Editar"
+        guardada -> "Guardado"
+        else -> "Guardar"
+    }
 
     Box(
         modifier = Modifier
+            .clickable { onClick() }
             .background(
-                Orange, RoundedCornerShape(50.dp)
+                colorFondo,
+                RoundedCornerShape(50.dp)
             )
             .padding(
-                horizontal = 16.dp, vertical = 8.dp
+                horizontal = 16.dp,
+                vertical = 8.dp
             )
     ) {
 
         Text(
-            text = if (esPropia) "Editar" else "Guardar",
-            color = Color.White,
+            text = texto,
+            color = colorTexto,
             fontWeight = FontWeight.Bold
         )
     }
@@ -534,6 +586,6 @@ fun seccionCalificacionPropia(
 @Composable
 fun preview() {
     detalleRecetaScreen(
-        usuarioMuestra, RecetaPrueba, true
+        usuarioMuestra, RecetaPrueba, true, viewModel()
     )
 }

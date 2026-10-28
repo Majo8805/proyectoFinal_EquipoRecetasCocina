@@ -1,6 +1,7 @@
 package equipo.recetario.saborio.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -9,6 +10,7 @@ import equipo.recetario.saborio.model.data.listaRecetas
 import equipo.recetario.saborio.model.domain.Usuario
 import equipo.recetario.saborio.view.screens.detalleRecetaScreen
 import equipo.recetario.saborio.view.screens.PrincipalScreen
+import equipo.recetario.saborio.viewModel.RecetasViewModel
 
 @Composable
 fun AppNavHost(usuario: Usuario) {
@@ -77,7 +79,8 @@ fun AppNavHost(usuario: Usuario) {
             detalleRecetaScreen(
                 usuario = usuario,
                 receta = receta,
-                esPropia = ruta.esPropia
+                esPropia = ruta.esPropia,
+                RecetasViewModel()
             )
         }
     }

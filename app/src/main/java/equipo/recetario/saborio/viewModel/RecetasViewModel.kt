@@ -14,7 +14,7 @@ import equipo.recetario.saborio.model.domain.Receta
 import java.text.Normalizer
 import java.text.Normalizer.normalize
 
-class RecetasViewModel: ViewModel() {
+class RecetasViewModel : ViewModel() {
     var recetasAMostrar by mutableStateOf<List<Receta>>(emptyList())
         private set
 
@@ -56,13 +56,12 @@ class RecetasViewModel: ViewModel() {
         recetasAMostrar = listaBasePorPestaña
     }
 
-    private fun String.limpiarTexto() : String {
+    private fun String.limpiarTexto(): String {
         val normalizado = normalize(this, Normalizer.Form.NFD)
-        return "\\p{InCombiningDiacriticalMarks}+".toRegex()
-            .replace(normalizado, "")
-            .lowercase()
+        return "\\p{InCombiningDiacriticalMarks}+".toRegex().replace(normalizado, "").lowercase()
             .trim()
     }
+
     fun onSearchQueryChanged(nuevoTexto: String) {
         textoBusqueda = nuevoTexto
         recetasAMostrar = if (nuevoTexto.isBlank()) {
@@ -105,6 +104,10 @@ class RecetasViewModel: ViewModel() {
         }
     }
 
+    /**
+     * Este metodo se usa para el botón de guardar, esta llega cambiar su guardado y se vuelve
+     * a desguardar al volver a usarlo
+     */
     fun alternarGuardado(recetaSeleccionada: Receta) {
         guardadoGlobalDeRecetas(recetaSeleccionada.nombre)
 
