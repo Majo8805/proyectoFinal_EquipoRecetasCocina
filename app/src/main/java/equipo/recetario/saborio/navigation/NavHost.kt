@@ -5,46 +5,34 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import equipo.recetario.saborio.model.data.listaRecetas
 import equipo.recetario.saborio.model.data.getRecetasSecretas
+import equipo.recetario.saborio.model.data.listaRecetas
 import equipo.recetario.saborio.model.domain.Usuario
-import equipo.recetario.saborio.view.screens.detalleRecetaScreen
 import equipo.recetario.saborio.view.screens.EditarPerfilScreen
 import equipo.recetario.saborio.view.screens.PerfilScreen
-import equipo.recetario.saborio.model.data.listaRecetas
-import equipo.recetario.saborio.view.screens.detalleRecetaScreen
 import equipo.recetario.saborio.view.screens.PrincipalScreen
 import equipo.recetario.saborio.view.screens.RecetasSecretasScreen
+import equipo.recetario.saborio.view.screens.detalleRecetaScreen
 
 @Composable
 fun AppNavHost(
-    usuario: Usuario,
-    modoOscuro: Boolean = false,
-    onModoOscuroChange: (Boolean) -> Unit = {}
+    usuario: Usuario, modoOscuro: Boolean = false, onModoOscuroChange: (Boolean) -> Unit = {}
 ) {
     val navController = rememberNavController()
 //Cuando el Login este hecho cambiar el startDestination para que use la ruta del Login
     NavHost(navController = navController, startDestination = VerMisRecetas) {
         composable<VerMisRecetas> {
-            PrincipalScreen(
-                usuario,
-                "Inicio",
-                onNavigateToInicio = { },
-                onNavigateToExplorar = {
-                    navController.navigate(VerExplorar)
-                },
-                onNavigateToGuardadas = {
-                    navController.navigate(VerGuardadas)
-                },
-                onNavigateToPerfil = {
-                    navController.navigate(VerPerfil)
-                },
-                onRecetaClick = { receta ->
-                    navController.navigate(
-                        VerDetalleReceta(receta.id, true)
-                    )
-                }
-            )
+            PrincipalScreen(usuario, "Inicio", onNavigateToInicio = { }, onNavigateToExplorar = {
+                navController.navigate(VerExplorar)
+            }, onNavigateToGuardadas = {
+                navController.navigate(VerGuardadas)
+            }, onNavigateToPerfil = {
+                navController.navigate(VerPerfil)
+            }, onRecetaClick = { receta ->
+                navController.navigate(
+                    VerDetalleReceta(receta.id, true)
+                )
+            })
         }
         composable<VerExplorar> {
             PrincipalScreen(
@@ -58,8 +46,7 @@ fun AppNavHost(
                     navController.navigate(
                         VerDetalleReceta(receta.id, false)
                     )
-                }
-            )
+                })
         }
         composable<VerGuardadas> {
             PrincipalScreen(
@@ -73,8 +60,7 @@ fun AppNavHost(
                     navController.navigate(
                         VerDetalleReceta(receta.id, false)
                     )
-                }
-            )
+                })
         }
         composable<VerDetalleReceta> { backStackEntry ->
 
@@ -85,9 +71,7 @@ fun AppNavHost(
             }
 
             detalleRecetaScreen(
-                usuario = usuario,
-                receta = receta,
-                esPropia = ruta.esPropia
+                usuario = usuario, receta = receta, esPropia = ruta.esPropia
             )
         }
         composable<VerPerfil> {
@@ -97,7 +81,7 @@ fun AppNavHost(
                 onNavigateToExplorar = { navController.navigate(VerExplorar) },
                 onNavigateToGuardadas = { navController.navigate(VerGuardadas) },
                 onNavigateToPerfil = { },
-                onEditarClick = { navController.navigate(VerEditarPerfil)},
+                onEditarClick = { navController.navigate(VerEditarPerfil) },
                 onDesbloquearClick = { navController.navigate(VerRecetasSecretas) },
                 onCerrarSesionClick = { },
                 modoOscuro = modoOscuro,
@@ -108,15 +92,20 @@ fun AppNavHost(
             EditarPerfilScreen(
                 usuario,
                 onGuardarClick = { navController.popBackStack() },
-                onCancelarClick = { navController.popBackStack() }
-            )
+                onCancelarClick = { navController.popBackStack() })
         }
-        composable<VerRecetasSecretas>{
+        composable<VerRecetasSecretas> {
             RecetasSecretasScreen(
                 recetas = getRecetasSecretas(usuario.nombre),
-                onRecetaClick = { receta -> navController.navigate(VerDetalleReceta(receta.id,false)) },
-                onVolverClick = { navController.popBackStack() }
-            )
+                onRecetaClick = { receta ->
+                    navController.navigate(
+                        VerDetalleReceta(
+                            receta.id,
+                            false
+                        )
+                    )
+                },
+                onVolverClick = { navController.popBackStack() })
         }
     }
 }
