@@ -37,9 +37,7 @@ import androidx.compose.ui.unit.sp
 import equipo.recetario.saborio.R
 import equipo.recetario.saborio.model.data.RecetaPrueba
 import equipo.recetario.saborio.model.domain.Receta
-import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
 import equipo.recetario.saborio.ui.theme.Brown
-import equipo.recetario.saborio.ui.theme.LightBrownGrey
 import equipo.recetario.saborio.ui.theme.Orange
 import equipo.recetario.saborio.utilities.getColorByEtiqueta
 
@@ -115,8 +113,8 @@ fun BtnGuardar(
     onClick: () -> Unit,
     modifier: Modifier
 ) {
-    val colorFondo = if (estaGuardada) Orange else Color.White
-    val colorIcono = if (estaGuardada) Color.White else Brown
+    val colorFondo = if (estaGuardada) Orange else MaterialTheme.colorScheme.surfaceVariant
+    val colorIcono = if (estaGuardada) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
     IconButton(
         onClick = onClick,
         modifier

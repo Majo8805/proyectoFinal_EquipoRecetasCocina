@@ -55,7 +55,7 @@ fun BarraInferior(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable{onNavigateToInicio()}
             ) {
-                val color = if (pestana == "Inicio") Orange else Brown
+                val color = if (pestana == "Inicio") Orange else MaterialTheme.colorScheme.onSurfaceVariant
                 Image(painter = painterResource(R.drawable.home_icon),
                     contentDescription = "home_icon",
                     colorFilter = ColorFilter.tint(color)
@@ -72,7 +72,7 @@ fun BarraInferior(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable{onNavigateToExplorar()}
             ) {
-                val color = if (pestana == "Explorar") Orange else Brown
+                val color = if (pestana == "Explorar") Orange else MaterialTheme.colorScheme.onSurfaceVariant
                 Image(painter = painterResource(R.drawable.explore_icon),
                     contentDescription = "explore_icon",
                     colorFilter = ColorFilter.tint(color)
@@ -99,7 +99,7 @@ fun BarraInferior(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable{onNavigateToGuardadas()}
             ) {
-                val color = if (pestana == "Guardadas") Orange else Brown
+                val color = if (pestana == "Guardadas") Orange else MaterialTheme.colorScheme.onSurfaceVariant
                 Image(painter = painterResource(R.drawable.guardar_icon),
                     contentDescription = "guardar_icon",
                     colorFilter = ColorFilter.tint(color)
@@ -116,7 +116,7 @@ fun BarraInferior(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable{ onNavigateToPerfil() }
             ) {
-                val color = if (pestana == "Perfil") Orange else Brown
+                val color = if (pestana == "Perfil") Orange else MaterialTheme.colorScheme.onSurfaceVariant
                 Image(painter = painterResource(R.drawable.person_icon),
                     contentDescription = "person_icon",
                     colorFilter = ColorFilter.tint(color)
