@@ -9,6 +9,7 @@ import equipo.recetario.saborio.model.data.getRecetasSecretas
 import equipo.recetario.saborio.model.data.listaRecetas
 import equipo.recetario.saborio.model.domain.Usuario
 import equipo.recetario.saborio.view.screens.EditarPerfilScreen
+import equipo.recetario.saborio.view.screens.PantallaAgregarEditarReceta
 import equipo.recetario.saborio.view.screens.PerfilScreen
 import equipo.recetario.saborio.view.screens.PrincipalScreen
 import equipo.recetario.saborio.view.screens.RecetasSecretasScreen
@@ -28,6 +29,8 @@ fun AppNavHost(
                 navController.navigate(VerGuardadas)
             }, onNavigateToPerfil = {
                 navController.navigate(VerPerfil)
+            }, onNavigateToAgregarReceta = {
+                navController.navigate(VerAgregarEditarReceta)
             }, onRecetaClick = { receta ->
                 navController.navigate(
                     VerDetalleReceta(receta.id, true)
@@ -42,6 +45,7 @@ fun AppNavHost(
                 onNavigateToExplorar = { },
                 onNavigateToGuardadas = { navController.navigate(VerGuardadas) },
                 onNavigateToPerfil = { navController.navigate(VerPerfil) },
+                onNavigateToAgregarReceta = { navController.navigate(VerAgregarEditarReceta) },
                 onRecetaClick = { receta ->
                     navController.navigate(
                         VerDetalleReceta(receta.id, false)
@@ -56,6 +60,7 @@ fun AppNavHost(
                 onNavigateToExplorar = { navController.navigate(VerExplorar) },
                 onNavigateToGuardadas = { },
                 onNavigateToPerfil = { navController.navigate(VerPerfil) },
+                onNavigateToAgregarReceta = { navController.navigate(VerAgregarEditarReceta) },
                 onRecetaClick = { receta ->
                     navController.navigate(
                         VerDetalleReceta(receta.id, false)
@@ -81,11 +86,18 @@ fun AppNavHost(
                 onNavigateToExplorar = { navController.navigate(VerExplorar) },
                 onNavigateToGuardadas = { navController.navigate(VerGuardadas) },
                 onNavigateToPerfil = { },
+                onNavigateToAgregarReceta = { navController.navigate(VerAgregarEditarReceta) },
                 onEditarClick = { navController.navigate(VerEditarPerfil) },
                 onDesbloquearClick = { navController.navigate(VerRecetasSecretas) },
                 onCerrarSesionClick = { },
                 modoOscuro = modoOscuro,
                 onModoOscuroChange = onModoOscuroChange
+            )
+        }
+        composable<VerAgregarEditarReceta> {
+            PantallaAgregarEditarReceta(
+                onVolverClick = { navController.popBackStack() },
+                onGuardarExitoso = { navController.popBackStack() }
             )
         }
         composable<VerEditarPerfil> {

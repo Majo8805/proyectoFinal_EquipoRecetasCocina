@@ -21,6 +21,9 @@ object VerExplorar
 object VerGuardadas
 
 @Serializable
+object VerAgregarEditarReceta
+
+@Serializable
 data class VerDetalleReceta(
     val recetaId: String,
     val esPropia: Boolean

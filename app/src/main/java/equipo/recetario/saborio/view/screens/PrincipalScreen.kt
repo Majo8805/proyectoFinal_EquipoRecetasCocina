@@ -37,6 +37,7 @@ fun PrincipalScreen(
     onNavigateToExplorar: () -> Unit,
     onNavigateToGuardadas: () -> Unit,
     onNavigateToPerfil: () -> Unit,
+    onNavigateToAgregarReceta: () -> Unit = {},
     onRecetaClick: (Receta) -> Unit,
     viewModel: RecetasViewModel = viewModel()
 ) {
@@ -111,7 +112,8 @@ fun PrincipalScreen(
             onNavigateToInicio,
             onNavigateToExplorar,
             onNavigateToGuardadas,
-            onNavigateToPerfil
+            onNavigateToPerfil,
+            onNavigateToAgregarReceta
         )
     }
 }
@@ -120,5 +122,5 @@ fun PrincipalScreen(
 @Composable
 @Preview(showBackground = true)
 fun PrincipalScreenPreview() {
-    PrincipalScreen(usuarioMuestra, "Inicio", {}, {}, {}, {}, {})
+    PrincipalScreen(usuarioMuestra, "Inicio", {}, {}, {}, {}, {}, {})
 }

@@ -34,7 +34,8 @@ fun BarraInferior(
     onNavigateToInicio: () -> Unit,
     onNavigateToExplorar: () -> Unit,
     onNavigateToGuardadas: () -> Unit,
-    onNavigateToPerfil: () -> Unit
+    onNavigateToPerfil: () -> Unit,
+    onNavigateToAgregarReceta: () -> Unit = {}
 ) {
     Card(
         shape = RoundedCornerShape(24.dp),
@@ -84,8 +85,9 @@ fun BarraInferior(
                     fontSize = 10.sp
                 )
             }
+            //Boton Agregar Receta
             FloatingActionButton(
-                onClick = {},
+                onClick = onNavigateToAgregarReceta,
                 shape = CircleShape,
                 containerColor = Orange,
                 modifier = Modifier

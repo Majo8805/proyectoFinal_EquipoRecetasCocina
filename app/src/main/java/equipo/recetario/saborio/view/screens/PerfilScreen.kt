@@ -72,6 +72,7 @@ fun PerfilScreen(
     onEditarClick: () -> Unit,
     onDesbloquearClick: () -> Unit,
     onCerrarSesionClick: () -> Unit,
+    onNavigateToAgregarReceta: () -> Unit = {},
     modoOscuro: Boolean = false,
     onModoOscuroChange: (Boolean) -> Unit = {}
 ) {
@@ -112,7 +113,8 @@ fun PerfilScreen(
             onNavigateToInicio,
             onNavigateToExplorar,
             onNavigateToGuardadas,
-            onNavigateToPerfil
+            onNavigateToPerfil,
+            onNavigateToAgregarReceta
         )
     }
 }
