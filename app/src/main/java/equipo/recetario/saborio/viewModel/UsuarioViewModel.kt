@@ -70,7 +70,7 @@ class UsuarioViewModel : ViewModel() {
                 && correoValido()
                 && fechaNacimiento.isNotBlank()
                 && genero.isNotBlank()
-                && password.length >= 8
+                && password.length >= 1 //por mientras vamos a dejarlo así para probarlo mas facil
                 && passwordsCoinciden()
                 && !existeCorreo(correo)
     }
