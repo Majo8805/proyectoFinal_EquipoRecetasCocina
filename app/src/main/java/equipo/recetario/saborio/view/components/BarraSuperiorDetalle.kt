@@ -23,7 +23,6 @@ import equipo.recetario.saborio.model.domain.Usuario
 @Composable
 fun BarraSuperiorDetalle(
     usuario: Usuario,
-    onBack: () -> Unit,
     onNavigateToPerfil: () -> Unit
 ) {
 
@@ -36,15 +35,6 @@ fun BarraSuperiorDetalle(
                 bottom = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
-        IconButton(
-            onClick = {onBack}
-        ) {
-            Image(
-                painter = painterResource(R.drawable.arrow_back_icon),
-                contentDescription = "back"
-            )
-        }
 
         Text(
             text = "Detalle de Receta",
@@ -73,7 +63,7 @@ fun BarraSuperiorDetalle(
 @Preview(showBackground = true)
 @Composable
 fun preview(){
-    BarraSuperiorDetalle(usuarioMuestra,{},{})
+    BarraSuperiorDetalle(usuarioMuestra,{})
 
 
 }

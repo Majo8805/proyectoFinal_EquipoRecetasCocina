@@ -14,5 +14,6 @@ data class Receta (
     val esSecreta: Boolean,
     val nombreAutor: String?,
     val calificacion: Double,
-    val esGuardada: Boolean
+    val esGuardada: Boolean,
+    val cantidadCalificaciones: Int
 )

@@ -2,12 +2,21 @@ package equipo.recetario.saborio.view.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -18,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,6 +36,7 @@ import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Ingrediente
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
+import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
 import equipo.recetario.saborio.ui.theme.Brown
 import equipo.recetario.saborio.ui.theme.LightBrownGrey
 import equipo.recetario.saborio.ui.theme.Orange
@@ -33,27 +44,21 @@ import equipo.recetario.saborio.view.components.BarraSuperiorDetalle
 import equipo.recetario.saborio.view.components.EtiquetaEstrellas
 import equipo.recetario.saborio.view.components.EtiquetaTag
 
+
 @Composable
-fun DetalleRecetaScreen(
-    usuario: Usuario,
-    receta: Receta,
-    onBack: () -> Unit
+fun detalleRecetaScreen(
+    usuario: Usuario, receta: Receta, esPropia: Boolean
 ) {
 
-    LazyColumn(
-        modifier = Modifier.background(MaterialTheme.colorScheme.background)
-    ) {
+    LazyColumn {
 
         item {
             BarraSuperiorDetalle(
-                usuario = usuario,
-                onBack = onBack,
-                onNavigateToPerfil = {}
-            )
+                usuario = usuario, onNavigateToPerfil = {})
         }
 
         item {
-            HeroReceta(receta)
+            heroReceta(receta)
         }
 
         item {
@@ -62,16 +67,15 @@ fun DetalleRecetaScreen(
                 modifier = Modifier.padding(16.dp)
             ) {
 
-                EncabezadoAutor(
-                    usuario,
-                    receta
+                encabezadoAutor(
+                    usuario, receta, esPropia
                 )
 
                 Spacer(
                     modifier = Modifier.height(16.dp)
                 )
 
-                TituloReceta(
+                tituloReceta(
                     receta
                 )
 
@@ -79,7 +83,7 @@ fun DetalleRecetaScreen(
                     modifier = Modifier.height(24.dp)
                 )
 
-                SeccionIngredientes(
+                seccionIngredientes(
                     receta
                 )
 
@@ -87,7 +91,7 @@ fun DetalleRecetaScreen(
                     modifier = Modifier.height(24.dp)
                 )
 
-                SeccionPreparacion(
+                seccionPreparacion(
                     receta
                 )
 
@@ -95,13 +99,15 @@ fun DetalleRecetaScreen(
                     modifier = Modifier.height(24.dp)
                 )
 
-                EnlaceReceta(
+                enlaceReceta(
                     receta
                 )
 
-                SeccionCalificacion(
-                    receta
-                )
+                if (esPropia) {
+                    seccionCalificacionPropia(receta)
+                } else {
+                    seccionCalificacion(receta)
+                }
 
                 Spacer(
                     modifier = Modifier.height(32.dp)
@@ -112,7 +118,7 @@ fun DetalleRecetaScreen(
 }
 
 @Composable
-fun SeccionCalificacion(
+fun seccionCalificacion(
     receta: Receta
 ) {
 
@@ -120,37 +126,78 @@ fun SeccionCalificacion(
         mutableIntStateOf(0)
     }
 
-    Text(
-        text = receta.calificacion.toString(), fontWeight = FontWeight.Bold, fontSize = 28.sp
-    )
-
-    Spacer(
-        modifier = Modifier.height(8.dp)
-    )
-
-    Text(
-        text = "Toca las estrellas para calificar esta receta"
-    )
-
-    Spacer(
-        modifier = Modifier.height(16.dp)
-    )
-
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                LightBrownGrey, RoundedCornerShape(12.dp)
+            )
+            .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        repeat(5) { index ->
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
 
             Text(
-                text = if (index < estrellas.intValue) "★" else "☆", fontSize = 30.sp
+                text = receta.calificacion.toString(),
+                fontWeight = FontWeight.Bold,
+                fontSize = 28.sp
             )
+
+            Spacer(
+                modifier = Modifier.width(8.dp)
+            )
+
+            Text(
+                text = "★★★★★", color = Orange, fontSize = 24.sp
+            )
+        }
+
+        Spacer(
+            modifier = Modifier.height(16.dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.90f)
+                .background(
+                    Color.White, RoundedCornerShape(8.dp)
+                )
+                .padding(16.dp), contentAlignment = Alignment.Center
+        ) {
+
+            Text(
+                text = "Toca las estrellas para calificar esta receta",
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.SemiBold,
+                color = Brown
+            )
+        }
+
+        Spacer(
+            modifier = Modifier.height(16.dp)
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+
+            repeat(5) { index ->
+
+                Text(
+                    text = if (index < estrellas.intValue) "★" else "☆",
+                    fontSize = 32.sp,
+                    color = Brown
+                )
+            }
         }
     }
 }
 
 @Composable
-fun EnlaceReceta(
+fun enlaceReceta(
     receta: Receta
 ) {
 
@@ -167,7 +214,7 @@ fun EnlaceReceta(
 }
 
 @Composable
-fun NumeroPaso(
+fun numeroPaso(
     numeroPaso: Int
 ) {
 
@@ -186,13 +233,13 @@ fun NumeroPaso(
 }
 
 @Composable
-fun PasoPreparacionItem(
+fun pasoPreparacionItem(
     numeroPaso: Int, descripcion: String
 ) {
 
     Row {
 
-        NumeroPaso(
+        numeroPaso(
             numeroPaso = numeroPaso
         )
 
@@ -218,7 +265,7 @@ fun PasoPreparacionItem(
 }
 
 @Composable
-fun SeccionPreparacion(
+fun seccionPreparacion(
     receta: Receta
 ) {
 
@@ -232,7 +279,7 @@ fun SeccionPreparacion(
 
     receta.pasosPreparacion.forEachIndexed { index, paso ->
 
-        PasoPreparacionItem(
+        pasoPreparacionItem(
             numeroPaso = index + 1, descripcion = paso
         )
 
@@ -243,7 +290,7 @@ fun SeccionPreparacion(
 }
 
 @Composable
-fun PuntoIngrediente() {
+fun puntoIngrediente() {
 
     Box(
         modifier = Modifier
@@ -255,7 +302,7 @@ fun PuntoIngrediente() {
 }
 
 @Composable
-fun IngredienteItem(
+fun ingredienteItem(
     ingrediente: Ingrediente
 ) {
 
@@ -264,12 +311,12 @@ fun IngredienteItem(
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .background(
-                MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)
+                LightBrownGrey, RoundedCornerShape(12.dp)
             )
             .padding(12.dp), verticalAlignment = Alignment.CenterVertically
     ) {
 
-        PuntoIngrediente()
+        puntoIngrediente()
 
         Spacer(
             modifier = Modifier.width(12.dp)
@@ -282,7 +329,7 @@ fun IngredienteItem(
 }
 
 @Composable
-fun SeccionIngredientes(
+fun seccionIngredientes(
     receta: Receta
 ) {
 
@@ -296,19 +343,19 @@ fun SeccionIngredientes(
 
     receta.ingredientes.forEach { ingrediente ->
 
-        IngredienteItem(
+        ingredienteItem(
             ingrediente
         )
     }
 }
 
 @Composable
-fun TituloReceta(
+fun tituloReceta(
     receta: Receta
 ) {
 
     Text(
-        text = receta.nombre, fontSize = 32.sp, fontWeight = FontWeight.Bold
+        text = receta.nombre, fontSize = 32.sp, fontWeight = FontWeight.Bold, lineHeight = 35.sp
     )
 
     Spacer(
@@ -321,15 +368,7 @@ fun TituloReceta(
 }
 
 @Composable
-fun TextoGuardar() {
-
-    Text(
-        text = "Guardar", color = Orange, fontWeight = FontWeight.Bold
-    )
-}
-
-@Composable
-fun FotoAutor(
+fun fotoAutor(
     usuario: Usuario
 ) {
 
@@ -343,15 +382,15 @@ fun FotoAutor(
 }
 
 @Composable
-fun EncabezadoAutor(
-    usuario: Usuario, receta: Receta
+fun encabezadoAutor(
+    usuario: Usuario, receta: Receta, esPropia: Boolean
 ) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        FotoAutor(usuario)
+        fotoAutor(usuario)
 
         Spacer(
             modifier = Modifier.width(10.dp)
@@ -365,12 +404,37 @@ fun EncabezadoAutor(
             modifier = Modifier.weight(1f)
         )
 
-        TextoGuardar()
+        botonAccionReceta(
+            esPropia = esPropia
+        )
     }
 }
 
 @Composable
-fun HeroReceta(
+fun botonAccionReceta(
+    esPropia: Boolean
+) {
+
+    Box(
+        modifier = Modifier
+            .background(
+                Orange, RoundedCornerShape(50.dp)
+            )
+            .padding(
+                horizontal = 16.dp, vertical = 8.dp
+            )
+    ) {
+
+        Text(
+            text = if (esPropia) "Editar" else "Guardar",
+            color = Color.White,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+fun heroReceta(
     receta: Receta
 ) {
 
@@ -406,10 +470,66 @@ fun HeroReceta(
     }
 }
 
+@Composable
+fun seccionCalificacionPropia(
+    receta: Receta
+) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                LightBrownGrey, RoundedCornerShape(12.dp)
+            )
+            .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Text(
+                text = receta.calificacion.toString(),
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(
+                modifier = Modifier.width(12.dp)
+            )
+
+            Text(
+                text = "★★★★☆", color = Orange, fontSize = 24.sp
+            )
+        }
+
+        Spacer(
+            modifier = Modifier.height(16.dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Color.White, RoundedCornerShape(8.dp)
+                )
+                .padding(16.dp), contentAlignment = Alignment.Center
+        ) {
+
+            Text(
+                text = "Tu receta ha sido calificada por ${receta.cantidadCalificaciones} personas",
+                fontWeight = FontWeight.SemiBold,
+                color = Brown
+            )
+        }
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
 fun preview() {
-    DetalleRecetaScreen(
-        usuarioMuestra, RecetaPrueba, {})
+    detalleRecetaScreen(
+        usuarioMuestra, RecetaPrueba, true
+    )
 }

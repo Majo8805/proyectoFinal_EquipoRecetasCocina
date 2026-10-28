@@ -4,8 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import equipo.recetario.saborio.model.data.listaRecetas
 import equipo.recetario.saborio.model.data.getRecetasSecretas
 import equipo.recetario.saborio.model.domain.Usuario
+import equipo.recetario.saborio.view.screens.detalleRecetaScreen
 import equipo.recetario.saborio.view.screens.EditarPerfilScreen
 import equipo.recetario.saborio.view.screens.PerfilScreen
 import equipo.recetario.saborio.model.data.listaRecetas
@@ -53,7 +56,7 @@ fun AppNavHost(
                 onNavigateToPerfil = { navController.navigate(VerPerfil) },
                 onRecetaClick = { receta ->
                     navController.navigate(
-                        VerDetalleReceta(receta.id)
+                        VerDetalleReceta(receta.id, false)
                     )
                 }
             )
@@ -68,21 +71,23 @@ fun AppNavHost(
                 onNavigateToPerfil = { navController.navigate(VerPerfil) },
                 onRecetaClick = { receta ->
                     navController.navigate(
-                        VerDetalleReceta(receta.id)
+                        VerDetalleReceta(receta.id, false)
                     )
                 }
             )
         }
-        composable<VerDetalleReceta> {
+        composable<VerDetalleReceta> { backStackEntry ->
 
-            val receta = listaRecetas.first()
+            val ruta = backStackEntry.toRoute<VerDetalleReceta>()
 
-            DetalleRecetaScreen(
+            val receta = listaRecetas.first {
+                it.id == ruta.recetaId
+            }
+
+            detalleRecetaScreen(
                 usuario = usuario,
                 receta = receta,
-                onBack = {
-                    navController.popBackStack()
-                }
+                esPropia = ruta.esPropia
             )
         }
         composable<VerPerfil> {
