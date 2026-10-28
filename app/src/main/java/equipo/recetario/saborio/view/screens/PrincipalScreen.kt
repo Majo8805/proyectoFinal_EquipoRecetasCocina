@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -20,7 +21,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
-import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
 import equipo.recetario.saborio.ui.theme.Brown
 import equipo.recetario.saborio.ui.theme.Orange
 import equipo.recetario.saborio.view.components.BarraInferior
@@ -49,7 +49,7 @@ fun PrincipalScreen(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()
-            .background(BackgrounLightBrown)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         BarraSuperior(usuario, onNavigateToPerfil)
         Column(
@@ -83,7 +83,7 @@ fun PrincipalScreen(
                 ) {
                     Text(
                         text = "No se encontraron recetas",
-                        color = Brown,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center

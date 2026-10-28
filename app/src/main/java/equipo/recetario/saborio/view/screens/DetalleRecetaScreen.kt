@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -39,7 +40,9 @@ fun DetalleRecetaScreen(
     onBack: () -> Unit
 ) {
 
-    LazyColumn {
+    LazyColumn(
+        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+    ) {
 
         item {
             BarraSuperiorDetalle(
@@ -261,7 +264,7 @@ fun IngredienteItem(
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .background(
-                LightBrownGrey, RoundedCornerShape(12.dp)
+                MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)
             )
             .padding(12.dp), verticalAlignment = Alignment.CenterVertically
     ) {

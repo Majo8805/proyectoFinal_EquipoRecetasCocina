@@ -14,7 +14,11 @@ import equipo.recetario.saborio.view.screens.PrincipalScreen
 import equipo.recetario.saborio.view.screens.RecetasSecretasScreen
 
 @Composable
-fun AppNavHost(usuario: Usuario) {
+fun AppNavHost(
+    usuario: Usuario,
+    modoOscuro: Boolean = false,
+    onModoOscuroChange: (Boolean) -> Unit = {}
+) {
     val navController = rememberNavController()
 //Cuando el Login este hecho cambiar el startDestination para que use la ruta del Login
     NavHost(navController = navController, startDestination = VerMisRecetas) {
@@ -90,7 +94,9 @@ fun AppNavHost(usuario: Usuario) {
                 onNavigateToPerfil = { },
                 onEditarClick = { navController.navigate(VerEditarPerfil)},
                 onDesbloquearClick = { navController.navigate(VerRecetasSecretas) },
-                onCerrarSesionClick = { }
+                onCerrarSesionClick = { },
+                modoOscuro = modoOscuro,
+                onModoOscuroChange = onModoOscuroChange
             )
         }
         composable<VerEditarPerfil> {

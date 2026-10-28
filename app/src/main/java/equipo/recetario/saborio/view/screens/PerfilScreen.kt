@@ -35,9 +35,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,9 +52,7 @@ import equipo.recetario.saborio.model.data.getRecetasSecretas
 import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
-import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
 import equipo.recetario.saborio.ui.theme.Brown
-import equipo.recetario.saborio.ui.theme.LightBrownGrey
 import equipo.recetario.saborio.ui.theme.Orange
 import equipo.recetario.saborio.ui.theme.SaborioTheme
 import equipo.recetario.saborio.ui.theme.WhiteText
@@ -73,14 +69,16 @@ fun PerfilScreen(
     onNavigateToPerfil: () -> Unit,
     onEditarClick: () -> Unit,
     onDesbloquearClick: () -> Unit,
-    onCerrarSesionClick: () -> Unit
+    onCerrarSesionClick: () -> Unit,
+    modoOscuro: Boolean = false,
+    onModoOscuroChange: (Boolean) -> Unit = {}
 ) {
     val misRecetas = getMisRecetas(usuario.nombre)
     val misRecetasSecretas = getRecetasSecretas(usuario.nombre)
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(BackgrounLightBrown)
+            .background(MaterialTheme.colorScheme.background)
             .statusBarsPadding()
     ) {
         BarraSuperior(usuario, onNavigateToPerfil)
@@ -100,7 +98,10 @@ fun PerfilScreen(
             TarjetaGrafica("Recetas guardadas por mes", R.drawable.grafica_actividad)
             TarjetaGrafica("Distribución de recetas", R.drawable.grafica_distribucion)
             TituloSeccion("Preferencias de la aplicación")
-            TarjetaPreferencias()
+            TarjetaPreferencias(
+                modoOscuro = modoOscuro,
+                onModoOscuroChange = onModoOscuroChange
+            )
             BotonCerrarSesion(onCerrarSesionClick)
         }
         BarraInferior(
@@ -121,7 +122,8 @@ fun RecetasSecretasScreen(
 ) {
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(BackgrounLightBrown)) {
+        .background(MaterialTheme.colorScheme.background)
+        .statusBarsPadding()) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(8.dp)
@@ -187,7 +189,7 @@ fun EstadisticaPerfil(valor: Int, etiqueta: String, modifier: Modifier = Modifie
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier
@@ -227,7 +229,7 @@ fun BotonEditarPerfil(onClick: () -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = ButtonDefaults.filledTonalButtonColors(
-            containerColor = LightBrownGrey,
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
             contentColor = Brown
         )
     ) {
@@ -248,7 +250,7 @@ fun BotonCerrarSesion(onClick: () -> Unit) {
             .fillMaxWidth()
             .padding(16.dp),
         colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = LightBrownGrey,
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
             contentColor = Orange
         )
     ) { Text("Cerrar sesión") }
@@ -262,7 +264,7 @@ fun TarjetaFolderSecretas(cantidad: Int, onDesbloquearClick: () -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -273,6 +275,7 @@ fun TarjetaFolderSecretas(cantidad: Int, onDesbloquearClick: () -> Unit) {
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Box(
+                    contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .size(48.dp)
                         .clip(CircleShape)
@@ -293,7 +296,7 @@ fun TarjetaFolderSecretas(cantidad: Int, onDesbloquearClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(16.dp))
-                    .background(LightBrownGrey)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
                     .padding(12.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -320,7 +323,7 @@ fun TarjetaGrafica(titulo: String, imagen: Int) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(titulo, fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -336,14 +339,16 @@ fun TarjetaGrafica(titulo: String, imagen: Int) {
 }
 
 @Composable
-fun TarjetaPreferencias() {
-    var modoOscuro by remember { mutableStateOf(false) }
+fun TarjetaPreferencias(
+    modoOscuro: Boolean = false,
+    onModoOscuroChange: (Boolean) -> Unit = {}
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(
             modifier = Modifier
@@ -353,7 +358,10 @@ fun TarjetaPreferencias() {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text("Modo oscuro", fontSize = 16.sp)
-            Switch(checked = modoOscuro, onCheckedChange = { modoOscuro = it })
+            Switch(
+                checked = modoOscuro,
+                onCheckedChange = onModoOscuroChange
+            )
         }
     }
 }
@@ -414,7 +422,8 @@ fun PreviewEstadisticasPerfil() {
 fun PreviewTarjetaPreferencias() {
     SaborioTheme {
         TituloSeccion("Preferencias de la aplicación")
-        TarjetaPreferencias() }
+        TarjetaPreferencias()
+    }
 }
 
 @Preview(showBackground = true)

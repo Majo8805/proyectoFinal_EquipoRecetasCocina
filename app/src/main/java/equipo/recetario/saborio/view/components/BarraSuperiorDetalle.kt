@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +19,6 @@ import androidx.compose.ui.unit.sp
 import equipo.recetario.saborio.R
 import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Usuario
-import equipo.recetario.saborio.ui.theme.Brown
 
 @Composable
 fun BarraSuperiorDetalle(
@@ -50,7 +50,7 @@ fun BarraSuperiorDetalle(
             text = "Detalle de Receta",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = Brown
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.weight(1f))
