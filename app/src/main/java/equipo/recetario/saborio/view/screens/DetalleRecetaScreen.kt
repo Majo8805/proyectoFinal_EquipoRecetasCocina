@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -121,31 +122,78 @@ fun SeccionCalificacion(
         mutableIntStateOf(0)
     }
 
-    Text(
-        text = receta.calificacion.toString(), fontWeight = FontWeight.Bold, fontSize = 28.sp
-    )
-
-    Spacer(
-        modifier = Modifier.height(8.dp)
-    )
-
-    Text(
-        text = "Toca las estrellas para calificar esta receta"
-    )
-
-    Spacer(
-        modifier = Modifier.height(16.dp)
-    )
-
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                LightBrownGrey,
+                RoundedCornerShape(12.dp)
+            )
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        repeat(5) { index ->
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
 
             Text(
-                text = if (index < estrellas.intValue) "★" else "☆", fontSize = 30.sp
+                text = receta.calificacion.toString(),
+                fontWeight = FontWeight.Bold,
+                fontSize = 28.sp
             )
+
+            Spacer(
+                modifier = Modifier.width(8.dp)
+            )
+
+            Text(
+                text = "★★★★★",
+                color = Orange,
+                fontSize = 24.sp
+            )
+        }
+
+        Spacer(
+            modifier = Modifier.height(16.dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.90f)
+                .background(
+                    Color.White,
+                    RoundedCornerShape(8.dp)
+                )
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+
+            Text(
+                text = "Toca las estrellas para calificar esta receta",
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.SemiBold,
+                color = Brown
+            )
+        }
+
+        Spacer(
+            modifier = Modifier.height(16.dp)
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+
+            repeat(5) { index ->
+
+                Text(
+                    text = if (index < estrellas.intValue) "★" else "☆",
+                    fontSize = 32.sp,
+                    color = Brown
+                )
+            }
         }
     }
 }
@@ -309,7 +357,7 @@ fun TituloReceta(
 ) {
 
     Text(
-        text = receta.nombre, fontSize = 32.sp, fontWeight = FontWeight.Bold
+        text = receta.nombre, fontSize = 32.sp, fontWeight = FontWeight.Bold, lineHeight = 35.sp
     )
 
     Spacer(
@@ -318,14 +366,6 @@ fun TituloReceta(
 
     Text(
         text = receta.descripcionBreve, color = Brown
-    )
-}
-
-@Composable
-fun TextoGuardar() {
-
-    Text(
-        text = "Guardar", color = Orange, fontWeight = FontWeight.Bold
     )
 }
 
@@ -446,7 +486,8 @@ fun SeccionCalificacionPropia(
                 LightBrownGrey,
                 RoundedCornerShape(12.dp)
             )
-            .padding(24.dp)
+            .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Row(

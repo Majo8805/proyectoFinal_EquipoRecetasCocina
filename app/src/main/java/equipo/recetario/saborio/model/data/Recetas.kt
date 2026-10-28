@@ -6,7 +6,7 @@ import equipo.recetario.saborio.utilities.EtiquetasPredeterminadas
 
 val RecetaPrueba = Receta(
     id = "6",
-    nombre = "Cookies",
+    nombre = "Cookies de chispas de chocolate",
     descripcionBreve = "Galletas clásicas con chispas de chocolate.",
     fotografia = R.drawable.cookies,
     ingredientes = listOf(
