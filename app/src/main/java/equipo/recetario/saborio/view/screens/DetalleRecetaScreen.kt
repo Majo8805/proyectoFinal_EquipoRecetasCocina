@@ -32,6 +32,8 @@ import equipo.recetario.saborio.view.components.BarraSuperiorDetalle
 import equipo.recetario.saborio.view.components.EtiquetaEstrellas
 import equipo.recetario.saborio.view.components.EtiquetaTag
 
+
+
 @Composable
 fun DetalleRecetaScreen(
     usuario: Usuario,
@@ -96,9 +98,11 @@ fun DetalleRecetaScreen(
                     receta
                 )
 
-                SeccionCalificacion(
-                    receta
-                )
+                if (esPropia) {
+                    SeccionCalificacionPropia(receta)
+                } else {
+                    SeccionCalificacion(receta)
+                }
 
                 Spacer(
                     modifier = Modifier.height(32.dp)
