@@ -17,13 +17,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,9 +37,6 @@ import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Ingrediente
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
-import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
-import equipo.recetario.saborio.ui.theme.Brown
-import equipo.recetario.saborio.ui.theme.LightBrownGrey
 import equipo.recetario.saborio.ui.theme.Orange
 import equipo.recetario.saborio.view.components.BarraSuperiorDetalle
 import equipo.recetario.saborio.view.components.EtiquetaEstrellas
@@ -50,7 +48,11 @@ fun detalleRecetaScreen(
     usuario: Usuario, receta: Receta, esPropia: Boolean
 ) {
 
-    LazyColumn {
+    Surface(
+        color = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.onBackground
+    ) {
+        LazyColumn {
 
         item {
             BarraSuperiorDetalle(
@@ -116,6 +118,7 @@ fun detalleRecetaScreen(
         }
     }
 }
+}
 
 @Composable
 fun seccionCalificacion(
@@ -130,7 +133,7 @@ fun seccionCalificacion(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                LightBrownGrey, RoundedCornerShape(12.dp)
+                MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)
             )
             .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -163,7 +166,7 @@ fun seccionCalificacion(
             modifier = Modifier
                 .fillMaxWidth(0.90f)
                 .background(
-                    Color.White, RoundedCornerShape(8.dp)
+                    MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp)
                 )
                 .padding(16.dp), contentAlignment = Alignment.Center
         ) {
@@ -172,7 +175,7 @@ fun seccionCalificacion(
                 text = "Toca las estrellas para calificar esta receta",
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.SemiBold,
-                color = Brown
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
 
@@ -189,7 +192,7 @@ fun seccionCalificacion(
                 Text(
                     text = if (index < estrellas.intValue) "★" else "☆",
                     fontSize = 32.sp,
-                    color = Brown
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -227,7 +230,9 @@ fun numeroPaso(
     ) {
 
         Text(
-            text = numeroPaso.toString(), color = Color.White, fontWeight = FontWeight.Bold
+            text = numeroPaso.toString(),
+            color = MaterialTheme.colorScheme.onPrimary,
+            fontWeight = FontWeight.Bold
         )
     }
 }
@@ -311,7 +316,7 @@ fun ingredienteItem(
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .background(
-                LightBrownGrey, RoundedCornerShape(12.dp)
+                MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)
             )
             .padding(12.dp), verticalAlignment = Alignment.CenterVertically
     ) {
@@ -363,7 +368,8 @@ fun tituloReceta(
     )
 
     Text(
-        text = receta.descripcionBreve, color = Brown
+        text = receta.descripcionBreve,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
     )
 }
 
@@ -427,7 +433,7 @@ fun botonAccionReceta(
 
         Text(
             text = if (esPropia) "Editar" else "Guardar",
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onPrimary,
             fontWeight = FontWeight.Bold
         )
     }
@@ -479,7 +485,7 @@ fun seccionCalificacionPropia(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                LightBrownGrey, RoundedCornerShape(12.dp)
+                MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)
             )
             .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -511,7 +517,7 @@ fun seccionCalificacionPropia(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    Color.White, RoundedCornerShape(8.dp)
+                    MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp)
                 )
                 .padding(16.dp), contentAlignment = Alignment.Center
         ) {
@@ -519,7 +525,7 @@ fun seccionCalificacionPropia(
             Text(
                 text = "Tu receta ha sido calificada por ${receta.cantidadCalificaciones} personas",
                 fontWeight = FontWeight.SemiBold,
-                color = Brown
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }
