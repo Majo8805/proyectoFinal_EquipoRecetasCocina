@@ -34,7 +34,8 @@ val RecetaPrueba = Receta(
     esSecreta = false,
     nombreAutor = "Ana Torres",
     calificacion = 4.5,
-    esGuardada = false
+    esGuardada = false,
+    19
 )
 
 var listaRecetas = listOf(
@@ -67,7 +68,8 @@ var listaRecetas = listOf(
         esSecreta = false,
         nombreAutor = "Chef Sofia Rossi",
         calificacion = 4.9,
-        esGuardada = true
+        esGuardada = true,
+        42
     ),
 
     Receta(
@@ -100,7 +102,8 @@ var listaRecetas = listOf(
         esSecreta = false,
         nombreAutor = "Ana Torres",
         calificacion = 4.5,
-        esGuardada = false
+        esGuardada = false,
+        32
     ),
 
     Receta(
@@ -133,7 +136,7 @@ var listaRecetas = listOf(
         esSecreta = false,
         nombreAutor = "Chef Mario",
         calificacion = 4.5,
-        esGuardada = true
+        esGuardada = true,54
     ),
 
     Receta(
@@ -164,7 +167,7 @@ var listaRecetas = listOf(
         esSecreta = false,
         nombreAutor = "Tryndamere Gonzales",
         calificacion = 3.8,
-        esGuardada = false
+        esGuardada = false,23
     ),
 
     Receta(
@@ -196,7 +199,7 @@ var listaRecetas = listOf(
         esSecreta = false,
         nombreAutor = "Taquería El Trompo",
         calificacion = 5.0,
-        esGuardada = true
+        esGuardada = true,98
     ),
 
     Receta(
@@ -229,7 +232,7 @@ var listaRecetas = listOf(
         esSecreta = false,
         nombreAutor = "Ana Torres",
         calificacion = 4.5,
-        esGuardada = false
+        esGuardada = false,25
     ),
 
     Receta(
@@ -260,7 +263,7 @@ var listaRecetas = listOf(
         esSecreta = false,
         nombreAutor = "FitLife Recipes",
         calificacion = 4.5,
-        esGuardada = false
+        esGuardada = false,42
     ),
 
     Receta(
@@ -291,7 +294,7 @@ var listaRecetas = listOf(
         esSecreta = true,
         nombreAutor = "Ana Torres",
         calificacion = 5.0,
-        esGuardada = false
+        esGuardada = false,54
     ),
 
     Receta(
@@ -323,7 +326,7 @@ var listaRecetas = listOf(
         esSecreta = false,
         nombreAutor = "Abuela Carmen",
         calificacion = 4.8,
-        esGuardada = true
+        esGuardada = true,23
     ),
 
     Receta(
@@ -357,7 +360,7 @@ var listaRecetas = listOf(
         esSecreta = false,
         nombreAutor = "Tryndamere Gonzales",
         calificacion = 4.0,
-        esGuardada = false
+        esGuardada = false,33
     )
 )
 

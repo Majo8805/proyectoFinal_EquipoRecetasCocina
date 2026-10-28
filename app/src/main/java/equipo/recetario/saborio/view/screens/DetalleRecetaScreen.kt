@@ -486,7 +486,7 @@ fun SeccionCalificacionPropia(
         ) {
 
             Text(
-                text = "Tu receta ha sido calificada por 19 personas",
+                text = "Tu receta ha sido calificada por ${receta.cantidadCalificaciones} personas",
                 fontWeight = FontWeight.SemiBold,
                 color = Brown
             )
