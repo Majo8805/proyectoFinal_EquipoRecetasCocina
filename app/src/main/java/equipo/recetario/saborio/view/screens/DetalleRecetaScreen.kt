@@ -430,6 +430,68 @@ fun HeroReceta(
     }
 }
 
+@Composable
+fun SeccionCalificacionPropia(
+    receta: Receta
+) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                LightBrownGrey,
+                RoundedCornerShape(12.dp)
+            )
+            .padding(24.dp)
+    ) {
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Text(
+                text = receta.calificacion.toString(),
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(
+                modifier = Modifier.width(12.dp)
+            )
+
+            Text(
+                text = "★★★★☆",
+                color = Orange,
+                fontSize = 24.sp
+            )
+        }
+
+        Spacer(
+            modifier = Modifier.height(16.dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Color.White,
+                    RoundedCornerShape(8.dp)
+                )
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+
+            Text(
+                text = "Tu receta ha sido calificada por 19 personas",
+                fontWeight = FontWeight.SemiBold,
+                color = Brown
+            )
+        }
+    }
+}
+
+
+
 
 @Preview(showBackground = true)
 @Composable
