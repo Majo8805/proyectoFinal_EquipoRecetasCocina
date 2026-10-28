@@ -1,172 +1,171 @@
 package equipo.recetario.saborio.view.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import equipo.recetario.saborio.model.data.usuarioMuestra
-import equipo.recetario.saborio.model.domain.EstadoFormularioReceta
-import equipo.recetario.saborio.model.domain.Usuario
-import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
-import equipo.recetario.saborio.ui.theme.Brown
-import equipo.recetario.saborio.ui.theme.WhiteText
-import equipo.recetario.saborio.view.components.BarraSuperior
-import equipo.recetario.saborio.view.components.CampoTextoReceta
-import equipo.recetario.saborio.view.components.ListaDinamicaIngredientes
-import equipo.recetario.saborio.view.components.ListaDinamicaPasos
-import equipo.recetario.saborio.view.components.SeleccionadorImagenReceta
+import androidx.compose.ui.unit.sp
+import equipo.recetario.saborio.R
+import equipo.recetario.saborio.ui.theme.*
+import equipo.recetario.saborio.view.components.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaAgregarEditarReceta(
-    estado: EstadoFormularioReceta,
-    usuario: Usuario = usuarioMuestra,
-    onCambioTitulo: (String) -> Unit,
-    onCambioDescripcion: (String) -> Unit,
-    onCambioTiempoPreparacion: (String) -> Unit,
-    onCambioPorciones: (String) -> Unit,
-    onCambioCategoria: (String) -> Unit,
-    onCambioIngrediente: (Int, String) -> Unit,
-    onAgregarIngrediente: () -> Unit,
-    onEliminarIngrediente: (Int) -> Unit,
-    onCambioPaso: (Int, String) -> Unit,
-    onAgregarPaso: () -> Unit,
-    onEliminarPaso: (Int) -> Unit,
-    onSeleccionarImagen: () -> Unit,
-    onClicGuardar: () -> Unit,
-    onClicRegresar: () -> Unit,
-    onClicPerfil: () -> Unit = {}
+    esEdicion: Boolean = false,
+    onVolverClick: () -> Unit = {},
+    onGuardarExitoso: () -> Unit = {}
 ) {
-    val tituloPantalla = if (estado.esModoEdicion) "Editar Receta" else "Añadir Receta"
+    // --- ESTADOS DE LA RECETA ---
+    var nombreReceta by remember { mutableStateOf("") }
+    var descripcionReceta by remember { mutableStateOf("") }
+
+    // Lista de ingredientes
+    val listaIngredientesState = remember { mutableStateListOf<IngredienteItem>() }
+
+    // Lista de pasos de preparación
+    val listaPasosState = remember { mutableStateListOf<String>() }
+
+    // Etiquetas elegidas
+    val etiquetasSeleccionadasState = remember { mutableStateListOf<String>() }
+
+    // Opciones de privacidad
+    var compartirReceta by remember { mutableStateOf(true) }
+    var recetaSecreta by remember { mutableStateOf(false) }
+
+    // Enlace a fuente original
+    var enlaceFuenteUrl by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
-            BarraSuperior(
-                usuario = usuario
+            TopAppBar(
+                title = {
+                    Text(
+                        text = if (esEdicion) "Editar Receta" else "Agregar Receta",
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = DarkText,
+                            fontSize = 20.sp
+                        )
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onVolverClick) {
+                        Image(
+                            painter = painterResource(id = R.drawable.plus_icon), // Reemplazar con tu icono de flecha atrás / regresar
+                            contentDescription = "Regresar",
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.White
+                )
             )
         },
-        containerColor = BackgrounLightBrown
-    ) { valoresRelleno ->
+        containerColor = Color.White
+    ) { innerPadding ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(valoresRelleno)
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 20.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = tituloPantalla,
-                style = MaterialTheme.typography.headlineMedium
+            // 1. Información Básica
+            InformacionBasicaReceta(
+                nombre = nombreReceta,
+                onNombreChange = { nombreReceta = it },
+                descripcion = descripcionReceta,
+                onDescripcionChange = { descripcionReceta = it }
             )
 
-            SeleccionadorImagenReceta(
-                rutaImagen = estado.rutaImagen,
-                onSeleccionarImagen = onSeleccionarImagen
+            // 2. Foto del Platillo
+            FotoPlatillo(
+                onSubirFotoClick = {
+                    // Acción para abrir la galería o tomar foto
+                }
             )
 
-            CampoTextoReceta(
-                valor = estado.titulo,
-                onCambioValor = onCambioTitulo,
-                etiqueta = "Nombre de la Receta"
+            // 3. Lista de Ingredientes
+            ListaIngredientes(
+                ingredientes = listaIngredientesState,
+                onAddIngrediente = { ingrediente ->
+                    listaIngredientesState.add(ingrediente)
+                },
+                onDeleteIngrediente = { ingrediente ->
+                    listaIngredientesState.remove(ingrediente)
+                }
             )
 
-            CampoTextoReceta(
-                valor = estado.descripcion,
-                onCambioValor = onCambioDescripcion,
-                etiqueta = "Descripción",
-                esLineaUnica = false,
-                maxLineas = 3
+            // 4. Pasos de Preparación
+            PasosPreparacion(
+                pasos = listaPasosState,
+                onAddPaso = { nuevoPaso ->
+                    listaPasosState.add(nuevoPaso)
+                },
+                onDeletePaso = { index ->
+                    if (index in listaPasosState.indices) {
+                        listaPasosState.removeAt(index)
+                    }
+                }
             )
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                CampoTextoReceta(
-                    valor = estado.tiempoPreparacionMinutos,
-                    onCambioValor = onCambioTiempoPreparacion,
-                    etiqueta = "Tiempo (min)",
-                    modifier = Modifier.weight(1f)
-                )
-                CampoTextoReceta(
-                    valor = estado.porciones,
-                    onCambioValor = onCambioPorciones,
-                    etiqueta = "Porciones",
-                    modifier = Modifier.weight(1f)
-                )
-            }
-
-            CampoTextoReceta(
-                valor = estado.categoria,
-                onCambioValor = onCambioCategoria,
-                etiqueta = "Categoría (ej. Postres, Comidas)"
+            // 5. Etiquetas de la Receta
+            EtiquetasReceta(
+                etiquetasSeleccionadas = etiquetasSeleccionadasState,
+                onToggleEtiqueta = { tag ->
+                    if (etiquetasSeleccionadasState.contains(tag)) {
+                        etiquetasSeleccionadasState.remove(tag)
+                    } else {
+                        etiquetasSeleccionadasState.add(tag)
+                    }
+                },
+                onAddCustomEtiqueta = { nuevaEtiqueta ->
+                    if (!etiquetasSeleccionadasState.contains(nuevaEtiqueta)) {
+                        etiquetasSeleccionadasState.add(nuevaEtiqueta)
+                    }
+                }
             )
 
-            ListaDinamicaIngredientes(
-                ingredientes = estado.ingredientes,
-                onCambioIngrediente = onCambioIngrediente,
-                onAgregarIngrediente = onAgregarIngrediente,
-                onEliminarIngrediente = onEliminarIngrediente
+            // 6. Configuración de Privacidad
+            ConfiguracionPrivacidad(
+                compartirReceta = compartirReceta,
+                onCompartirChange = { compartirReceta = it },
+                recetaSecreta = recetaSecreta,
+                onSecretaChange = { recetaSecreta = it }
             )
 
-            ListaDinamicaPasos(
-                pasos = estado.pasos,
-                onCambioPaso = onCambioPaso,
-                onAgregarPaso = onAgregarPaso,
-                onEliminarPaso = onEliminarPaso
+            // 7. Enlace a la Fuente
+            EnlaceFuente(
+                url = enlaceFuenteUrl,
+                onUrlChange = { enlaceFuenteUrl = it }
             )
 
-            Button(
-                onClick = onClicGuardar,
-                colors = ButtonDefaults.buttonColors(containerColor = Brown),
-                shape = RoundedCornerShape(24.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-            ) {
-                Text(
-                    text = if (estado.esModoEdicion) "Actualizar Receta" else "Guardar Receta",
-                    color = WhiteText,
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
+            // 8. Botones de Acción
+            AccionesGuardado(
+                onGuardarClick = {
+                    // Procesar el guardado de la receta
+                    onGuardarExitoso()
+                },
+                onDescartarClick = {
+                    onVolverClick()
+                }
+            )
+
+            // Espacio final para scroll cómodo
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PantallaAgregarEditarRecetaPreview() {
-    PantallaAgregarEditarReceta(
-        estado = EstadoFormularioReceta(),
-        onCambioTitulo = {},
-        onCambioDescripcion = {},
-        onCambioTiempoPreparacion = {},
-        onCambioPorciones = {},
-        onCambioCategoria = {},
-        onCambioIngrediente = { _, _ -> },
-        onAgregarIngrediente = {},
-        onEliminarIngrediente = {},
-        onCambioPaso = { _, _ -> },
-        onAgregarPaso = {},
-        onEliminarPaso = {},
-        onSeleccionarImagen = {},
-        onClicGuardar = {},
-        onClicRegresar = {}
-    )
 }
