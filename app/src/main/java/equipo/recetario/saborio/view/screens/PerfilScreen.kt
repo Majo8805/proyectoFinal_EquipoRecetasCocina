@@ -29,8 +29,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -78,6 +83,11 @@ fun PerfilScreen(
         ) {
             EncabezadoPerfil(usuario)
             EstadisticasPerfil(recetas = misRecetas.size, secretas = misRecetasSecretas.size)
+            TarjetaFolderSecretas(
+                cantidad = misRecetasSecretas.size,
+                onDesbloquearClick = onDesbloquearClick
+            )
+            TarjetaPreferencias()
             AccionesPerfil(
                 onEditarClick = onEditarClick,
                 onDesbloquearClick = onDesbloquearClick,
@@ -99,19 +109,25 @@ fun RecetasSecretasScreen(
     recetas: List<Receta>,
     onRecetaClick: (Receta) -> Unit = {},
     onVolverClick: () -> Unit
-){
-    Column(modifier = Modifier.fillMaxSize().background(BackgrounLightBrown)) {
-        Row(verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(8.dp)) {
+) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(BackgrounLightBrown)) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(8.dp)
+        ) {
             IconButton(onClick = onVolverClick) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
             }
             Text("Mis recetas secretas", fontSize = 24.sp, fontWeight = FontWeight.Bold)
         }
-        Box(modifier = Modifier.weight(1f)){
-            if (recetas.isEmpty()){
-                Text("Aún no hay recetas secretas",
-                modifier = Modifier.align(Alignment.Center))
+        Box(modifier = Modifier.weight(1f)) {
+            if (recetas.isEmpty()) {
+                Text(
+                    "Aún no hay recetas secretas",
+                    modifier = Modifier.align(Alignment.Center)
+                )
             } else {
                 ListaRecetas(
                     recetas = recetas,
@@ -209,22 +225,57 @@ fun TarjetaFolderSecretas(cantidad: Int, onDesbloquearClick: () -> Unit) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = RoundedCornerShape(20.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
                 Icon(Icons.Default.Lock, contentDescription = null)
                 Column {
                     Text(text = "Recetas Secretas", fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     Text(text = "($cantidad recetas)", fontSize = 14.sp)
                 }
             }
-            Row(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(MaterialTheme.colorScheme.surfaceVariant)
-                .padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(text = "Ver recetas secretas", fontSize = 16.sp)
                 Button(onClick = onDesbloquearClick) {
                     Text(text = "Ver")
                 }
 
+            }
         }
+    }
+}
+
+@Composable
+fun TarjetaPreferencias() {
+    var modoOscuro by remember { mutableStateOf(false) }
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("Modo oscuro", fontSize = 16.sp)
+            Switch(checked = modoOscuro, onCheckedChange = { modoOscuro = it })
         }
     }
 }
@@ -267,6 +318,7 @@ fun AccionesPerfil(
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewTarjetaFolderSecretas() {
@@ -275,7 +327,7 @@ fun PreviewTarjetaFolderSecretas() {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewRecetasSecretasScreen(){
+fun PreviewRecetasSecretasScreen() {
     SaborioTheme {
         RecetasSecretasScreen(
             recetas = getRecetasSecretas(usuarioMuestra.nombre),
@@ -306,4 +358,10 @@ fun PreviewEstadisticasPerfil() {
     SaborioTheme {
         EstadisticasPerfil(recetas = 3, secretas = 1)
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewTarjetaPreferencias() {
+    SaborioTheme { TarjetaPreferencias() }
 }
