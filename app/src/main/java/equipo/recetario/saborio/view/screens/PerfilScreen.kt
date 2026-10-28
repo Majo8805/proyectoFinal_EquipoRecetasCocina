@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.FilledTonalButton
@@ -96,6 +97,7 @@ fun PerfilScreen(
 @Composable
 fun RecetasSecretasScreen(
     recetas: List<Receta>,
+    onRecetaClick: (Receta) -> Unit = {},
     onVolverClick: () -> Unit
 ){
     Column(modifier = Modifier.fillMaxSize().background(BackgrounLightBrown)) {
@@ -111,7 +113,12 @@ fun RecetasSecretasScreen(
                 Text("Aún no hay recetas secretas",
                 modifier = Modifier.align(Alignment.Center))
             } else {
-                ListaRecetas(recetas, mostrarBotonGuardar = false, onGuardarClick = {})
+                ListaRecetas(
+                    recetas = recetas,
+                    mostrarBotonGuardar = false,
+                    onGuardarClick = {},
+                    onRecetaClick = onRecetaClick
+                )
             }
         }
     }
@@ -179,6 +186,50 @@ fun EstadisticasPerfil(recetas: Int, secretas: Int) {
 }
 
 @Composable
+fun BotonEditarPerfil(onClick: () -> Unit) {
+    FilledTonalButton(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Icon(
+            imageVector = Icons.Default.Edit,
+            contentDescription = "Editar datos personales"
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = "Editar Perfil")
+    }
+}
+
+@Composable
+fun TarjetaFolderSecretas(cantidad: Int, onDesbloquearClick: () -> Unit) {
+    Card(
+        onClick = onDesbloquearClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Icon(Icons.Default.Lock, contentDescription = null)
+                Column {
+                    Text(text = "Recetas Secretas", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Text(text = "($cantidad recetas)", fontSize = 14.sp)
+                }
+            }
+            Row(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(MaterialTheme.colorScheme.surfaceVariant)
+                .padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(text = "Ver recetas secretas", fontSize = 16.sp)
+                Button(onClick = onDesbloquearClick) {
+                    Text(text = "Ver")
+                }
+
+        }
+        }
+    }
+}
+
+@Composable
 fun AccionesPerfil(
     onEditarClick: () -> Unit,
     onDesbloquearClick: () -> Unit,
@@ -191,18 +242,7 @@ fun AccionesPerfil(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        FilledTonalButton(
-            onClick = onEditarClick,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(
-                imageVector = Icons.Default.Edit,
-                contentDescription = "Editar perfil"
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "Editar Perfil")
-        }
-
+        BotonEditarPerfil(onClick = onEditarClick)
         FilledTonalButton(
             onClick = onDesbloquearClick,
             modifier = Modifier.fillMaxWidth()
@@ -229,15 +269,24 @@ fun AccionesPerfil(
 
 @Preview(showBackground = true)
 @Composable
-fun RecetasSecretasScreenPreview(){
+fun PreviewTarjetaFolderSecretas() {
+    SaborioTheme { TarjetaFolderSecretas(cantidad = 1, onDesbloquearClick = {}) }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewRecetasSecretasScreen(){
     SaborioTheme {
-        RecetasSecretasScreen(getRecetasSecretas(usuarioMuestra.nombre), {})
+        RecetasSecretasScreen(
+            recetas = getRecetasSecretas(usuarioMuestra.nombre),
+            onVolverClick = {}
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun PerfilScreenPreview() {
+fun PreviewPerfilScreen() {
     SaborioTheme {
         PerfilScreen(usuarioMuestra, {}, {}, {}, {}, {}, {}, {})
     }
