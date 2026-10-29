@@ -1,5 +1,6 @@
 package equipo.recetario.saborio.view.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,22 +10,33 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import equipo.recetario.saborio.R
 import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
 import equipo.recetario.saborio.ui.theme.Brown
+import equipo.recetario.saborio.ui.theme.LightBrownGrey
 import equipo.recetario.saborio.ui.theme.Orange
 import equipo.recetario.saborio.view.components.CampoRegistro
 import equipo.recetario.saborio.view.components.SelectorGenero
@@ -58,15 +70,31 @@ fun registroScreen(
         )
     }
 }
+
 @Composable
 fun headerRegistro() {
 
-    Text(
-        text = "Saborío",
-        fontSize = 28.sp,
-        color = Orange,
-        fontWeight = FontWeight.Bold
-    )
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Image(
+            painter = painterResource(R.drawable.logo_icon),
+            contentDescription = "Logo Saborío",
+            colorFilter = ColorFilter.tint(Orange)
+            )
+
+        Spacer(
+            modifier = Modifier.width(8.dp)
+        )
+
+        Text(
+            text = "Saborío",
+            fontSize = 28.sp,
+            color = Orange,
+            fontWeight = FontWeight.Bold
+        )
+    }
 
     Spacer(
         modifier = Modifier.height(24.dp)
@@ -96,7 +124,11 @@ fun tarjetaRegistro(
 ) {
 
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        shape = RoundedCornerShape(24.dp)
     ) {
 
         Column(
@@ -122,6 +154,7 @@ fun tarjetaRegistro(
         }
     }
 }
+
 @Composable
 fun campoNombre(
     viewModel: UsuarioViewModel
@@ -167,10 +200,35 @@ fun campoCorreo(
         placeholder = "chef@correo.com"
     )
 
+    if (viewModel.correo.isNotBlank()) {
+
+        Spacer(
+            modifier = Modifier.height(4.dp)
+        )
+
+        if (viewModel.correoValido()) {
+
+            Text(
+                text = "✓ Correo válido",
+                color = Color(0xFF2E7D32),
+                fontSize = 12.sp
+            )
+
+        } else {
+
+            Text(
+                text = "Ingresa un correo válido",
+                color = Color.Red,
+                fontSize = 12.sp
+            )
+        }
+    }
+
     Spacer(
         modifier = Modifier.height(20.dp)
     )
 }
+
 @Composable
 fun campoFechaNacimiento(
     viewModel: UsuarioViewModel
@@ -195,6 +253,7 @@ fun campoFechaNacimiento(
         modifier = Modifier.height(20.dp)
     )
 }
+
 @Composable
 fun seccionGenero(
     viewModel: UsuarioViewModel
@@ -259,6 +318,32 @@ fun seccionGenero(
         modifier = Modifier.height(20.dp)
     )
 }
+
+@Composable
+fun CampoPassword(
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String
+) {
+
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        visualTransformation = PasswordVisualTransformation(),
+        placeholder = {
+            Text(placeholder)
+        },
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedContainerColor = LightBrownGrey,
+            unfocusedContainerColor = LightBrownGrey,
+            focusedBorderColor = Color.Transparent,
+            unfocusedBorderColor = Color.Transparent
+        )
+    )
+}
+
 @Composable
 fun campoPassword(
     viewModel: UsuarioViewModel
@@ -273,7 +358,7 @@ fun campoPassword(
         modifier = Modifier.height(8.dp)
     )
 
-    CampoRegistro(
+    CampoPassword(
         value = viewModel.password,
         onValueChange = viewModel::actualizarPassword,
         placeholder = "Mínimo 8 caracteres"
@@ -283,6 +368,7 @@ fun campoPassword(
         modifier = Modifier.height(20.dp)
     )
 }
+
 @Composable
 fun campoConfirmPassword(
     viewModel: UsuarioViewModel
@@ -297,16 +383,41 @@ fun campoConfirmPassword(
         modifier = Modifier.height(8.dp)
     )
 
-    CampoRegistro(
+    CampoPassword(
         value = viewModel.confirmarPassword,
         onValueChange = viewModel::actualizarConfirmPassword,
         placeholder = "Confirma tu contraseña"
     )
 
+    if (viewModel.confirmarPassword.isNotBlank()) {
+
+        Spacer(
+            modifier = Modifier.height(4.dp)
+        )
+
+        if (viewModel.passwordsCoinciden()) {
+
+            Text(
+                text = "✓ Las contraseñas coinciden",
+                color = Color(0xFF2E7D32),
+                fontSize = 12.sp
+            )
+
+        } else {
+
+            Text(
+                text = "Las contraseñas no coinciden",
+                color = Color.Red,
+                fontSize = 12.sp
+            )
+        }
+    }
+
     Spacer(
-        modifier = Modifier.height(32.dp)
+        modifier = Modifier.height(20.dp)
     )
 }
+
 @Composable
 fun botonCrearCuenta(
     viewModel: UsuarioViewModel,
@@ -339,6 +450,6 @@ fun botonCrearCuenta(
 
 @Preview
 @Composable
-fun previewRegistroScreen(){
+fun previewRegistroScreen() {
     registroScreen({})
 }
