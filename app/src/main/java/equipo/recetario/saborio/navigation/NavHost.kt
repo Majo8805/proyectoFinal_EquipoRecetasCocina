@@ -10,13 +10,14 @@ import equipo.recetario.saborio.model.data.listaRecetas
 import equipo.recetario.saborio.model.domain.Usuario
 import equipo.recetario.saborio.view.screens.detalleRecetaScreen
 import equipo.recetario.saborio.view.screens.PrincipalScreen
+import equipo.recetario.saborio.view.screens.registroScreen
 import equipo.recetario.saborio.viewModel.RecetasViewModel
 
 @Composable
 fun AppNavHost(usuario: Usuario) {
     val navController = rememberNavController()
 //Cuando el Login este hecho cambiar el startDestination para que use la ruta del Login
-    NavHost(navController = navController, startDestination = VerMisRecetas) {
+    NavHost(navController = navController, startDestination = VerRegistro) {
         composable<VerMisRecetas> {
             PrincipalScreen(
                 usuario,
@@ -76,12 +77,32 @@ fun AppNavHost(usuario: Usuario) {
                 it.id == ruta.recetaId
             }
 
+            val recetasViewModel: RecetasViewModel = viewModel()
+
             detalleRecetaScreen(
                 usuario = usuario,
                 receta = receta,
                 esPropia = ruta.esPropia,
-                RecetasViewModel()
+                viewModel= recetasViewModel
             )
         }
+
+        composable<VerRegistro> {
+
+            registroScreen(
+
+                onRegistroExitoso = {
+
+                    navController.navigate(
+                        VerMisRecetas
+                    ) {
+                        popUpTo<VerRegistro> {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+
     }
 }
