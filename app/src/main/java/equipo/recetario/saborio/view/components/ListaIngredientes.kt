@@ -54,7 +54,7 @@ fun ListaIngredientes(
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.logo_icon),
+                        painter = painterResource(id = R.drawable.shopping_cart_24px),
                         contentDescription = "Ingredientes",
                         modifier = Modifier.size(22.dp)
                     )
@@ -111,7 +111,7 @@ fun ListaIngredientes(
                         }
                         IconButton(onClick = { onDeleteIngrediente(item) }) {
                             Image(
-                                painter = painterResource(id = R.drawable.plus_icon), // Sustituir por icono papelera si aplica
+                                painter = painterResource(id = R.drawable.delete_24px),
                                 contentDescription = "Eliminar",
                                 modifier = Modifier.size(20.dp)
                             )

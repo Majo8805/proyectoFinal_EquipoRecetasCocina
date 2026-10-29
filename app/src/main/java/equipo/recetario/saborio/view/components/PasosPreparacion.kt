@@ -51,7 +51,7 @@ fun PasosPreparacion(
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.logo_icon),
+                            painter = painterResource(id = R.drawable.local_dining_24px),
                             contentDescription = "Pasos",
                             modifier = Modifier.size(22.dp)
                         )
@@ -129,9 +129,9 @@ fun PasosPreparacion(
                             }
                             IconButton(onClick = { onDeletePaso(index) }) {
                                 Image(
-                                    painter = painterResource(id = R.drawable.close_24px),
+                                    painter = painterResource(id = R.drawable.delete_24px),
                                     contentDescription = "Borrar paso",
-                                    modifier = Modifier.size(16.dp)
+                                    modifier = Modifier.size(18.dp)
                                 )
                             }
                         }

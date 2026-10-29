@@ -52,7 +52,7 @@ fun EtiquetasReceta(
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.guardar_icon),
+                        painter = painterResource(id = R.drawable.sell_24px),
                         contentDescription = "Etiquetas",
                         modifier = Modifier.size(22.dp)
                     )

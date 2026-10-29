@@ -9,7 +9,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -20,73 +23,98 @@ import equipo.recetario.saborio.ui.theme.*
 
 @Composable
 fun FotoPlatillo(
+    fotoDrawableRes: Int? = null,
     onSubirFotoClick: () -> Unit
 ) {
+    val gradientBrush = Brush.verticalGradient(
+        colors = listOf(
+            BackgrounLightBrown,
+            Color(0xFFEADBCE)
+        )
+    )
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = BackgrounLightBrown)
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+                .background(brush = gradientBrush, shape = RoundedCornerShape(24.dp))
+                .padding(24.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(68.dp)
-                    .background(Color(0xFFFFE0D6), shape = CircleShape),
-                contentAlignment = Alignment.Center
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.photo_camera_24px),
-                    contentDescription = "Foto",
-                    modifier = Modifier.size(32.dp)
-                )
-            }
-
-            Text(
-                text = "Foto del platillo",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = DarkText,
-                    fontSize = 20.sp
-                )
-            )
-
-            Text(
-                text = "Una imagen apetitosa despierta todos los sentidos antes del primer bocado.",
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = Brown,
-                    textAlign = TextAlign.Center,
-                    fontSize = 14.sp
-                ),
-                modifier = Modifier.padding(horizontal = 12.dp)
-            )
-
-            Button(
-                onClick = onSubirFotoClick,
-                shape = RoundedCornerShape(50),
-                colors = ButtonDefaults.buttonColors(containerColor = Orange),
-                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
+                if (fotoDrawableRes != null) {
                     Image(
-                        painter = painterResource(id = R.drawable.plus_icon),
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        painter = painterResource(id = fotoDrawableRes),
+                        contentDescription = "Foto del platillo",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                            .clip(RoundedCornerShape(16.dp))
                     )
-                    Text(
-                        text = "Subir o tomar foto",
-                        color = Color.White,
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .size(68.dp)
+                            .background(Color(0xFFFFE0D6), shape = CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.add_photo_alternate_24px),
+                            contentDescription = "Foto",
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+                }
+
+                Text(
+                    text = "Foto del platillo",
+                    style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp
+                        color = DarkText,
+                        fontSize = 20.sp
                     )
+                )
+
+                Text(
+                    text = "Una imagen apetitosa despierta todos los sentidos antes del primer bocado.",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Brown,
+                        textAlign = TextAlign.Center,
+                        fontSize = 14.sp
+                    ),
+                    modifier = Modifier.padding(horizontal = 12.dp)
+                )
+
+                Button(
+                    onClick = onSubirFotoClick,
+                    shape = RoundedCornerShape(50),
+                    colors = ButtonDefaults.buttonColors(containerColor = Orange),
+                    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.add_photo_alternate_24px),
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Text(
+                            text = if (fotoDrawableRes != null) "Cambiar foto" else "Subir o tomar foto",
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 15.sp
+                        )
+                    }
                 }
             }
         }

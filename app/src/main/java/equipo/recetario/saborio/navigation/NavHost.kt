@@ -33,7 +33,7 @@ fun AppNavHost(
             }, onNavigateToPerfil = {
                 navController.navigate(VerPerfil)
             }, onNavigateToAgregarReceta = {
-                navController.navigate(VerAgregarEditarReceta)
+                navController.navigate(VerAgregarEditarReceta())
             }, onRecetaClick = { receta ->
                 navController.navigate(
                     VerDetalleReceta(receta.id, true)
@@ -48,7 +48,7 @@ fun AppNavHost(
                 onNavigateToExplorar = { },
                 onNavigateToGuardadas = { navController.navigate(VerGuardadas) },
                 onNavigateToPerfil = { navController.navigate(VerPerfil) },
-                onNavigateToAgregarReceta = { navController.navigate(VerAgregarEditarReceta) },
+                onNavigateToAgregarReceta = { navController.navigate(VerAgregarEditarReceta()) },
                 onRecetaClick = { receta ->
                     navController.navigate(
                         VerDetalleReceta(receta.id, false)
@@ -63,6 +63,7 @@ fun AppNavHost(
                 onNavigateToExplorar = { navController.navigate(VerExplorar) },
                 onNavigateToGuardadas = { },
                 onNavigateToPerfil = { navController.navigate(VerPerfil) },
+                onNavigateToAgregarReceta = { navController.navigate(VerAgregarEditarReceta()) },
                 onRecetaClick = { receta ->
                     navController.navigate(
                         VerDetalleReceta(receta.id, false)
@@ -84,7 +85,10 @@ fun AppNavHost(
                 usuario = usuario,
                 receta = receta,
                 esPropia = ruta.esPropia,
-                viewModel= recetasViewModel
+                viewModel = recetasViewModel,
+                onEditarClick = { recetaId ->
+                    navController.navigate(VerAgregarEditarReceta(recetaId = recetaId, esEdicion = true))
+                }
             )
         }
         composable<VerPerfil> {
@@ -94,7 +98,7 @@ fun AppNavHost(
                 onNavigateToExplorar = { navController.navigate(VerExplorar) },
                 onNavigateToGuardadas = { navController.navigate(VerGuardadas) },
                 onNavigateToPerfil = { },
-                onNavigateToAgregarReceta = { navController.navigate(VerAgregarEditarReceta) },
+                onNavigateToAgregarReceta = { navController.navigate(VerAgregarEditarReceta()) },
                 onEditarClick = { navController.navigate(VerEditarPerfil) },
                 onDesbloquearClick = { navController.navigate(VerRecetasSecretas) },
                 onCerrarSesionClick = { },
@@ -102,10 +106,15 @@ fun AppNavHost(
                 onModoOscuroChange = onModoOscuroChange
             )
         }
-        composable<VerAgregarEditarReceta> {
+        composable<VerAgregarEditarReceta> { backStackEntry ->
+            val ruta = backStackEntry.toRoute<VerAgregarEditarReceta>()
             PantallaAgregarEditarReceta(
+                usuario = usuario,
+                recetaId = ruta.recetaId,
+                esEdicion = ruta.esEdicion,
                 onVolverClick = { navController.popBackStack() },
-                onGuardarExitoso = { navController.popBackStack() }
+                onGuardarExitoso = { navController.popBackStack() },
+                onNavigateToPerfil = { navController.navigate(VerPerfil) }
             )
         }
         composable<VerEditarPerfil> {

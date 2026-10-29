@@ -5,16 +5,20 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import equipo.recetario.saborio.model.data.listaRecetas
 import equipo.recetario.saborio.view.components.IngredienteItem
 
 /**
- * ViewModel que gestiona el estado y realiza las validaciones para los componentes
- * de la pantalla PantallaAgregarEditarReceta.
+ * ViewModel que gestiona el estado y realiza las validaciones para la pantalla
+ * PantallaAgregarEditarReceta.
  */
 class AgregarEditarRecetaViewModel : ViewModel() {
 
     // --- ESTADOS DEL FORMULARIO ---
     var esEdicion by mutableStateOf(false)
+        private set
+
+    var recetaIdEdicion by mutableStateOf<String?>(null)
         private set
 
     var nombreReceta by mutableStateOf("")
@@ -29,6 +33,7 @@ class AgregarEditarRecetaViewModel : ViewModel() {
 
     val etiquetasSeleccionadas = mutableStateListOf<String>()
 
+    // Mutuamente exclusivos: sólo uno puede ser true a la vez
     var compartirReceta by mutableStateOf(true)
         private set
 
@@ -38,7 +43,7 @@ class AgregarEditarRecetaViewModel : ViewModel() {
     var enlaceFuenteUrl by mutableStateOf("")
         private set
 
-    var fotoUri by mutableStateOf<String?>(null)
+    var fotoDrawableRes by mutableStateOf<Int?>(null)
         private set
 
     // --- MENSAJES DE ERROR DE VALIDACIÓN ---
@@ -60,30 +65,37 @@ class AgregarEditarRecetaViewModel : ViewModel() {
     var errorEnlaceFuente by mutableStateOf<String?>(null)
         private set
 
-    var errorFoto by mutableStateOf<String?>(null)
-        private set
-
     var errorGeneral by mutableStateOf<String?>(null)
         private set
 
-    /** Indica si todo el formulario pasa todas las validaciones actuales. */
-    val esFormularioValido: Boolean
-        get() = errorNombre == null &&
-                errorDescripcion == null &&
-                errorIngredientes == null &&
-                errorPasos == null &&
-                errorEtiquetas == null &&
-                errorEnlaceFuente == null &&
-                nombreReceta.isNotBlank() &&
-                descripcionReceta.isNotBlank() &&
-                listaIngredientes.isNotEmpty() &&
-                listaPasos.isNotEmpty() &&
-                etiquetasSeleccionadas.isNotEmpty()
+    /** Carga la información de la receta si se entra en modo edición. */
+    fun cargarRecetaParaEditar(id: String?, modoEdicion: Boolean = true) {
+        recetaIdEdicion = id
+        esEdicion = modoEdicion
 
-    // --- MÉTODOS DE ACTUALIZACIÓN DE CAMPOS ---
-
-    fun inicializarModo(esEdicionModo: Boolean) {
-        esEdicion = esEdicionModo
+        if (id != null) {
+            val receta = listaRecetas.find { it.id == id }
+            if (receta != null) {
+                nombreReceta = receta.nombre
+                descripcionReceta = receta.descripcionBreve
+                listaIngredientes.clear()
+                listaIngredientes.addAll(receta.ingredientes.map {
+                    IngredienteItem(
+                        nombre = it.nombre,
+                        cantidad = if (it.cantidad % 1.0 == 0.0) it.cantidad.toInt().toString() else it.cantidad.toString(),
+                        unidad = it.unidadMedida
+                    )
+                })
+                listaPasos.clear()
+                listaPasos.addAll(receta.pasosPreparacion)
+                etiquetasSeleccionadas.clear()
+                etiquetasSeleccionadas.addAll(receta.etiquetas)
+                compartirReceta = receta.esPublica
+                recetaSecreta = receta.esSecreta
+                enlaceFuenteUrl = receta.enlaceWeb ?: ""
+                fotoDrawableRes = receta.fotografia
+            }
+        }
     }
 
     fun actualizarNombre(nuevoNombre: String) {
@@ -96,22 +108,37 @@ class AgregarEditarRecetaViewModel : ViewModel() {
         validarDescripcion(nuevaDescripcion)
     }
 
+    /**
+     * Alterna la opción de compartir (pública).
+     * Garantiza exclusividad mutua con 'recetaSecreta' (privada).
+     */
     fun actualizarCompartirReceta(compartir: Boolean) {
-        compartirReceta = compartir
+        if (compartir) {
+            compartirReceta = true
+            recetaSecreta = false
+        } else {
+            compartirReceta = false
+            recetaSecreta = true
+        }
     }
 
+    /**
+     * Alterna la opción de receta secreta (privada).
+     * Garantiza exclusividad mutua con 'compartirReceta' (pública).
+     */
     fun actualizarRecetaSecreta(secreta: Boolean) {
-        recetaSecreta = secreta
+        if (secreta) {
+            recetaSecreta = true
+            compartirReceta = false
+        } else {
+            recetaSecreta = false
+            compartirReceta = true
+        }
     }
 
     fun actualizarEnlaceFuente(url: String) {
         enlaceFuenteUrl = url
         validarEnlaceFuente(url)
-    }
-
-    fun actualizarFotoUri(uri: String?) {
-        fotoUri = uri
-        validarFoto(uri)
     }
 
     // --- GESTIÓN DE INGREDIENTES ---
@@ -169,10 +196,6 @@ class AgregarEditarRecetaViewModel : ViewModel() {
             errorEtiquetas = "La etiqueta no puede estar vacía"
             return false
         }
-        if (etiquetaLimpia.length < 2) {
-            errorEtiquetas = "La etiqueta debe tener al menos 2 caracteres"
-            return false
-        }
         if (!etiquetasSeleccionadas.contains(etiquetaLimpia)) {
             etiquetasSeleccionadas.add(etiquetaLimpia)
         }
@@ -180,12 +203,8 @@ class AgregarEditarRecetaViewModel : ViewModel() {
         return true
     }
 
-    // --- VALIDACIONES INDIVIDUALES DE CAMPOS ---
+    // --- VALIDACIONES INDIVIDUALES ---
 
-    /**
-     * Valida el nombre de la receta.
-     * @return true si es válido, false de lo contrario.
-     */
     fun validarNombre(nombre: String = nombreReceta): Boolean {
         return when {
             nombre.isBlank() -> {
@@ -196,10 +215,6 @@ class AgregarEditarRecetaViewModel : ViewModel() {
                 errorNombre = "El nombre debe tener al menos 3 caracteres"
                 false
             }
-            nombre.length > 100 -> {
-                errorNombre = "El nombre no puede exceder los 100 caracteres"
-                false
-            }
             else -> {
                 errorNombre = null
                 true
@@ -207,22 +222,10 @@ class AgregarEditarRecetaViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Valida la descripción de la receta.
-     * @return true si es válida, false de lo contrario.
-     */
     fun validarDescripcion(descripcion: String = descripcionReceta): Boolean {
         return when {
             descripcion.isBlank() -> {
-                errorDescripcion = "La descripción de la receta es obligatoria"
-                false
-            }
-            descripcion.trim().length < 10 -> {
-                errorDescripcion = "La descripción debe tener al menos 10 caracteres"
-                false
-            }
-            descripcion.length > 180 -> {
-                errorDescripcion = "La descripción no puede exceder los 180 caracteres"
+                errorDescripcion = "La descripción es obligatoria"
                 false
             }
             else -> {
@@ -232,9 +235,6 @@ class AgregarEditarRecetaViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Valida que la lista de ingredientes no esté vacía.
-     */
     fun validarListaIngredientes(): Boolean {
         return if (listaIngredientes.isEmpty()) {
             errorIngredientes = "Debes agregar al menos un ingrediente"
@@ -245,29 +245,12 @@ class AgregarEditarRecetaViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Valida los datos de un ingrediente individual antes de agregarlo.
-     */
     fun validarIngrediente(nombre: String, cantidad: String, unidad: String): String? {
-        if (nombre.isBlank()) {
-            return "El nombre del ingrediente no puede estar vacío"
-        }
-        if (cantidad.isBlank()) {
-            return "La cantidad no puede estar vacía"
-        }
-        val cantidadNum = cantidad.toDoubleOrNull()
-        if (cantidadNum == null || cantidadNum <= 0) {
-            return "La cantidad debe ser un número mayor a 0"
-        }
-        if (unidad.isBlank()) {
-            return "Debes seleccionar una unidad de medida"
-        }
+        if (nombre.isBlank()) return "El nombre del ingrediente no puede estar vacío"
+        if (cantidad.isBlank()) return "La cantidad no puede estar vacía"
         return null
     }
 
-    /**
-     * Valida que la lista de pasos no esté vacía.
-     */
     fun validarListaPasos(): Boolean {
         return if (listaPasos.isEmpty()) {
             errorPasos = "Debes agregar al menos un paso de preparación"
@@ -278,25 +261,14 @@ class AgregarEditarRecetaViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Valida el texto de un paso individual antes de agregarlo.
-     */
     fun validarPasoTexto(paso: String): String? {
-        if (paso.isBlank()) {
-            return "El paso de preparación no puede estar vacío"
-        }
-        if (paso.trim().length < 5) {
-            return "El paso debe describir el procedimiento (mínimo 5 caracteres)"
-        }
+        if (paso.isBlank()) return "El paso no puede estar vacío"
         return null
     }
 
-    /**
-     * Valida que al menos una etiqueta esté seleccionada.
-     */
     fun validarEtiquetas(): Boolean {
         return if (etiquetasSeleccionadas.isEmpty()) {
-            errorEtiquetas = "Debes seleccionar al menos una etiqueta o categoría"
+            errorEtiquetas = "Debes seleccionar al menos una etiqueta"
             false
         } else {
             errorEtiquetas = null
@@ -304,9 +276,6 @@ class AgregarEditarRecetaViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Valida el enlace de la fuente si fue introducido (campo opcional).
-     */
     fun validarEnlaceFuente(url: String = enlaceFuenteUrl): Boolean {
         if (url.isBlank()) {
             errorEnlaceFuente = null
@@ -314,7 +283,7 @@ class AgregarEditarRecetaViewModel : ViewModel() {
         }
         val urlRegex = Regex("^(https?://)?[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(/.*)?$")
         return if (!urlRegex.matches(url.trim())) {
-            errorEnlaceFuente = "El enlace introducido no es una URL válida (ej. https://ejemplo.com)"
+            errorEnlaceFuente = "El enlace no es una URL válida"
             false
         } else {
             errorEnlaceFuente = null
@@ -322,18 +291,6 @@ class AgregarEditarRecetaViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Valida la foto del platillo.
-     */
-    fun validarFoto(uri: String? = fotoUri): Boolean {
-        errorFoto = null
-        return true
-    }
-
-    /**
-     * Ejecuta todas las validaciones del formulario de una sola vez.
-     * @return true si todas las validaciones son exitosas, false en caso contrario.
-     */
     fun validarFormularioCompleto(): Boolean {
         val vNombre = validarNombre()
         val vDescripcion = validarDescripcion()
@@ -341,16 +298,9 @@ class AgregarEditarRecetaViewModel : ViewModel() {
         val vPasos = validarListaPasos()
         val vEtiquetas = validarEtiquetas()
         val vEnlace = validarEnlaceFuente()
-        val vFoto = validarFoto()
 
-        val esValido = vNombre && vDescripcion && vIngredientes && vPasos && vEtiquetas && vEnlace && vFoto
-
-        errorGeneral = if (!esValido) {
-            "Por favor, corrige los errores resaltados antes de guardar la receta"
-        } else {
-            null
-        }
-
+        val esValido = vNombre && vDescripcion && vIngredientes && vPasos && vEtiquetas && vEnlace
+        errorGeneral = if (!esValido) "Revisa los campos para continuar" else null
         return esValido
     }
 }

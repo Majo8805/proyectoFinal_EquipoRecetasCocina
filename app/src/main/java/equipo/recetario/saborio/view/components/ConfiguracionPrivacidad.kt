@@ -47,7 +47,10 @@ fun ConfiguracionPrivacidad(
                     color = if (compartirReceta) Orange else Color.Transparent,
                     shape = RoundedCornerShape(20.dp)
                 )
-                .clickable { onCompartirChange(!compartirReceta) },
+                .clickable {
+                    // Exclusividad mutua: seleccionar pública deselecciona privada
+                    onCompartirChange(true)
+                },
             shape = RoundedCornerShape(20.dp),
             colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
         ) {
@@ -69,28 +72,28 @@ fun ConfiguracionPrivacidad(
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.explore_icon),
-                            contentDescription = "Compartir",
+                            painter = painterResource(id = R.drawable.public_24px),
+                            contentDescription = "Pública",
                             modifier = Modifier.size(20.dp)
                         )
                     }
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(
-                            text = "Compartir receta",
+                            text = "Compartir receta (Pública)",
                             fontWeight = FontWeight.Bold,
                             color = DarkText,
                             fontSize = 16.sp
                         )
                         Text(
-                            text = "La receta será visible para otros usuarios en la sección \"Explorar recetas\". Si no se activa, la receta solo será visible en \"Mis recetas\".",
+                            text = "La receta será visible para otros usuarios en la sección \"Explorar recetas\". Si no se activa, solo tú podrás verla.",
                             style = MaterialTheme.typography.bodySmall.copy(color = Brown, lineHeight = 18.sp)
                         )
                     }
                 }
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .background(if (compartirReceta) Orange else Color.White, shape = CircleShape)
+                RadioButton(
+                    selected = compartirReceta,
+                    onClick = { onCompartirChange(true) },
+                    colors = RadioButtonDefaults.colors(selectedColor = Orange)
                 )
             }
         }
@@ -103,7 +106,10 @@ fun ConfiguracionPrivacidad(
                     color = if (recetaSecreta) Orange else Color.Transparent,
                     shape = RoundedCornerShape(20.dp)
                 )
-                .clickable { onSecretaChange(!recetaSecreta) },
+                .clickable {
+                    // Exclusividad mutua: seleccionar privada deselecciona pública
+                    onSecretaChange(true)
+                },
             shape = RoundedCornerShape(20.dp),
             colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
         ) {
@@ -125,14 +131,14 @@ fun ConfiguracionPrivacidad(
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.guardar_icon),
+                            painter = painterResource(id = R.drawable.lock_24px),
                             contentDescription = "Secreta",
                             modifier = Modifier.size(20.dp)
                         )
                     }
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(
-                            text = "Receta secreta",
+                            text = "Receta secreta (Privada)",
                             fontWeight = FontWeight.Bold,
                             color = DarkText,
                             fontSize = 16.sp
@@ -143,10 +149,10 @@ fun ConfiguracionPrivacidad(
                         )
                     }
                 }
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .background(if (recetaSecreta) Orange else Color.White, shape = CircleShape)
+                RadioButton(
+                    selected = recetaSecreta,
+                    onClick = { onSecretaChange(true) },
+                    colors = RadioButtonDefaults.colors(selectedColor = Orange)
                 )
             }
         }

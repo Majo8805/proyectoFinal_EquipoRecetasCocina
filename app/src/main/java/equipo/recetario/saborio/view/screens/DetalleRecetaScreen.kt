@@ -50,12 +50,13 @@ import equipo.recetario.saborio.view.components.EtiquetaEstrellas
 import equipo.recetario.saborio.view.components.EtiquetaTag
 import equipo.recetario.saborio.viewModel.RecetasViewModel
 
-
-
-
 @Composable
 fun detalleRecetaScreen(
-    usuario: Usuario, receta: Receta, esPropia: Boolean, viewModel: RecetasViewModel
+    usuario: Usuario,
+    receta: Receta,
+    esPropia: Boolean,
+    viewModel: RecetasViewModel = viewModel(),
+    onEditarClick: (String) -> Unit = {}
 ) {
 
     var guardada by remember {
@@ -89,12 +90,12 @@ fun detalleRecetaScreen(
                     esPropia = esPropia,
                     guardada = guardada,
                     onAccionClick = {
-
-                        if (!esPropia) {
+                        if (esPropia) {
+                            onEditarClick(receta.id)
+                        } else {
                             viewModel.cambiarEstadoGuardado(receta)
                             guardada = !guardada
                         }
-
                     }
                 )
 

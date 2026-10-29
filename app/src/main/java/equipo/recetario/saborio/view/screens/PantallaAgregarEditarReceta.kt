@@ -8,7 +8,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,8 +15,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import equipo.recetario.saborio.R
+import equipo.recetario.saborio.model.data.usuarioMuestra
+import equipo.recetario.saborio.model.domain.Usuario
 import equipo.recetario.saborio.ui.theme.*
 import equipo.recetario.saborio.view.components.AccionesGuardado
+import equipo.recetario.saborio.view.components.BarraSuperior
 import equipo.recetario.saborio.view.components.ConfiguracionPrivacidad
 import equipo.recetario.saborio.view.components.EnlaceFuente
 import equipo.recetario.saborio.view.components.EtiquetasReceta
@@ -30,13 +32,16 @@ import equipo.recetario.saborio.viewModel.AgregarEditarRecetaViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaAgregarEditarReceta(
+    usuario: Usuario = usuarioMuestra,
+    recetaId: String? = null,
     esEdicion: Boolean = false,
     onVolverClick: () -> Unit = {},
     onGuardarExitoso: () -> Unit = {},
+    onNavigateToPerfil: () -> Unit = {},
     viewModel: AgregarEditarRecetaViewModel = viewModel()
 ) {
-    LaunchedEffect(key1 = esEdicion) {
-        viewModel.inicializarModo(esEdicion)
+    LaunchedEffect(key1 = recetaId, key2 = esEdicion) {
+        viewModel.cargarRecetaParaEditar(recetaId, esEdicion)
     }
 
     // --- ESTADOS DE LA RECETA DESDE EL VIEWMODEL ---
@@ -48,35 +53,42 @@ fun PantallaAgregarEditarReceta(
     val compartirReceta = viewModel.compartirReceta
     val recetaSecreta = viewModel.recetaSecreta
     val enlaceFuenteUrl = viewModel.enlaceFuenteUrl
+    val fotoDrawableRes = viewModel.fotoDrawableRes
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = if (esEdicion) "Editar Receta" else "Agregar Receta",
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.Bold,
-                            color = DarkText,
-                            fontSize = 20.sp
-                        )
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onVolverClick) {
-                        Image(
-                            painter = painterResource(id = R.drawable.arrow_back_24px),
-                            contentDescription = "Regresar",
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White
+            Column {
+                BarraSuperior(
+                    usuario = usuario,
+                    onNavigateToPerfil = onNavigateToPerfil
                 )
-            )
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = if (esEdicion) "Editar Receta" else "Agregar Receta",
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = DarkText,
+                                fontSize = 20.sp
+                            )
+                        )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = onVolverClick) {
+                            Image(
+                                painter = painterResource(id = R.drawable.arrow_back_24px),
+                                contentDescription = "Regresar",
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = BackgrounLightBrown
+                    )
+                )
+            }
         },
-        containerColor = Color.White
+        containerColor = BackgrounLightBrown
     ) { innerPadding ->
 
         BoxWithConstraints(
@@ -135,9 +147,9 @@ fun PantallaAgregarEditarReceta(
                             viewModel.errorDescripcion?.let { MensajeErrorCampo(it) }
 
                             FotoPlatillo(
+                                fotoDrawableRes = fotoDrawableRes,
                                 onSubirFotoClick = { /* Galería / Cámara */ }
                             )
-                            viewModel.errorFoto?.let { MensajeErrorCampo(it) }
 
                             EtiquetasReceta(
                                 etiquetasSeleccionadas = etiquetasSeleccionadasState,
@@ -192,9 +204,9 @@ fun PantallaAgregarEditarReceta(
                     viewModel.errorDescripcion?.let { MensajeErrorCampo(it) }
 
                     FotoPlatillo(
+                        fotoDrawableRes = fotoDrawableRes,
                         onSubirFotoClick = { /* Galería / Cámara */ }
                     )
-                    viewModel.errorFoto?.let { MensajeErrorCampo(it) }
 
                     ListaIngredientes(
                         ingredientes = listaIngredientesState,
