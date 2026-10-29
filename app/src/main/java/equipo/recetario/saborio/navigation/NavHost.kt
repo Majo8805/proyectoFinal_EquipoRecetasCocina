@@ -15,6 +15,7 @@ import equipo.recetario.saborio.view.screens.PerfilScreen
 import equipo.recetario.saborio.view.screens.PrincipalScreen
 import equipo.recetario.saborio.view.screens.RecetasSecretasScreen
 import equipo.recetario.saborio.view.screens.detalleRecetaScreen
+import equipo.recetario.saborio.view.screens.loginScreen
 import equipo.recetario.saborio.view.screens.registroScreen
 import equipo.recetario.saborio.viewModel.RecetasViewModel
 
@@ -23,8 +24,19 @@ fun AppNavHost(
     usuario: Usuario, modoOscuro: Boolean = false, onModoOscuroChange: (Boolean) -> Unit = {}
 ) {
     val navController = rememberNavController()
-//Cuando el Login este hecho cambiar el startDestination para que use la ruta del Login
-    NavHost(navController = navController, startDestination = VerRegistro) {
+    NavHost(navController = navController, startDestination = VerLogin) {
+        composable<VerLogin> {
+            loginScreen(
+                onLoginClick = {
+                    navController.navigate(VerMisRecetas) {
+                        popUpTo<VerLogin> { inclusive = true }
+                    }
+                },
+                onNavigateRegistro = {
+                    navController.navigate(VerRegistro)
+                }
+            )
+        }
         composable<VerMisRecetas> {
             PrincipalScreen(usuario, "Inicio", onNavigateToInicio = { }, onNavigateToExplorar = {
                 navController.navigate(VerExplorar)
@@ -140,17 +152,12 @@ fun AppNavHost(
         composable<VerRegistro> {
 
             registroScreen(
-
                 onRegistroExitoso = {
-
-                    navController.navigate(
-                        VerMisRecetas
-                    ) {
-                        popUpTo<VerRegistro> {
-                            inclusive = true
-                        }
+                    navController.navigate(VerMisRecetas) {
+                        popUpTo<VerRegistro> { inclusive = true }
                     }
-                }
+                },
+                onNavigateLogin = { navController.navigate(VerLogin) }
             )
         }
 

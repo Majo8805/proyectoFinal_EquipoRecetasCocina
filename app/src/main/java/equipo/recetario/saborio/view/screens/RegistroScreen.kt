@@ -25,6 +25,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -41,9 +42,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import equipo.recetario.saborio.R
-import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
-import equipo.recetario.saborio.ui.theme.Brown
-import equipo.recetario.saborio.ui.theme.LightBrownGrey
 import equipo.recetario.saborio.ui.theme.Orange
 import equipo.recetario.saborio.view.components.CampoRegistro
 import equipo.recetario.saborio.view.components.SelectorGenero
@@ -52,7 +50,8 @@ import equipo.recetario.saborio.viewModel.UsuarioViewModel
 
 @Composable
 fun registroScreen(
-    onRegistroExitoso: () -> Unit
+    onRegistroExitoso: () -> Unit,
+    onNavigateLogin: () -> Unit
 ) {
 
     val viewModel: UsuarioViewModel = viewModel()
@@ -60,7 +59,7 @@ fun registroScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(BackgrounLightBrown)
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .systemBarsPadding()
             .padding(18.dp,1.dp,18.dp,1.dp)
@@ -77,7 +76,7 @@ fun registroScreen(
 
         selectorAutenticacion(
             esRegistro = true,
-            onNavigateLogin = {},
+            onNavigateLogin = onNavigateLogin,
             onNavigateRegistro = {}
         )
         Spacer(
@@ -139,7 +138,7 @@ fun headerRegistro() {
 
     Text(
         text = "¡Crea tu cuenta hoy mismo!",
-        color = Brown,
+        color = MaterialTheme.colorScheme.onBackground,
         fontSize = 18.sp
     )
 }
@@ -153,7 +152,7 @@ fun tarjetaRegistro(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = RoundedCornerShape(24.dp),
 
@@ -309,8 +308,10 @@ fun campoFechaNacimiento(
                 datePickerDialog.show()
             },
         colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = LightBrownGrey,
-            unfocusedContainerColor = LightBrownGrey,
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
             focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent
         ),
@@ -404,8 +405,10 @@ fun CampoPassword(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = LightBrownGrey,
-            unfocusedContainerColor = LightBrownGrey,
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
             focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent
         )
@@ -494,12 +497,7 @@ fun botonCrearCuenta(
 
     Button(
         onClick = {
-
-            val usuario = viewModel.registrarUsuario()
-
-            if (usuario != null) {
-                onRegistroExitoso()
-            }
+            onRegistroExitoso()
         },
         colors = ButtonDefaults.buttonColors(
             containerColor = Orange
@@ -519,5 +517,5 @@ fun botonCrearCuenta(
 @Preview
 @Composable
 fun previewRegistroScreen() {
-    registroScreen({})
+    registroScreen({}, {})
 }

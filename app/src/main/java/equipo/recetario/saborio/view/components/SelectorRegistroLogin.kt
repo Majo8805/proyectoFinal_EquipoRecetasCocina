@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import equipo.recetario.saborio.ui.theme.Brown
 import equipo.recetario.saborio.ui.theme.Orange
 
 @Composable
@@ -30,7 +30,7 @@ fun selectorAutenticacion(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                Color(0xFFF2F0EC),
+                MaterialTheme.colorScheme.surfaceVariant,
                 RoundedCornerShape(50.dp)
             )
             .padding(6.dp)
@@ -63,7 +63,7 @@ fun ButtonSelector(
     Box(
         modifier = modifier
             .background(
-                if (seleccionado) Color.White
+                if (seleccionado) MaterialTheme.colorScheme.surface
                 else Color.Transparent,
                 RoundedCornerShape(50.dp)
             )
@@ -78,10 +78,7 @@ fun ButtonSelector(
 
         Text(
             text = texto,
-            color = if (seleccionado)
-                Orange
-            else
-                Brown,
+            color = if (seleccionado) Orange else MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = FontWeight.SemiBold
         )
     }

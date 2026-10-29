@@ -34,3 +34,6 @@ data class VerDetalleReceta(
 
 @Serializable
 data object VerRegistro
+
+@Serializable
+data object VerLogin
