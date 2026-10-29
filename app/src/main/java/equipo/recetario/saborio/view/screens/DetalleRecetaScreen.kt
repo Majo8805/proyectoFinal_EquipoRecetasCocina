@@ -91,7 +91,7 @@ fun detalleRecetaScreen(
                     onAccionClick = {
 
                         if (!esPropia) {
-                            viewModel.alternarGuardado(receta)
+                            viewModel.cambiarEstadoGuardado(receta)
                             guardada = !guardada
                         }
 
