@@ -47,6 +47,7 @@ import equipo.recetario.saborio.ui.theme.LightBrownGrey
 import equipo.recetario.saborio.ui.theme.Orange
 import equipo.recetario.saborio.view.components.CampoRegistro
 import equipo.recetario.saborio.view.components.SelectorGenero
+import equipo.recetario.saborio.view.components.selectorAutenticacion
 import equipo.recetario.saborio.viewModel.UsuarioViewModel
 
 @Composable
@@ -74,10 +75,21 @@ fun registroScreen(
             modifier = Modifier.height(24.dp)
         )
 
+        selectorAutenticacion(
+            esRegistro = true,
+            onNavigateLogin = {},
+            onNavigateRegistro = {}
+        )
+        Spacer(
+            modifier = Modifier.height(24.dp)
+        )
+
         tarjetaRegistro(
             viewModel = viewModel,
             onRegistroExitoso = onRegistroExitoso
         )
+
+
     }
 }
 
