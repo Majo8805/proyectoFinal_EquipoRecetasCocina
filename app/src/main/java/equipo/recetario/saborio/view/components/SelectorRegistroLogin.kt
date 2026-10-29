@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -20,46 +21,59 @@ import equipo.recetario.saborio.ui.theme.Orange
 
 @Composable
 fun selectorAutenticacion(
-    esRegistro: Boolean, onNavigateLogin: () -> Unit, onNavigateRegistro: () -> Unit
+    esRegistro: Boolean,
+    onNavigateLogin: () -> Unit,
+    onNavigateRegistro: () -> Unit
 ) {
 
     Row(
-        modifier = Modifier.fillMaxWidth().background(
-                Color(0xFFF2F0EC), RoundedCornerShape(50.dp)
-            ).padding(6.dp), horizontalArrangement = Arrangement.SpaceBetween
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                Color(0xFFF2F0EC),
+                RoundedCornerShape(50.dp)
+            )
+            .padding(6.dp)
     ) {
 
         ButtonSelector(
-            texto = "Iniciar Sesión", seleccionado = !esRegistro, onClick = onNavigateLogin
+            modifier = Modifier.weight(1f),
+            texto = "Iniciar Sesión",
+            seleccionado = !esRegistro,
+            onClick = onNavigateLogin
         )
 
         ButtonSelector(
-            texto = "Registro", seleccionado = esRegistro, onClick = onNavigateRegistro
+            modifier = Modifier.weight(1f),
+            texto = "Registro",
+            seleccionado = esRegistro,
+            onClick = onNavigateRegistro
         )
     }
 }
 
 @Composable
 fun ButtonSelector(
+    modifier: Modifier = Modifier,
     texto: String,
     seleccionado: Boolean,
     onClick: () -> Unit
 ) {
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .background(
                 if (seleccionado) Color.White
                 else Color.Transparent,
                 RoundedCornerShape(50.dp)
             )
-            .padding(
-                horizontal = 20.dp,
-                vertical = 12.dp
-            )
             .clickable {
                 onClick()
             }
+            .padding(
+                vertical = 14.dp
+            ),
+        contentAlignment = Alignment.Center
     ) {
 
         Text(
@@ -76,5 +90,5 @@ fun ButtonSelector(
 @Preview
 @Composable
 fun previewSelector(){
-    selectorAutenticacion(false, {},{})
+    selectorAutenticacion(true, {},{})
 }
