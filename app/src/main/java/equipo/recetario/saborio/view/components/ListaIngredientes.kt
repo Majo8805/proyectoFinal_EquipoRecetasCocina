@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -56,7 +57,8 @@ fun ListaIngredientes(
                     Image(
                         painter = painterResource(id = R.drawable.shopping_cart_24px),
                         contentDescription = "Ingredientes",
-                        modifier = Modifier.size(22.dp)
+                        modifier = Modifier.size(22.dp),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
                     )
                 }
                 Column {
@@ -70,7 +72,9 @@ fun ListaIngredientes(
                     )
                     Text(
                         text = "Agrega proporciones exactas",
-                        style = MaterialTheme.typography.bodySmall.copy(color = LightBrown)
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     )
                 }
             }
@@ -113,7 +117,8 @@ fun ListaIngredientes(
                             Image(
                                 painter = painterResource(id = R.drawable.delete_24px),
                                 contentDescription = "Eliminar",
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(20.dp),
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant)
                             )
                         }
                     }
@@ -231,9 +236,14 @@ fun ListaIngredientes(
                         Image(
                             painter = painterResource(id = R.drawable.plus_icon),
                             contentDescription = null,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(16.dp),
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
                         )
-                        Text("+ Añadir ingrediente", color = Color.White, fontWeight = FontWeight.Bold)
+                        Text(
+                            "+ Añadir ingrediente",
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             }

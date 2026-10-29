@@ -51,6 +51,7 @@ fun PantallaAgregarEditarReceta(
     val fotoDrawableRes = viewModel.fotoDrawableRes
 
     Scaffold(
+        modifier = Modifier.systemBarsPadding(),
         topBar = {
             BarraSuperiorAnadirReceta(
                 titulo = if (esEdicion) "Editar Receta" else "Agregar Receta",

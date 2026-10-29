@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -69,7 +70,8 @@ fun FotoPlatillo(
                         Image(
                             painter = painterResource(id = R.drawable.add_photo_alternate_24px),
                             contentDescription = "Foto",
-                            modifier = Modifier.size(32.dp)
+                            modifier = Modifier.size(32.dp),
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                         )
                     }
                 }
@@ -106,11 +108,12 @@ fun FotoPlatillo(
                         Image(
                             painter = painterResource(id = R.drawable.add_photo_alternate_24px),
                             contentDescription = null,
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(18.dp),
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
                         )
                         Text(
                             text = if (fotoDrawableRes != null) "Cambiar foto" else "Subir o tomar foto",
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             fontWeight = FontWeight.Bold,
                             fontSize = 15.sp
                         )

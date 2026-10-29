@@ -146,7 +146,8 @@ fun EtiquetaEstrellas(calificacion: Double, modifier: Modifier) {
             Image(painter = painterResource(R.drawable.star_icon),
                 contentDescription = "stars_icon",
                 modifier = Modifier
-                    .size(16.dp)
+                    .size(16.dp),
+                colorFilter = ColorFilter.tint(Color(0xFFFFC107))
             )
             Spacer(modifier = Modifier.width(4.dp))
 

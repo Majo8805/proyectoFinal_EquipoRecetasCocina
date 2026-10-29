@@ -169,7 +169,8 @@ fun seccionCalificacion(
             Text(
                 text = receta.calificacion.toString(),
                 fontWeight = FontWeight.Bold,
-                fontSize = 28.sp
+                fontSize = 28.sp,
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             Spacer(
@@ -253,7 +254,9 @@ fun numeroPaso(
     ) {
 
         Text(
-            text = numeroPaso.toString(), color = Color.White, fontWeight = FontWeight.Bold
+            text = numeroPaso.toString(),
+            color = MaterialTheme.colorScheme.onPrimary,
+            fontWeight = FontWeight.Bold
         )
     }
 }
@@ -276,7 +279,9 @@ fun pasoPreparacionItem(
         Column {
 
             Text(
-                text = "Paso $numeroPaso", fontWeight = FontWeight.Bold
+                text = "Paso $numeroPaso",
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(
@@ -284,7 +289,8 @@ fun pasoPreparacionItem(
             )
 
             Text(
-                text = descripcion
+                text = descripcion,
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
     }
@@ -296,7 +302,10 @@ fun seccionPreparacion(
 ) {
 
     Text(
-        text = "Preparación", fontSize = 22.sp, fontWeight = FontWeight.Bold
+        text = "Preparación",
+        fontSize = 22.sp,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onBackground
     )
 
     Spacer(
@@ -349,7 +358,8 @@ fun ingredienteItem(
         )
 
         Text(
-            text = "${ingrediente.cantidad} ${ingrediente.unidadMedida} ${ingrediente.nombre}"
+            text = "${ingrediente.cantidad} ${ingrediente.unidadMedida} ${ingrediente.nombre}",
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }
@@ -360,7 +370,10 @@ fun seccionIngredientes(
 ) {
 
     Text(
-        text = "Ingredientes", fontSize = 22.sp, fontWeight = FontWeight.Bold
+        text = "Ingredientes",
+        fontSize = 22.sp,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onBackground
     )
 
     Spacer(
@@ -381,7 +394,11 @@ fun tituloReceta(
 ) {
 
     Text(
-        text = receta.nombre, fontSize = 32.sp, fontWeight = FontWeight.Bold, lineHeight = 35.sp
+        text = receta.nombre,
+        fontSize = 32.sp,
+        fontWeight = FontWeight.Bold,
+        lineHeight = 35.sp,
+        color = MaterialTheme.colorScheme.onBackground
     )
 
     Spacer(
@@ -427,7 +444,9 @@ fun encabezadoAutor(
         )
 
         Text(
-            text = receta.nombreAutor ?: "Autor", fontWeight = FontWeight.Medium
+            text = receta.nombreAutor ?: "Autor",
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onSurface
         )
 
         Spacer(
@@ -457,7 +476,7 @@ fun botonAccionReceta(
 
     val colorTexto = when {
         esPropia -> MaterialTheme.colorScheme.onPrimary
-        guardada -> Orange
+        guardada -> MaterialTheme.colorScheme.onSurface
         else -> MaterialTheme.colorScheme.onPrimary
     }
 
@@ -481,7 +500,7 @@ fun botonAccionReceta(
     ) {
 
         Text(
-            text = if (esPropia) "Editar" else "Guardar",
+            text = texto,
             color = colorTexto,
             fontWeight = FontWeight.Bold
         )
@@ -546,7 +565,8 @@ fun seccionCalificacionPropia(
             Text(
                 text = receta.calificacion.toString(),
                 fontSize = 28.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             Spacer(

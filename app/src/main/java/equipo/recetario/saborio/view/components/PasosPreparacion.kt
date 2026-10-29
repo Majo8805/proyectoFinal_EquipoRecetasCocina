@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -53,7 +54,8 @@ fun PasosPreparacion(
                         Image(
                             painter = painterResource(id = R.drawable.local_dining_24px),
                             contentDescription = "Pasos",
-                            modifier = Modifier.size(22.dp)
+                            modifier = Modifier.size(22.dp),
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
                         )
                     }
                     Column {
@@ -67,7 +69,9 @@ fun PasosPreparacion(
                         )
                         Text(
                             text = "Lista de pasos",
-                            style = MaterialTheme.typography.bodySmall.copy(color = LightBrown)
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         )
                     }
                 }
@@ -131,7 +135,8 @@ fun PasosPreparacion(
                                 Image(
                                     painter = painterResource(id = R.drawable.delete_24px),
                                     contentDescription = "Borrar paso",
-                                    modifier = Modifier.size(18.dp)
+                                    modifier = Modifier.size(18.dp),
+                                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant)
                                 )
                             }
                         }
@@ -177,7 +182,11 @@ fun PasosPreparacion(
                 shape = RoundedCornerShape(50),
                 colors = ButtonDefaults.buttonColors(containerColor = Orange)
             ) {
-                Text("+ Añadir paso de preparación", color = Color.White, fontWeight = FontWeight.Bold)
+                Text(
+                    "+ Añadir paso de preparación",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }

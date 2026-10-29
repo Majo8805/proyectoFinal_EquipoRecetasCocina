@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -54,7 +55,8 @@ fun EtiquetasReceta(
                     Image(
                         painter = painterResource(id = R.drawable.sell_24px),
                         contentDescription = "Etiquetas",
-                        modifier = Modifier.size(22.dp)
+                        modifier = Modifier.size(22.dp),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                     )
                 }
                 Column {
@@ -68,7 +70,9 @@ fun EtiquetasReceta(
                     )
                     Text(
                         text = "Ayuda a otros a descubrirla por ocasión o dieta",
-                        style = MaterialTheme.typography.bodySmall.copy(color = LightBrown)
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     )
                 }
             }
@@ -138,7 +142,11 @@ fun EtiquetasReceta(
                     colors = ButtonDefaults.buttonColors(containerColor = Orange),
                     contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp)
                 ) {
-                    Text("Agregar", color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(
+                        "Agregar",
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
         }

@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -74,7 +75,8 @@ fun ConfiguracionPrivacidad(
                         Image(
                             painter = painterResource(id = R.drawable.public_24px),
                             contentDescription = "Pública",
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                         )
                     }
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -133,7 +135,8 @@ fun ConfiguracionPrivacidad(
                         Image(
                             painter = painterResource(id = R.drawable.lock_24px),
                             contentDescription = "Secreta",
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                         )
                     }
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
