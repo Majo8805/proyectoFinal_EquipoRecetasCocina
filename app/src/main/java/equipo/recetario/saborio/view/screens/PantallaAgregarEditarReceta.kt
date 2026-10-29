@@ -58,10 +58,12 @@ fun PantallaAgregarEditarReceta(
     Scaffold(
         topBar = {
             Column {
+                // Se conserva la BarraSuperior de la app
                 BarraSuperior(
                     usuario = usuario,
                     onNavigateToPerfil = onNavigateToPerfil
                 )
+                // Barra de navegación secundaria solo con botón de regreso y título de la sección
                 TopAppBar(
                     title = {
                         Text(
@@ -98,14 +100,14 @@ fun PantallaAgregarEditarReceta(
                 .imePadding()
         ) {
             val isTabletOrWide = maxWidth >= 600.dp
-            val paddingHorizontal = if (isTabletOrWide) 32.dp else 16.dp
-            val spacingBetween = if (isTabletOrWide) 24.dp else 16.dp
+            val paddingHorizontal = if (isTabletOrWide) 24.dp else 16.dp
+            val spacingBetween = if (isTabletOrWide) 20.dp else 16.dp
 
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = paddingHorizontal, vertical = 12.dp),
+                    .padding(horizontal = paddingHorizontal, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(spacingBetween),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -255,7 +257,7 @@ fun PantallaAgregarEditarReceta(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(24.dp))
             }
         }
     }
