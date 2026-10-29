@@ -62,7 +62,7 @@ fun registroScreen(
             .background(BackgrounLightBrown)
             .verticalScroll(rememberScrollState())
             .systemBarsPadding()
-            //.padding(13.dp,100.dp,13.dp,1.dp)
+            .padding(18.dp,1.dp,18.dp,1.dp)
             //majo dijo que no se ocupa...
             ,
         horizontalAlignment = Alignment.CenterHorizontally
