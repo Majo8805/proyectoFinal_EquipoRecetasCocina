@@ -1,6 +1,5 @@
 package equipo.recetario.saborio.view.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -8,18 +7,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import equipo.recetario.saborio.R
 import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Usuario
 import equipo.recetario.saborio.ui.theme.*
 import equipo.recetario.saborio.view.components.AccionesGuardado
-import equipo.recetario.saborio.view.components.BarraSuperior
+import equipo.recetario.saborio.view.components.BarraSuperiorAnadirReceta
 import equipo.recetario.saborio.view.components.ConfiguracionPrivacidad
 import equipo.recetario.saborio.view.components.EnlaceFuente
 import equipo.recetario.saborio.view.components.EtiquetasReceta
@@ -29,7 +25,6 @@ import equipo.recetario.saborio.view.components.ListaIngredientes
 import equipo.recetario.saborio.view.components.PasosPreparacion
 import equipo.recetario.saborio.viewModel.AgregarEditarRecetaViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaAgregarEditarReceta(
     usuario: Usuario = usuarioMuestra,
@@ -44,7 +39,7 @@ fun PantallaAgregarEditarReceta(
         viewModel.cargarRecetaParaEditar(recetaId, esEdicion)
     }
 
-    // --- ESTADOS DE LA RECETA DESDE EL VIEWMODEL ---
+
     val nombreReceta = viewModel.nombreReceta
     val descripcionReceta = viewModel.descripcionReceta
     val listaIngredientesState = viewModel.listaIngredientes
@@ -57,38 +52,12 @@ fun PantallaAgregarEditarReceta(
 
     Scaffold(
         topBar = {
-            Column {
-                // Se conserva la BarraSuperior de la app
-                BarraSuperior(
-                    usuario = usuario,
-                    onNavigateToPerfil = onNavigateToPerfil
-                )
-                // Barra de navegación secundaria solo con botón de regreso y título de la sección
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = if (esEdicion) "Editar Receta" else "Agregar Receta",
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                fontWeight = FontWeight.Bold,
-                                color = DarkText,
-                                fontSize = 20.sp
-                            )
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = onVolverClick) {
-                            Image(
-                                painter = painterResource(id = R.drawable.arrow_back_24px),
-                                contentDescription = "Regresar",
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = BackgrounLightBrown
-                    )
-                )
-            }
+            BarraSuperiorAnadirReceta(
+                titulo = if (esEdicion) "Editar Receta" else "Agregar Receta",
+                usuario = usuario,
+                onVolverClick = onVolverClick,
+                onNavigateToPerfil = onNavigateToPerfil
+            )
         },
         containerColor = BackgrounLightBrown
     ) { innerPadding ->
@@ -111,7 +80,7 @@ fun PantallaAgregarEditarReceta(
                 verticalArrangement = Arrangement.spacedBy(spacingBetween),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Mensaje de error general si la validación falla
+
                 viewModel.errorGeneral?.let { errorMsg ->
                     Card(
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
@@ -128,13 +97,11 @@ fun PantallaAgregarEditarReceta(
                 }
 
                 if (isTabletOrWide) {
-                    // --- DISEÑO RESPONSIVO (2 COLUMNAS PARA TABLETS / PANTALLAS ANCHAS) ---
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(20.dp),
                         verticalAlignment = Alignment.Top
                     ) {
-                        // Columna Izquierda
                         Column(
                             modifier = Modifier.weight(1f),
                             verticalArrangement = Arrangement.spacedBy(spacingBetween)
@@ -150,7 +117,7 @@ fun PantallaAgregarEditarReceta(
 
                             FotoPlatillo(
                                 fotoDrawableRes = fotoDrawableRes,
-                                onSubirFotoClick = { /* Galería / Cámara */ }
+                                onSubirFotoClick = {  }
                             )
 
                             EtiquetasReceta(
@@ -161,7 +128,6 @@ fun PantallaAgregarEditarReceta(
                             viewModel.errorEtiquetas?.let { MensajeErrorCampo(it) }
                         }
 
-                        // Columna Derecha
                         Column(
                             modifier = Modifier.weight(1f),
                             verticalArrangement = Arrangement.spacedBy(spacingBetween)
@@ -195,7 +161,6 @@ fun PantallaAgregarEditarReceta(
                         }
                     }
                 } else {
-                    // --- DISEÑO MÓVIL (1 COLUMNA) ---
                     InformacionBasicaReceta(
                         nombre = nombreReceta,
                         onNombreChange = { viewModel.actualizarNombre(it) },
@@ -245,7 +210,6 @@ fun PantallaAgregarEditarReceta(
                     viewModel.errorEnlaceFuente?.let { MensajeErrorCampo(it) }
                 }
 
-                // Botones de acción principales
                 AccionesGuardado(
                     onGuardarClick = {
                         if (viewModel.validarFormularioCompleto()) {
