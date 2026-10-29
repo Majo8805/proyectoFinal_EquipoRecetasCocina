@@ -28,3 +28,7 @@ data class VerDetalleReceta(
     val recetaId: String,
     val esPropia: Boolean
 )
+
+
+@Serializable
+data object VerRegistro

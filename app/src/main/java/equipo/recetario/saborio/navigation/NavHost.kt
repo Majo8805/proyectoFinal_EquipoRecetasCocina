@@ -1,6 +1,7 @@
 package equipo.recetario.saborio.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -14,6 +15,8 @@ import equipo.recetario.saborio.view.screens.PerfilScreen
 import equipo.recetario.saborio.view.screens.PrincipalScreen
 import equipo.recetario.saborio.view.screens.RecetasSecretasScreen
 import equipo.recetario.saborio.view.screens.detalleRecetaScreen
+import equipo.recetario.saborio.view.screens.registroScreen
+import equipo.recetario.saborio.viewModel.RecetasViewModel
 
 @Composable
 fun AppNavHost(
@@ -21,7 +24,7 @@ fun AppNavHost(
 ) {
     val navController = rememberNavController()
 //Cuando el Login este hecho cambiar el startDestination para que use la ruta del Login
-    NavHost(navController = navController, startDestination = VerMisRecetas) {
+    NavHost(navController = navController, startDestination = VerRegistro) {
         composable<VerMisRecetas> {
             PrincipalScreen(usuario, "Inicio", onNavigateToInicio = { }, onNavigateToExplorar = {
                 navController.navigate(VerExplorar)
@@ -60,12 +63,12 @@ fun AppNavHost(
                 onNavigateToExplorar = { navController.navigate(VerExplorar) },
                 onNavigateToGuardadas = { },
                 onNavigateToPerfil = { navController.navigate(VerPerfil) },
-                onNavigateToAgregarReceta = { navController.navigate(VerAgregarEditarReceta) },
                 onRecetaClick = { receta ->
                     navController.navigate(
                         VerDetalleReceta(receta.id, false)
                     )
-                })
+                }
+            )
         }
         composable<VerDetalleReceta> { backStackEntry ->
 
@@ -75,8 +78,13 @@ fun AppNavHost(
                 it.id == ruta.recetaId
             }
 
+            val recetasViewModel: RecetasViewModel = viewModel()
+
             detalleRecetaScreen(
-                usuario = usuario, receta = receta, esPropia = ruta.esPropia
+                usuario = usuario,
+                receta = receta,
+                esPropia = ruta.esPropia,
+                viewModel= recetasViewModel
             )
         }
         composable<VerPerfil> {
@@ -119,5 +127,23 @@ fun AppNavHost(
                 },
                 onVolverClick = { navController.popBackStack() })
         }
+
+        composable<VerRegistro> {
+
+            registroScreen(
+
+                onRegistroExitoso = {
+
+                    navController.navigate(
+                        VerMisRecetas
+                    ) {
+                        popUpTo<VerRegistro> {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+
     }
 }

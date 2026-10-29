@@ -14,6 +14,7 @@ import equipo.recetario.saborio.model.domain.Receta
 import java.text.Normalizer
 import java.text.Normalizer.normalize
 
+class RecetasViewModel : ViewModel() {
 /**
  * Mantiene el estado de las recetas que se muestran y gestiona su búsqueda,
  * ordenamiento, filtrado por categoría y guardado.

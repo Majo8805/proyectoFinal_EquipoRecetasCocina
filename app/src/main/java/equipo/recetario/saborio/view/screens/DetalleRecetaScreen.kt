@@ -2,6 +2,7 @@ package equipo.recetario.saborio.view.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,14 +18,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,27 +35,38 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import equipo.recetario.saborio.model.data.RecetaPrueba
 import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Ingrediente
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
+import equipo.recetario.saborio.ui.theme.BackgrounLightBrown
+import equipo.recetario.saborio.ui.theme.Brown
+import equipo.recetario.saborio.ui.theme.LightBrownGrey
 import equipo.recetario.saborio.ui.theme.Orange
 import equipo.recetario.saborio.view.components.BarraSuperiorDetalle
 import equipo.recetario.saborio.view.components.EtiquetaEstrellas
 import equipo.recetario.saborio.view.components.EtiquetaTag
+import equipo.recetario.saborio.viewModel.RecetasViewModel
+
+
 
 
 @Composable
 fun detalleRecetaScreen(
-    usuario: Usuario, receta: Receta, esPropia: Boolean
+    usuario: Usuario, receta: Receta, esPropia: Boolean, viewModel: RecetasViewModel
 ) {
 
-    Surface(
-        color = MaterialTheme.colorScheme.background,
-        contentColor = MaterialTheme.colorScheme.onBackground
+    var guardada by remember {
+        mutableStateOf(receta.esGuardada)
+    }
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(BackgrounLightBrown)
     ) {
-        LazyColumn {
 
         item {
             BarraSuperiorDetalle(
@@ -70,7 +84,18 @@ fun detalleRecetaScreen(
             ) {
 
                 encabezadoAutor(
-                    usuario, receta, esPropia
+                    usuario = usuario,
+                    receta = receta,
+                    esPropia = esPropia,
+                    guardada = guardada,
+                    onAccionClick = {
+
+                        if (!esPropia) {
+                            viewModel.alternarGuardado(receta)
+                            guardada = !guardada
+                        }
+
+                    }
                 )
 
                 Spacer(
@@ -118,7 +143,6 @@ fun detalleRecetaScreen(
         }
     }
 }
-}
 
 @Composable
 fun seccionCalificacion(
@@ -133,7 +157,7 @@ fun seccionCalificacion(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)
+                LightBrownGrey, RoundedCornerShape(12.dp)
             )
             .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -166,7 +190,7 @@ fun seccionCalificacion(
             modifier = Modifier
                 .fillMaxWidth(0.90f)
                 .background(
-                    MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp)
+                    Color.White, RoundedCornerShape(8.dp)
                 )
                 .padding(16.dp), contentAlignment = Alignment.Center
         ) {
@@ -175,7 +199,7 @@ fun seccionCalificacion(
                 text = "Toca las estrellas para calificar esta receta",
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = Brown
             )
         }
 
@@ -192,7 +216,7 @@ fun seccionCalificacion(
                 Text(
                     text = if (index < estrellas.intValue) "★" else "☆",
                     fontSize = 32.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = Brown
                 )
             }
         }
@@ -230,9 +254,7 @@ fun numeroPaso(
     ) {
 
         Text(
-            text = numeroPaso.toString(),
-            color = MaterialTheme.colorScheme.onPrimary,
-            fontWeight = FontWeight.Bold
+            text = numeroPaso.toString(), color = Color.White, fontWeight = FontWeight.Bold
         )
     }
 }
@@ -316,7 +338,7 @@ fun ingredienteItem(
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .background(
-                MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)
+                LightBrownGrey, RoundedCornerShape(12.dp)
             )
             .padding(12.dp), verticalAlignment = Alignment.CenterVertically
     ) {
@@ -368,8 +390,7 @@ fun tituloReceta(
     )
 
     Text(
-        text = receta.descripcionBreve,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
+        text = receta.descripcionBreve, color = Brown
     )
 }
 
@@ -389,7 +410,11 @@ fun fotoAutor(
 
 @Composable
 fun encabezadoAutor(
-    usuario: Usuario, receta: Receta, esPropia: Boolean
+    usuario: Usuario,
+    receta: Receta,
+    esPropia: Boolean,
+    guardada: Boolean,
+    onAccionClick: () -> Unit
 ) {
 
     Row(
@@ -411,29 +436,54 @@ fun encabezadoAutor(
         )
 
         botonAccionReceta(
-            esPropia = esPropia
+            esPropia = esPropia,
+            guardada = guardada,
+            onClick = onAccionClick
         )
     }
 }
 
 @Composable
 fun botonAccionReceta(
-    esPropia: Boolean
+    guardada: Boolean,
+    esPropia: Boolean,
+    onClick: () -> Unit
 ) {
+
+    val colorFondo = when {
+        esPropia -> Orange
+        guardada -> Color.White
+        else -> Orange
+    }
+
+    val colorTexto = when {
+        esPropia -> Color.White
+        guardada -> Orange
+        else -> Color.White
+    }
+
+    val texto = when {
+        esPropia -> "Editar"
+        guardada -> "Guardado"
+        else -> "Guardar"
+    }
 
     Box(
         modifier = Modifier
+            .clickable { onClick() }
             .background(
-                Orange, RoundedCornerShape(50.dp)
+                colorFondo,
+                RoundedCornerShape(50.dp)
             )
             .padding(
-                horizontal = 16.dp, vertical = 8.dp
+                horizontal = 16.dp,
+                vertical = 8.dp
             )
     ) {
 
         Text(
             text = if (esPropia) "Editar" else "Guardar",
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = Color.White,
             fontWeight = FontWeight.Bold
         )
     }
@@ -485,7 +535,7 @@ fun seccionCalificacionPropia(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)
+                LightBrownGrey, RoundedCornerShape(12.dp)
             )
             .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -517,7 +567,7 @@ fun seccionCalificacionPropia(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp)
+                    Color.White, RoundedCornerShape(8.dp)
                 )
                 .padding(16.dp), contentAlignment = Alignment.Center
         ) {
@@ -525,7 +575,7 @@ fun seccionCalificacionPropia(
             Text(
                 text = "Tu receta ha sido calificada por ${receta.cantidadCalificaciones} personas",
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = Brown
             )
         }
     }
@@ -536,6 +586,6 @@ fun seccionCalificacionPropia(
 @Composable
 fun preview() {
     detalleRecetaScreen(
-        usuarioMuestra, RecetaPrueba, true
+        usuarioMuestra, RecetaPrueba, true, viewModel()
     )
 }
