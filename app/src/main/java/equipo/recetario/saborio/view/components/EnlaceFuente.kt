@@ -24,7 +24,7 @@ fun EnlaceFuente(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Column(
             modifier = Modifier.padding(20.dp),
@@ -42,7 +42,7 @@ fun EnlaceFuente(
                 Text(
                     text = "Enlace a la fuente original (opcional)",
                     fontWeight = FontWeight.Bold,
-                    color = DarkText,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 16.sp
                 )
             }
@@ -53,19 +53,19 @@ fun EnlaceFuente(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(50),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White,
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                     focusedBorderColor = Color.Transparent,
                     unfocusedBorderColor = Color.Transparent,
-                    focusedTextColor = DarkText,
-                    unfocusedTextColor = DarkText
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                 ),
                 singleLine = true
             )
 
             Text(
                 text = "Si te inspiraste en un blog o canal de cocina, da crédito al autor.",
-                style = MaterialTheme.typography.bodySmall.copy(color = Brown)
+                style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
             )
         }
     }
@@ -112,7 +112,7 @@ fun SeccionAccionesGuardado(
         Text(
             text = "Descartar cambios",
             style = MaterialTheme.typography.bodyMedium.copy(
-                color = Brown,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Bold,
                 fontSize = 15.sp
             ),

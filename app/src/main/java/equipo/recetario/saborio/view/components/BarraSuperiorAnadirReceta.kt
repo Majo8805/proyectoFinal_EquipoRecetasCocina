@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.sp
 import equipo.recetario.saborio.R
 import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Usuario
-import equipo.recetario.saborio.ui.theme.DarkText
 
 @Composable
 fun BarraSuperiorAnadirReceta(
@@ -54,7 +53,7 @@ fun BarraSuperiorAnadirReceta(
             text = titulo,
             style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold,
-                color = DarkText,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 20.sp
             )
         )

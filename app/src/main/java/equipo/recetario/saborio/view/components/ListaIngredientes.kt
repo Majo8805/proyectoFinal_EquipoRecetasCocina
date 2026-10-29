@@ -36,7 +36,7 @@ fun ListaIngredientes(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Column(
             modifier = Modifier.padding(20.dp),
@@ -64,7 +64,7 @@ fun ListaIngredientes(
                         text = "Ingredientes",
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold,
-                            color = DarkText,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 18.sp
                         )
                     )
@@ -80,7 +80,7 @@ fun ListaIngredientes(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(50),
-                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     Row(
                         modifier = Modifier
@@ -98,7 +98,7 @@ fun ListaIngredientes(
                                 Text(
                                     text = item.nombre,
                                     fontWeight = FontWeight.Bold,
-                                    color = DarkText,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontSize = 15.sp
                                 )
                                 Text(
@@ -125,16 +125,16 @@ fun ListaIngredientes(
                 OutlinedTextField(
                     value = ingredienteInput,
                     onValueChange = { ingredienteInput = it },
-                    placeholder = { Text("Ingrediente (ej. Salsa de tomate)", color = Color.Gray) },
+                    placeholder = { Text("Ingrediente (ej. Salsa de tomate)", color = MaterialTheme.colorScheme.onSurfaceVariant) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(50),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White,
+                        focusedContainerColor = MaterialTheme.colorScheme.surface,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent,
-                        focusedTextColor = DarkText,
-                        unfocusedTextColor = DarkText
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                     ),
                     singleLine = true
                 )
@@ -146,16 +146,16 @@ fun ListaIngredientes(
                     OutlinedTextField(
                         value = cantidadInput,
                         onValueChange = { cantidadInput = it },
-                        placeholder = { Text("Cantidad (ej. 2)", color = Color.Gray) },
+                        placeholder = { Text("Cantidad (ej. 2)", color = MaterialTheme.colorScheme.onSurfaceVariant) },
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(50),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White,
+                            focusedContainerColor = MaterialTheme.colorScheme.surface,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                             focusedBorderColor = Color.Transparent,
                             unfocusedBorderColor = Color.Transparent,
-                            focusedTextColor = DarkText,
-                            unfocusedTextColor = DarkText
+                            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                         ),
                         singleLine = true
                     )
@@ -170,19 +170,19 @@ fun ListaIngredientes(
                             value = unidadSeleccionada,
                             onValueChange = {},
                             readOnly = true,
-                            placeholder = { Text("Unidad de medida", color = Color.Gray, fontSize = 13.sp) },
+                            placeholder = { Text("Unidad de medida", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 13.sp) },
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedComboBox) },
                             modifier = Modifier
                                 .menuAnchor()
                                 .fillMaxWidth(),
                             shape = RoundedCornerShape(50),
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedContainerColor = Color.White,
-                                unfocusedContainerColor = Color.White,
+                                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                                 focusedBorderColor = Color.Transparent,
                                 unfocusedBorderColor = Color.Transparent,
-                                focusedTextColor = DarkText,
-                                unfocusedTextColor = DarkText
+                                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                                unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                             ),
                             singleLine = true
                         )
@@ -190,11 +190,11 @@ fun ListaIngredientes(
                         ExposedDropdownMenu(
                             expanded = expandedComboBox,
                             onDismissRequest = { expandedComboBox = false },
-                            modifier = Modifier.background(Color.White)
+                            modifier = Modifier.background(MaterialTheme.colorScheme.surface)
                         ) {
                             opcionesUnidades.forEach { opcion ->
                                 DropdownMenuItem(
-                                    text = { Text(opcion, color = DarkText) },
+                                    text = { Text(opcion, color = MaterialTheme.colorScheme.onSurface) },
                                     onClick = {
                                         unidadSeleccionada = opcion
                                         expandedComboBox = false

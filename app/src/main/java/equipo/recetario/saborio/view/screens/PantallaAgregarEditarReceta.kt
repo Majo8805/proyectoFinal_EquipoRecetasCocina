@@ -59,7 +59,7 @@ fun PantallaAgregarEditarReceta(
                 onNavigateToPerfil = onNavigateToPerfil
             )
         },
-        containerColor = BackgrounLightBrown
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
 
         BoxWithConstraints(

@@ -54,7 +54,6 @@ import equipo.recetario.saborio.model.data.getRecetasSecretas
 import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
-import equipo.recetario.saborio.ui.theme.Brown
 import equipo.recetario.saborio.ui.theme.Orange
 import equipo.recetario.saborio.ui.theme.SaborioTheme
 import equipo.recetario.saborio.ui.theme.WhiteText
@@ -242,7 +241,7 @@ fun BotonEditarPerfil(onClick: () -> Unit) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = ButtonDefaults.filledTonalButtonColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = Brown
+            contentColor = MaterialTheme.colorScheme.onSurface
         )
     ) {
         Icon(

@@ -28,7 +28,7 @@ fun PasosPreparacion(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Column(
             modifier = Modifier.padding(20.dp),
@@ -61,7 +61,7 @@ fun PasosPreparacion(
                             text = "Pasos de preparación",
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontWeight = FontWeight.Bold,
-                                color = DarkText,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontSize = 18.sp
                             )
                         )
@@ -74,13 +74,13 @@ fun PasosPreparacion(
 
                 Surface(
                     shape = RoundedCornerShape(50),
-                    color = Color(0xFFEBE3DA)
+                    color = MaterialTheme.colorScheme.surface
                 ) {
                     Text(
                         text = "${pasos.size} pasos",
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                         style = MaterialTheme.typography.labelMedium.copy(
-                            color = DarkText,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
                         )
                     )
@@ -92,7 +92,7 @@ fun PasosPreparacion(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp),
@@ -110,7 +110,7 @@ fun PasosPreparacion(
                                 Box(
                                     modifier = Modifier
                                         .size(28.dp)
-                                        .background(Color(0xFFFFE0D6), shape = CircleShape),
+                                        .background(MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
@@ -123,7 +123,7 @@ fun PasosPreparacion(
                                 Text(
                                     text = "Paso ${index + 1}",
                                     fontWeight = FontWeight.Bold,
-                                    color = DarkText,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontSize = 16.sp
                                 )
                             }
@@ -139,7 +139,7 @@ fun PasosPreparacion(
                         Text(
                             text = paso,
                             style = MaterialTheme.typography.bodyMedium.copy(
-                                color = DarkText,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 lineHeight = 20.sp
                             )
                         )
@@ -151,18 +151,18 @@ fun PasosPreparacion(
             OutlinedTextField(
                 value = nuevoPasoText,
                 onValueChange = { nuevoPasoText = it },
-                placeholder = { Text("Escribe el siguiente paso", color = Color.Gray) },
+                placeholder = { Text("Escribe el siguiente paso", color = MaterialTheme.colorScheme.onSurfaceVariant) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(min = 90.dp),
                 shape = RoundedCornerShape(20.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White,
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                     focusedBorderColor = Color.Transparent,
                     unfocusedBorderColor = Color.Transparent,
-                    focusedTextColor = DarkText,
-                    unfocusedTextColor = DarkText
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                 )
             )
 

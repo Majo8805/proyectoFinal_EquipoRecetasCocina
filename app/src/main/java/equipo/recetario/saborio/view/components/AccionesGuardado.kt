@@ -58,7 +58,7 @@ fun AccionesGuardado(
         Text(
             text = "Descartar cambios",
             style = MaterialTheme.typography.bodyMedium.copy(
-                color = Brown,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Bold,
                 fontSize = 15.sp
             ),

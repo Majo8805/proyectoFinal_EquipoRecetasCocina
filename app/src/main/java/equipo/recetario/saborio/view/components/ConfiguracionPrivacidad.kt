@@ -34,7 +34,7 @@ fun ConfiguracionPrivacidad(
             text = "CONFIGURACIÓN DE PRIVACIDAD",
             style = MaterialTheme.typography.labelMedium.copy(
                 fontWeight = FontWeight.Bold,
-                color = Brown,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 letterSpacing = 1.sp
             )
         )
@@ -52,7 +52,7 @@ fun ConfiguracionPrivacidad(
                     onCompartirChange(true)
                 },
             shape = RoundedCornerShape(20.dp),
-            colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
         ) {
             Row(
                 modifier = Modifier
@@ -68,7 +68,7 @@ fun ConfiguracionPrivacidad(
                     Box(
                         modifier = Modifier
                             .size(40.dp)
-                            .background(Color(0xFFFFE0D6), shape = CircleShape),
+                            .background(MaterialTheme.colorScheme.surface, shape = CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
@@ -81,12 +81,12 @@ fun ConfiguracionPrivacidad(
                         Text(
                             text = "Compartir receta (Pública)",
                             fontWeight = FontWeight.Bold,
-                            color = DarkText,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 16.sp
                         )
                         Text(
                             text = "La receta será visible para otros usuarios en la sección \"Explorar recetas\". Si no se activa, solo tú podrás verla.",
-                            style = MaterialTheme.typography.bodySmall.copy(color = Brown, lineHeight = 18.sp)
+                            style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant, lineHeight = 18.sp)
                         )
                     }
                 }
@@ -111,7 +111,7 @@ fun ConfiguracionPrivacidad(
                     onSecretaChange(true)
                 },
             shape = RoundedCornerShape(20.dp),
-            colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
         ) {
             Row(
                 modifier = Modifier
@@ -127,7 +127,7 @@ fun ConfiguracionPrivacidad(
                     Box(
                         modifier = Modifier
                             .size(40.dp)
-                            .background(Color(0xFFFFE0D6), shape = CircleShape),
+                            .background(MaterialTheme.colorScheme.surface, shape = CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
@@ -140,12 +140,12 @@ fun ConfiguracionPrivacidad(
                         Text(
                             text = "Receta secreta (Privada)",
                             fontWeight = FontWeight.Bold,
-                            color = DarkText,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 16.sp
                         )
                         Text(
                             text = "Solo tú podrás acceder desde tu perfil a esta receta, autenticando con tu huella dactilar.",
-                            style = MaterialTheme.typography.bodySmall.copy(color = Brown, lineHeight = 18.sp)
+                            style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant, lineHeight = 18.sp)
                         )
                     }
                 }

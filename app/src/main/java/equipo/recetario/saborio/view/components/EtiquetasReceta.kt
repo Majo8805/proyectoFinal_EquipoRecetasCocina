@@ -35,7 +35,7 @@ fun EtiquetasReceta(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Column(
             modifier = Modifier.padding(20.dp),
@@ -48,7 +48,7 @@ fun EtiquetasReceta(
                 Box(
                     modifier = Modifier
                         .size(44.dp)
-                        .background(Color(0xFFEBE3DA), shape = CircleShape),
+                        .background(MaterialTheme.colorScheme.surface, shape = CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
@@ -62,7 +62,7 @@ fun EtiquetasReceta(
                         text = "Etiquetas de la receta",
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold,
-                            color = DarkText,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 18.sp
                         )
                     )
@@ -83,7 +83,7 @@ fun EtiquetasReceta(
                     Surface(
                         modifier = Modifier.clickable { onToggleEtiqueta(tag) },
                         shape = RoundedCornerShape(50),
-                        color = if (isSelected) Orange else Color.White
+                        color = if (isSelected) Orange else MaterialTheme.colorScheme.surface
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -92,12 +92,12 @@ fun EtiquetasReceta(
                         ) {
                             Text(
                                 text = tag,
-                                color = if (isSelected) Color.White else DarkText,
+                                color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 14.sp
                             )
                             if (isSelected) {
-                                Text("✓", color = Color.White, fontWeight = FontWeight.Bold)
+                                Text("✓", color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold)
                             }
                         }
                     }
@@ -113,16 +113,16 @@ fun EtiquetasReceta(
                 OutlinedTextField(
                     value = nuevaEtiquetaText,
                     onValueChange = { nuevaEtiquetaText = it },
-                    placeholder = { Text("Añadir otra etiqueta...", color = Color.Gray, fontSize = 14.sp) },
+                    placeholder = { Text("Añadir otra etiqueta...", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 14.sp) },
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(50),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White,
+                        focusedContainerColor = MaterialTheme.colorScheme.surface,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent,
-                        focusedTextColor = DarkText,
-                        unfocusedTextColor = DarkText
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                     ),
                     singleLine = true
                 )

@@ -28,8 +28,8 @@ fun FotoPlatillo(
 ) {
     val gradientBrush = Brush.verticalGradient(
         colors = listOf(
-            BackgrounLightBrown,
-            Color(0xFFEADBCE)
+            MaterialTheme.colorScheme.surfaceVariant,
+            MaterialTheme.colorScheme.surface
         )
     )
 
@@ -63,7 +63,7 @@ fun FotoPlatillo(
                     Box(
                         modifier = Modifier
                             .size(68.dp)
-                            .background(Color(0xFFFFE0D6), shape = CircleShape),
+                            .background(MaterialTheme.colorScheme.surface, shape = CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
@@ -78,7 +78,7 @@ fun FotoPlatillo(
                     text = "Foto del platillo",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = DarkText,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 20.sp
                     )
                 )
@@ -86,7 +86,7 @@ fun FotoPlatillo(
                 Text(
                     text = "Una imagen apetitosa despierta todos los sentidos antes del primer bocado.",
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Brown,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
                         fontSize = 14.sp
                     ),
