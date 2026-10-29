@@ -1,7 +1,10 @@
 package equipo.recetario.saborio.view.screens
 
+import android.app.DatePickerDialog
+import android.icu.util.Calendar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -22,10 +26,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -80,9 +86,14 @@ fun headerRegistro() {
 
         Image(
             painter = painterResource(R.drawable.logo_icon),
-            contentDescription = "Logo Saborío",
-            colorFilter = ColorFilter.tint(Orange)
-            )
+            contentDescription = "logo_icon",
+            modifier = Modifier
+                .background(
+                    color = Orange,
+                    shape = CircleShape
+                )
+                .padding(8.dp)
+        )
 
         Spacer(
             modifier = Modifier.width(8.dp)
@@ -128,7 +139,8 @@ fun tarjetaRegistro(
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
-        shape = RoundedCornerShape(24.dp)
+        shape = RoundedCornerShape(24.dp),
+
     ) {
 
         Column(
@@ -234,6 +246,30 @@ fun campoFechaNacimiento(
     viewModel: UsuarioViewModel
 ) {
 
+    val context = LocalContext.current
+
+    val calendar = remember {
+        Calendar.getInstance()
+    }
+
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _, year, month, dayOfMonth ->
+
+            val fechaSeleccionada =
+                "%02d/%02d/%04d".format(
+                    dayOfMonth,
+                    month + 1,
+                    year
+                )
+
+            viewModel.actualizarFecha(fechaSeleccionada)
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
+
     Text(
         text = "Fecha de nacimiento",
         fontWeight = FontWeight.SemiBold
@@ -243,10 +279,26 @@ fun campoFechaNacimiento(
         modifier = Modifier.height(8.dp)
     )
 
-    CampoRegistro(
+    OutlinedTextField(
         value = viewModel.fechaNacimiento,
-        onValueChange = viewModel::actualizarFecha,
-        placeholder = "DD/MM/AAAA"
+        onValueChange = {},
+        enabled = false,
+        readOnly = true,
+        placeholder = {
+            Text("Selecciona una fecha")
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                datePickerDialog.show()
+            },
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedContainerColor = LightBrownGrey,
+            unfocusedContainerColor = LightBrownGrey,
+            focusedBorderColor = Color.Transparent,
+            unfocusedBorderColor = Color.Transparent
+        ),
+        shape = RoundedCornerShape(24.dp)
     )
 
     Spacer(
