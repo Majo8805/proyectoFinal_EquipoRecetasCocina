@@ -2,14 +2,6 @@ package equipo.recetario.saborio.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
-
 //Colores de los Tags
 val DesayunoBg = Color(0xFFF57C00)
 
@@ -36,12 +28,18 @@ val CustomBg = Color(0xFFF1EDE7)
 val WhiteText = Color(0xFFFFFFFF)
 val DarkText = Color(0xFF354048)
 
-//Colores Pagina
-val Brown = Color(0xFF5A413A)
-val LightBrown = Color(0xFF8F7068)
-val Orange = Color(0xFFAD2C00)
-val LightBrownGrey = Color(0xFFF1EDE7)
-val BackgrounLightBrown = Color(0xFFFDF9F3)
+//Colores App Modo Claro
+val Brown = Color(0xFF5A413A) // color de todos los textos color cafe oscuro
+val LightBrown = Color(0xFF8F7068) // color de los textos placeholder de los textfields
+val Orange = Color(0xFFAD2C00) //color de todas las cosas que son naranjas en la app
+val Peach = Color(0xFFFFDBD0) // color de boton cerrar sesion y de algunos circulos claritos de crear receta
+val LighterBrownGrey = Color(0xFFF7F3ED) // color de cards claras (como el de la lista de recetas en detalle receta)
+
+val LightBrownGrey = Color(0xFFF1EDE7) // color muy parecido al de arriba pero es un poco mas oscuro (se usa por ejemplo en los fondos de las cards de crear receta)
+val BackgrounLightBrown = Color(0xFFFDF9F3) // color de fondo de la app en modo claro
+
+
+// Colores App Modo Oscuro
 val DarkBackground = Color(0xFF160F0C)
 val DarkSurface = Color(0xFF211916)
 val DarkSurfaceVariant = Color(0xFF2D231F)

@@ -1,6 +1,5 @@
 package equipo.recetario.saborio.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -34,7 +33,7 @@ private val LightColorScheme = lightColorScheme(
     tertiary = LightBrown,
     background = BackgrounLightBrown,
     surface = PureWhite,
-    surfaceVariant = LightBrownGrey,
+    surfaceVariant = LighterBrownGrey,
     error = Orange,
     onPrimary = WhiteText,
     onSecondary = WhiteText,
