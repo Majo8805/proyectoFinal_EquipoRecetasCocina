@@ -70,7 +70,7 @@ fun PrincipalScreen(
                 text = viewModel.titulo,
                 color = Orange,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 28.sp,
+                fontSize = 32.sp,
                 fontFamily = Epilogue,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )

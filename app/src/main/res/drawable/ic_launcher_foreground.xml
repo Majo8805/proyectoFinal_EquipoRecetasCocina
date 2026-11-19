@@ -1,30 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
-    <path android:pathData="M31,63.928c0,0 6.4,-11 12.1,-13.1c7.2,-2.6 26,-1.4 26,-1.4l38.1,38.1L107,108.928l-32,-1L31,63.928z">
-        <aapt:attr name="android:fillColor">
-            <gradient
-                android:endX="85.84757"
-                android:endY="92.4963"
-                android:startX="42.9492"
-                android:startY="49.59793"
-                android:type="linear">
-                <item
-                    android:color="#44000000"
-                    android:offset="0.0" />
-                <item
-                    android:color="#00000000"
-                    android:offset="1.0" />
-            </gradient>
-        </aapt:attr>
-    </path>
-    <path
-        android:fillColor="#FFFFFF"
-        android:fillType="nonZero"
-        android:pathData="M65.3,45.828l3.8,-6.6c0.2,-0.4 0.1,-0.9 -0.3,-1.1c-0.4,-0.2 -0.9,-0.1 -1.1,0.3l-3.9,6.7c-6.3,-2.8 -13.4,-2.8 -19.7,0l-3.9,-6.7c-0.2,-0.4 -0.7,-0.5 -1.1,-0.3C38.8,38.328 38.7,38.828 38.9,39.228l3.8,6.6C36.2,49.428 31.7,56.028 31,63.928h46C76.3,56.028 71.8,49.428 65.3,45.828zM43.4,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2c-0.3,-0.7 -0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C45.3,56.528 44.5,57.328 43.4,57.328L43.4,57.328zM64.6,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2s-0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C66.5,56.528 65.6,57.328 64.6,57.328L64.6,57.328z"
-        android:strokeWidth="1"
-        android:strokeColor="#00000000" />
+    android:viewportWidth="960"
+    android:viewportHeight="960">
+    <group
+        android:pivotX="480"
+        android:pivotY="480"
+        android:scaleX="0.82"
+        android:scaleY="0.82">
+        <path
+            android:fillColor="#AD2C00"
+            android:pathData="M480,140a340,340 0,1 0,0 680a340,340 0,1 0,0 -680" />
+    </group>
+    <group
+        android:pivotX="480"
+        android:pivotY="480"
+        android:scaleX="0.4"
+        android:scaleY="0.4">
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M200,800Q150,800 115,765Q80,730 80,680L80,480L641,480Q646,446 668,420.5Q690,395 722,384L907,322L932,398L747,460Q735,464 727.5,474.5Q720,485 720,498L720,680Q720,730 685,765Q650,800 600,800L200,800ZM177,400Q191,364 181.5,336Q172,308 149,280Q116,240 105.5,204.5Q95,169 102,120L180,120Q172,158 177.5,182Q183,206 206,234Q244,280 254.5,315.5Q265,351 255,400L177,400ZM337,400Q351,364 342,336Q333,308 310,280Q277,240 266,204.5Q255,169 262,120L340,120Q332,158 337.5,182Q343,206 366,234Q404,280 414.5,315.5Q425,351 415,400L337,400ZM497,400Q511,364 502,336Q493,308 470,280Q437,240 426,204.5Q415,169 422,120L500,120Q492,158 497.5,182Q503,206 526,234Q564,280 574.5,315.5Q585,351 575,400L497,400Z" />
+    </group>
 </vector>
