@@ -38,7 +38,10 @@ import equipo.recetario.saborio.R
 import equipo.recetario.saborio.model.data.RecetaPrueba
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.ui.theme.Brown
+import equipo.recetario.saborio.ui.theme.Epilogue
 import equipo.recetario.saborio.ui.theme.Orange
+import equipo.recetario.saborio.ui.theme.Peach
+import equipo.recetario.saborio.ui.theme.PlusJakartaSans
 import equipo.recetario.saborio.utilities.getColorByEtiqueta
 
 @Composable
@@ -89,7 +92,8 @@ fun RecetaElement(
             Text(
                 text = receta.nombre,
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = Epilogue,
                 modifier = Modifier
                     .padding(horizontal = 12.dp, vertical = 8.dp)
             )
@@ -147,7 +151,7 @@ fun EtiquetaEstrellas(calificacion: Double, modifier: Modifier) {
                 contentDescription = "stars_icon",
                 modifier = Modifier
                     .size(16.dp),
-                colorFilter = ColorFilter.tint(Color(0xFFFFC107))
+                colorFilter = ColorFilter.tint(Peach)
             )
             Spacer(modifier = Modifier.width(4.dp))
 
@@ -172,8 +176,9 @@ fun EtiquetaTag(texto: String) {
             text = texto,
             color = colores.second,
             fontSize = 12.sp,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+            fontWeight = FontWeight.Bold,
+            fontFamily = PlusJakartaSans,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
         )
     }
 }

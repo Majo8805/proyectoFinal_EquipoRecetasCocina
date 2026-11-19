@@ -1,8 +1,8 @@
 package equipo.recetario.saborio.view.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -24,8 +24,13 @@ fun ListaRecetas(
         columns = StaggeredGridCells.Fixed(2),
         verticalItemSpacing = 16.dp,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(
+            start = 15.dp,
+            top = 15.dp,
+            end = 15.dp,
+            bottom = 32.dp
+        ),
         modifier = Modifier.fillMaxSize()
-            .padding(15.dp, 15.dp,15.dp, 0.dp)
     ) {
         items(recetas) { receta ->
             RecetaElement(receta, mostrarBotonGuardar, onGuardarClick, onRecetaClick)

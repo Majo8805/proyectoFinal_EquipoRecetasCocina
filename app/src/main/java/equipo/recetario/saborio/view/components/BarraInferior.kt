@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import equipo.recetario.saborio.R
 import equipo.recetario.saborio.ui.theme.Orange
+import equipo.recetario.saborio.ui.theme.PlusJakartaSans
 
 @Composable
 fun BarraInferior(
@@ -48,14 +49,15 @@ fun BarraInferior(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 5.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             //Boton Inicio
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable{onNavigateToInicio()}
             ) {
-                val color = if (pestana == "Inicio") Orange else MaterialTheme.colorScheme.onSurfaceVariant
+                val color = if (pestana == "Inicio") Orange else MaterialTheme.colorScheme.onSurface
                 Image(painter = painterResource(R.drawable.home_icon),
                     contentDescription = "home_icon",
                     colorFilter = ColorFilter.tint(color)
@@ -64,7 +66,8 @@ fun BarraInferior(
                     "Inicio",
                     color = color,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 10.sp
+                    fontSize = 11.sp,
+                    fontFamily = PlusJakartaSans
                 )
             }
             //Boton Explorar
@@ -72,7 +75,7 @@ fun BarraInferior(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable{onNavigateToExplorar()}
             ) {
-                val color = if (pestana == "Explorar") Orange else MaterialTheme.colorScheme.onSurfaceVariant
+                val color = if (pestana == "Explorar") Orange else MaterialTheme.colorScheme.onSurface
                 Image(painter = painterResource(R.drawable.explore_icon),
                     contentDescription = "explore_icon",
                     colorFilter = ColorFilter.tint(color)
@@ -84,13 +87,13 @@ fun BarraInferior(
                     fontSize = 10.sp
                 )
             }
-            //Boton Agregar Receta
+            //Boton Crear Receta
             FloatingActionButton(
                 onClick = onNavigateToAgregarReceta,
                 shape = CircleShape,
                 containerColor = Orange,
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(48.dp)
             ) {
                 Image(painter = painterResource(R.drawable.plus_icon),
                     contentDescription = "plus_icon")
@@ -100,7 +103,7 @@ fun BarraInferior(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable{onNavigateToGuardadas()}
             ) {
-                val color = if (pestana == "Guardadas") Orange else MaterialTheme.colorScheme.onSurfaceVariant
+                val color = if (pestana == "Guardadas") Orange else MaterialTheme.colorScheme.onSurface
                 Image(painter = painterResource(R.drawable.guardar_icon),
                     contentDescription = "guardar_icon",
                     colorFilter = ColorFilter.tint(color)
@@ -117,7 +120,7 @@ fun BarraInferior(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable{ onNavigateToPerfil() }
             ) {
-                val color = if (pestana == "Perfil") Orange else MaterialTheme.colorScheme.onSurfaceVariant
+                val color = if (pestana == "Perfil") Orange else MaterialTheme.colorScheme.onSurface
                 Image(painter = painterResource(R.drawable.person_icon),
                     contentDescription = "person_icon",
                     colorFilter = ColorFilter.tint(color)

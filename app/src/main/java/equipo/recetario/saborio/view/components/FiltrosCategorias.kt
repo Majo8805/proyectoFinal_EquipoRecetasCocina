@@ -65,7 +65,7 @@ fun FiltrosCategorias(
             ) {
                 Text(
                     text = categoria,
-                    color = if (esActiva) WhiteText else MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = if (esActiva) WhiteText else MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Medium,
                     fontSize = 14.sp
                 )

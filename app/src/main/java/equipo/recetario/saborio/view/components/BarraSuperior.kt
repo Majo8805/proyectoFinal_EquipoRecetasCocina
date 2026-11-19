@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import equipo.recetario.saborio.R
 import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Usuario
+import equipo.recetario.saborio.ui.theme.Epilogue
 import equipo.recetario.saborio.ui.theme.Orange
 
 @Composable
@@ -55,7 +56,8 @@ fun BarraSuperior(usuario: Usuario, onNavigateToPerfil: () -> Unit) {
                 text = "Saborío",
                 color = Orange,
                 fontWeight = FontWeight.Bold,
-                fontSize = 22.sp
+                fontSize = 22.sp,
+                fontFamily = Epilogue
             )
             Spacer(modifier = Modifier.weight(1f))
             IconButton(onClick = { onNavigateToPerfil() }) {

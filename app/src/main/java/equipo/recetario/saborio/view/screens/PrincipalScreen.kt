@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
+import equipo.recetario.saborio.ui.theme.Epilogue
 import equipo.recetario.saborio.ui.theme.Orange
 import equipo.recetario.saborio.view.components.BarraInferior
 import equipo.recetario.saborio.view.components.BarraSuperior
@@ -68,8 +69,9 @@ fun PrincipalScreen(
             Text(
                 text = viewModel.titulo,
                 color = Orange,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.SemiBold,
                 fontSize = 28.sp,
+                fontFamily = Epilogue,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
 

@@ -27,9 +27,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import equipo.recetario.saborio.R
+import equipo.recetario.saborio.ui.theme.PlusJakartaSans
 
 @Composable
 fun Buscador(
@@ -50,7 +52,11 @@ fun Buscador(
             modifier = Modifier
                 .weight(1f),
             placeholder = {
-                Text("Buscar recetas", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text("Buscar recetas",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontFamily = PlusJakartaSans,
+                    fontWeight = FontWeight.Normal
+                )
             },
             leadingIcon = {
                 Image(
