@@ -1,7 +1,11 @@
 package equipo.recetario.saborio.view.screens
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,18 +24,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
@@ -39,8 +39,10 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -54,7 +56,13 @@ import equipo.recetario.saborio.model.data.getRecetasSecretas
 import equipo.recetario.saborio.model.data.usuarioMuestra
 import equipo.recetario.saborio.model.domain.Receta
 import equipo.recetario.saborio.model.domain.Usuario
+import equipo.recetario.saborio.ui.theme.Brown
+import equipo.recetario.saborio.ui.theme.Epilogue
+import equipo.recetario.saborio.ui.theme.LightBrown
+import equipo.recetario.saborio.ui.theme.LightBrownGrey
 import equipo.recetario.saborio.ui.theme.Orange
+import equipo.recetario.saborio.ui.theme.Peach
+import equipo.recetario.saborio.ui.theme.PlusJakartaSans
 import equipo.recetario.saborio.ui.theme.SaborioTheme
 import equipo.recetario.saborio.ui.theme.WhiteText
 import equipo.recetario.saborio.view.components.BarraInferior
@@ -90,9 +98,12 @@ fun PerfilScreen(
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
         ) {
-            EncabezadoPerfil(usuario)
-            EstadisticasPerfil(recetas = misRecetas.size, secretas = misRecetasSecretas.size)
-            BotonEditarPerfil(onEditarClick)
+            TarjetaEncabezadoPerfil(
+                usuario = usuario,
+                recetas = misRecetas.size,
+                secretas = misRecetasSecretas.size,
+                onEditarClick = onEditarClick
+            )
             TarjetaFolderSecretas(
                 cantidad = misRecetasSecretas.size,
                 onDesbloquearClick = onDesbloquearClick
@@ -137,12 +148,19 @@ fun RecetasSecretasScreen(
             IconButton(onClick = onVolverClick) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
             }
-            Text("Mis recetas secretas", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = "Mis recetas secretas",
+                fontSize = 24.sp,
+                fontFamily = Epilogue,
+                fontWeight = FontWeight.SemiBold
+            )
         }
         Box(modifier = Modifier.weight(1f)) {
             if (recetas.isEmpty()) {
                 Text(
-                    "Aún no hay recetas secretas",
+                    text = "Aún no hay recetas secretas",
+                    fontFamily = PlusJakartaSans,
+                    fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.align(Alignment.Center)
                 )
             } else {
@@ -160,33 +178,81 @@ fun RecetasSecretasScreen(
 
 
 @Composable
-fun EncabezadoPerfil(usuario: Usuario) {
-    Column(
+fun TarjetaEncabezadoPerfil(
+    usuario: Usuario,
+    recetas: Int,
+    secretas: Int,
+    onEditarClick: () -> Unit
+) {
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        shape = RoundedCornerShape(28.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            EncabezadoPerfil(usuario)
+            Spacer(modifier = Modifier.height(16.dp))
+            EstadisticasPerfil(recetas = recetas, secretas = secretas)
+            Spacer(modifier = Modifier.height(12.dp))
+            BotonEditarPerfil(onEditarClick)
+        }
+    }
+}
+
+@Composable
+fun EncabezadoPerfil(usuario: Usuario) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(usuario.fotoPerfil),
-            contentDescription = "Foto de perfil",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(120.dp)
-                .clip(CircleShape)
-        )
+        Box(contentAlignment = Alignment.BottomEnd) {
+            Image(
+                painter = painterResource(usuario.fotoPerfil),
+                contentDescription = "Foto de perfil",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(120.dp)
+                    .clip(CircleShape)
+            )
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(34.dp)
+                    .clip(CircleShape)
+                    .background(Orange)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.photo_camera_24px),
+                    contentDescription = "Cambiar foto",
+                    tint = WhiteText,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+        }
         Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = usuario.nombre,
-            fontSize = 24.sp,
+            fontSize = 22.sp,
+            fontFamily = Epilogue,
             fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurface
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = usuario.descripcionUsuario,
-            fontSize = 16.sp,
-            textAlign = TextAlign.Center
+            fontSize = 13.sp,
+            fontFamily = PlusJakartaSans,
+            fontWeight = FontWeight.Normal,
+            textAlign = TextAlign.Center,
+            color = LightBrown
         )
     }
 }
@@ -195,25 +261,28 @@ fun EncabezadoPerfil(usuario: Usuario) {
 fun EstadisticaPerfil(valor: Int, etiqueta: String, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = LightBrownGrey)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(vertical = 12.dp, horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = valor.toString(),
                 color = Orange,
-                fontSize = 23.sp,
+                fontSize = 24.sp,
+                fontFamily = PlusJakartaSans,
                 fontWeight = FontWeight.Bold
             )
             Text(
                 text = etiqueta,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 14.sp
+                color = Brown,
+                fontSize = 13.sp,
+                fontFamily = PlusJakartaSans,
+                fontWeight = FontWeight.Bold
             )
         }
     }
@@ -222,9 +291,7 @@ fun EstadisticaPerfil(valor: Int, etiqueta: String, modifier: Modifier = Modifie
 @Composable
 fun EstadisticasPerfil(recetas: Int, secretas: Int) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         EstadisticaPerfil(valor = recetas, etiqueta = "Recetas", modifier = Modifier.weight(1f))
@@ -234,52 +301,77 @@ fun EstadisticasPerfil(recetas: Int, secretas: Int) {
 
 @Composable
 fun BotonEditarPerfil(onClick: () -> Unit) {
-    FilledTonalButton(
+    Button(
         onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = ButtonDefaults.filledTonalButtonColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = MaterialTheme.colorScheme.onSurface
-        )
+        modifier = Modifier.height(40.dp),
+        shape = CircleShape,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = LightBrownGrey,
+            contentColor = Brown
+        ),
+        elevation = null
     ) {
         Icon(
-            imageVector = Icons.Default.Edit,
-            contentDescription = "Editar datos personales"
+            painter = painterResource(R.drawable.ic_editar_datos),
+            contentDescription = "Editar datos personales",
+            modifier = Modifier.size(18.dp),
+            tint = Brown
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Text(text = "Editar datos personales")
+        Text(
+            text = "Editar datos personales",
+            fontSize = 14.sp,
+            fontFamily = PlusJakartaSans,
+            fontWeight = FontWeight.Bold,
+            color = Brown
+        )
     }
 }
 
 @Composable
 fun BotonCerrarSesion(onClick: () -> Unit) {
-    OutlinedButton(
+    Button(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .height(48.dp),
+        shape = CircleShape,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Peach,
             contentColor = Orange
+        ),
+        elevation = null
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_cerrar_sesion),
+            contentDescription = null,
+            modifier = Modifier.size(20.dp),
+            tint = Orange
         )
-    ) { Text("Cerrar sesión") }
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = "Cerrar sesión",
+            fontSize = 15.sp,
+            fontFamily = PlusJakartaSans,
+            fontWeight = FontWeight.Bold,
+            color = Orange
+        )
+    }
 }
 
 @Composable
 fun TarjetaFolderSecretas(cantidad: Int, onDesbloquearClick: () -> Unit) {
     Card(
-        onClick = onDesbloquearClick,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -299,29 +391,40 @@ fun TarjetaFolderSecretas(cantidad: Int, onDesbloquearClick: () -> Unit) {
                     )
                 }
                 Column {
-                    Text(text = "Folder de Recetas", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                    Text(text = "$cantidad recetas secretas", fontSize = 14.sp)
+                    Text(
+                        text = "Folder de Recetas",
+                        fontSize = 18.sp,
+                        fontFamily = Epilogue,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = "$cantidad recetas secretas",
+                        fontSize = 13.sp,
+                        fontFamily = PlusJakartaSans,
+                        fontWeight = FontWeight.Normal,
+                        color = LightBrown
+                    )
                 }
             }
-            Row(
+            Button(
+                onClick = onDesbloquearClick,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .padding(12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .height(44.dp),
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Orange,
+                    contentColor = WhiteText
+                ),
+                elevation = null
             ) {
-                Button(onClick = onDesbloquearClick,
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Orange,
-                        contentColor = WhiteText
-                    )) {
-                    Text(text = "Desbloquear")
-                }
-
+                Text(
+                    text = "Desbloquear",
+                    fontSize = 14.sp,
+                    fontFamily = PlusJakartaSans,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }
@@ -333,11 +436,17 @@ fun TarjetaGrafica(titulo: String, imagen: Int) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(titulo, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = titulo,
+                fontSize = 18.sp,
+                fontFamily = Epilogue,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
             Spacer(modifier = Modifier.height(8.dp))
             Image(
                 painter = painterResource(imagen),
@@ -350,6 +459,42 @@ fun TarjetaGrafica(titulo: String, imagen: Int) {
 }
 
 @Composable
+fun SwitchEstiloStoryboard(
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    val trackColor by animateColorAsState(
+        targetValue = if (checked) Orange else Color(0xFFE5DFD7),
+        label = "trackColor"
+    )
+    val bias by animateFloatAsState(
+        targetValue = if (checked) 1f else -1f,
+        label = "thumbBias"
+    )
+
+    Box(
+        modifier = Modifier
+            .width(46.dp)
+            .height(26.dp)
+            .clip(CircleShape)
+            .background(trackColor)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) { onCheckedChange(!checked) }
+            .padding(3.dp),
+        contentAlignment = BiasAlignment(bias, 0f)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(20.dp)
+                .clip(CircleShape)
+                .background(WhiteText)
+        )
+    }
+}
+
+@Composable
 fun TarjetaPreferencias(
     modoOscuro: Boolean = false,
     onModoOscuroChange: (Boolean) -> Unit = {}
@@ -358,7 +503,7 @@ fun TarjetaPreferencias(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(
@@ -368,8 +513,13 @@ fun TarjetaPreferencias(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Modo oscuro", fontSize = 16.sp)
-            Switch(
+            Text(
+                text = "Modo oscuro",
+                fontSize = 16.sp,
+                fontFamily = PlusJakartaSans,
+                fontWeight = FontWeight.SemiBold
+            )
+            SwitchEstiloStoryboard(
                 checked = modoOscuro,
                 onCheckedChange = onModoOscuroChange
             )
@@ -382,7 +532,8 @@ fun TituloSeccion(texto: String) {
     Text(
         text = texto,
         fontSize = 20.sp,
-        fontWeight = FontWeight.Bold,
+        fontFamily = Epilogue,
+        fontWeight = FontWeight.SemiBold,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
     )
 }
@@ -404,7 +555,7 @@ fun PreviewRecetasSecretasScreen() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, heightDp = 1350)
 @Composable
 fun PreviewPerfilScreen() {
     SaborioTheme {
@@ -432,8 +583,10 @@ fun PreviewEstadisticasPerfil() {
 @Composable
 fun PreviewTarjetaPreferencias() {
     SaborioTheme {
-        TituloSeccion("Preferencias de la aplicación")
-        TarjetaPreferencias()
+        Column(modifier = Modifier.padding(16.dp)) {
+            TituloSeccion("Preferencias de la aplicación")
+            TarjetaPreferencias()
+        }
     }
 }
 
@@ -442,4 +595,12 @@ fun PreviewTarjetaPreferencias() {
 fun PreviewTarjetaGrafica() {
     SaborioTheme {
         TarjetaGrafica("Recetas guardadas por mes", R.drawable.grafica_actividad) }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewBotonCerrarSesion() {
+    SaborioTheme {
+        BotonCerrarSesion(onClick = {})
+    }
 }
