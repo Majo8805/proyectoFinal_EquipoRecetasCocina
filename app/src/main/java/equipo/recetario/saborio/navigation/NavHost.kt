@@ -113,7 +113,11 @@ fun AppNavHost(
                 onNavigateToAgregarReceta = { navController.navigate(VerAgregarEditarReceta()) },
                 onEditarClick = { navController.navigate(VerEditarPerfil) },
                 onDesbloquearClick = { navController.navigate(VerRecetasSecretas) },
-                onCerrarSesionClick = { },
+                onCerrarSesionClick = {
+                    navController.navigate(VerLogin) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                },
                 modoOscuro = modoOscuro,
                 onModoOscuroChange = onModoOscuroChange
             )
