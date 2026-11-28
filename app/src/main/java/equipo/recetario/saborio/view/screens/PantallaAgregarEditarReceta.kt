@@ -39,7 +39,6 @@ fun PantallaAgregarEditarReceta(
         viewModel.cargarRecetaParaEditar(recetaId, esEdicion)
     }
 
-
     val nombreReceta = viewModel.nombreReceta
     val descripcionReceta = viewModel.descripcionReceta
     val listaIngredientesState = viewModel.listaIngredientes
@@ -60,7 +59,7 @@ fun PantallaAgregarEditarReceta(
                 onNavigateToPerfil = onNavigateToPerfil
             )
         },
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = BackgrounLightBrown
     ) { innerPadding ->
 
         BoxWithConstraints(
@@ -118,7 +117,7 @@ fun PantallaAgregarEditarReceta(
 
                             FotoPlatillo(
                                 fotoDrawableRes = fotoDrawableRes,
-                                onSubirFotoClick = {  }
+                                onSubirFotoClick = { }
                             )
 
                             EtiquetasReceta(
