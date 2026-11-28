@@ -248,7 +248,7 @@ fun EncabezadoPerfil(usuario: Usuario) {
         Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = usuario.descripcionUsuario,
-            fontSize = 13.sp,
+            fontSize = 14.sp,
             fontFamily = PlusJakartaSans,
             fontWeight = FontWeight.Normal,
             textAlign = TextAlign.Center,
@@ -443,8 +443,8 @@ fun TarjetaGrafica(titulo: String, imagen: Int) {
             Text(
                 text = titulo,
                 fontSize = 18.sp,
-                fontFamily = Epilogue,
-                fontWeight = FontWeight.Bold,
+                fontFamily = PlusJakartaSans,
+                fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -532,7 +532,7 @@ fun TituloSeccion(texto: String) {
     Text(
         text = texto,
         fontSize = 20.sp,
-        fontFamily = Epilogue,
+        fontFamily = PlusJakartaSans,
         fontWeight = FontWeight.SemiBold,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
     )
