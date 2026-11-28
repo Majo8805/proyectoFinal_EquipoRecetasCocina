@@ -8,7 +8,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -16,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import equipo.recetario.saborio.R
 import equipo.recetario.saborio.ui.theme.*
-
 
 @Composable
 fun AccionesGuardado(
@@ -28,31 +26,31 @@ fun AccionesGuardado(
             .fillMaxWidth()
             .padding(vertical = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Button(
             onClick = onGuardarClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(54.dp),
+                .height(64.dp),
             shape = RoundedCornerShape(50),
             colors = ButtonDefaults.buttonColors(containerColor = Orange)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.plus_icon),
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(24.dp),
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
                 )
                 Text(
                     text = "Guardar Receta",
                     color = MaterialTheme.colorScheme.onPrimary,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
+                    fontSize = 20.sp
                 )
             }
         }
@@ -62,7 +60,7 @@ fun AccionesGuardado(
             style = MaterialTheme.typography.bodyMedium.copy(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Bold,
-                fontSize = 15.sp
+                fontSize = 16.sp
             ),
             modifier = Modifier
                 .clickable { onDescartarClick() }
